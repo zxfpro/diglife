@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/diglife/__init__.py
+src/diglife/core.py
+src/diglife/log.py
+src/diglife/server.py
+src/diglife.egg-info/PKG-INFO
+src/diglife.egg-info/SOURCES.txt
+src/diglife.egg-info/dependency_links.txt
+src/diglife.egg-info/top_level.txt
+tests/test_main.py
