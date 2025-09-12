@@ -1,0 +1,177 @@
+2025-09-12 09:49:24,245 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:14,354 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:17,462 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:19,631 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:23,155 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:26,499 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:28,555 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:47,608 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:52,083 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:50:58,273 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:03,100 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:13,930 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:27,216 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:30,947 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:44,069 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:52,915 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:54,347 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:51:59,739 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:52:06,897 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:52:18,902 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:52:33,545 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:52:39,716 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:52:41,192 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:55:39,089 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:55:52,632 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:55:56,138 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:04,294 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:14,484 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:16,036 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:21,107 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:23,836 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:26,541 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 09:56:30,388 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:00:11,418 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:00:14,933 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:00:20,988 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:00:25,929 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:15:31,191 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:25:53,954 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:26:29,976 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:26:31,180 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:26:40,581 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:28:04,833 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:29:11,219 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:29:59,267 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:32:36,007 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:15,013 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:26,522 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:31,436 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:33,062 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:35,758 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:34:59,679 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:35:00,952 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:35:04,786 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:35:09,843 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:35:11,454 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:35:15,258 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:41:57,457 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:44:03,080 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:44:39,715 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:44:44,578 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:47:06,424 - INFO - root - client:38 - request running
+2025-09-12 10:47:06,471 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:47:14,297 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+2025-09-12 10:47:14,298 - DEBUG - root - client:42 - 7.874097108840942
+2025-09-12 10:48:23,918 - INFO - root - client:38 - request running
+2025-09-12 10:48:23,921 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:48:31,203 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 765
+2025-09-12 10:48:31,205 - DEBUG - root - client:42 - 7.286322832107544
+2025-09-12 10:49:32,093 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:49:33,673 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:49:39,968 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:49:43,899 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:49:46,633 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:50:17,043 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:50:22,291 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:05,682 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:09,341 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:11,138 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:12,761 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:19,929 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:21,590 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:23,199 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:24,758 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:28,680 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:30,429 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:51:34,396 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:25,755 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:34,050 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:38,768 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:42,535 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:45,348 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:51,317 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:52:58,960 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:53:01,707 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:53:03,534 - INFO - root - client:38 - request running
+2025-09-12 10:53:03,543 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:53:11,050 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 934
+2025-09-12 10:53:11,052 - DEBUG - root - client:42 - 7.517910003662109
+2025-09-12 10:56:34,325 - INFO - root - client:38 - request running
+2025-09-12 10:56:34,328 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:56:41,586 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 783
+2025-09-12 10:56:41,587 - DEBUG - root - client:42 - 7.261101007461548
+2025-09-12 10:56:53,643 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:56:57,302 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:56:58,916 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:57:03,057 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:57:03,081 - INFO - root - client:38 - request running
+2025-09-12 10:57:03,089 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:57:10,554 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 875
+2025-09-12 10:57:10,555 - DEBUG - root - client:42 - 7.47313117980957
+2025-09-12 10:57:25,283 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:57:33,034 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:57:36,899 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:57:39,119 - INFO - root - client:38 - request running
+2025-09-12 10:57:39,129 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:57:46,830 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 864
+2025-09-12 10:57:46,831 - DEBUG - root - client:42 - 7.711371898651123
+2025-09-12 10:58:21,205 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:58:45,157 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:59:03,898 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:59:05,481 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 10:59:50,971 - INFO - root - client:38 - request running
+2025-09-12 10:59:50,990 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 10:59:57,991 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 603
+2025-09-12 10:59:57,992 - DEBUG - root - client:42 - 7.020066261291504
+2025-09-12 11:02:17,604 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:02:49,159 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:03:01,833 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:03:03,232 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:03:59,763 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:04:06,936 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:19,445 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:23,070 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:31,358 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:34,074 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:37,870 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:43,130 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:48,193 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:06:59,935 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:01,369 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:02,988 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:04,596 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:16,103 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:17,738 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:20,457 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:26,575 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:28,200 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:29,865 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:07:42,979 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:01,776 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:06,602 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:15,084 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:24,455 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:32,723 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:50,895 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:09:54,503 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:10:12,368 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:10:13,782 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:10:15,487 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:10:58,398 - INFO - root - client:38 - request running
+2025-09-12 11:10:58,426 - DEBUG - urllib3.connectionpool - connectionpool:1049 - Starting new HTTPS connection (1): api.bianxie.ai:443
+2025-09-12 11:11:11,889 - DEBUG - urllib3.connectionpool - connectionpool:544 - https://api.bianxie.ai:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+2025-09-12 11:11:11,889 - DEBUG - root - client:42 - 13.490562915802002
+2025-09-12 11:11:43,839 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:12:07,724 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:12:20,623 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:12:28,913 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:12:50,384 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:14:59,301 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:17:30,858 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:17:33,274 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:17:38,201 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:20:28,003 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:22:08,939 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:26:36,632 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-12 11:27:55,034 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
