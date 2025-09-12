@@ -2,7 +2,9 @@
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
+from diglife.log import Log
 
+logger = Log.logger
 
 # TODO ADD
 app = FastAPI(
@@ -58,7 +60,7 @@ async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dic
 
 @app.post("/memory_card/generate_by_text")
 async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
-    """ 记忆卡片生成优化 """
+    """ 上传文件生成记忆卡片 """
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     result = await agenerate_memory_card(chat_history_str=request.text_str,
                                          weight=1000)
@@ -98,11 +100,27 @@ async def score_from_memory_card_server(request: Memory_cardRequest):
         "result": result
     }
 
+from diglife.core import memory_card_merge
+
 # 记忆合并
-@app.get("/memory_card_合并")
-async def 记忆合并():
-    """ x """
-    return {"message": "LLM Service is running."}
+class Memory_card_list_Request(BaseModel):
+    memory_cards: list[str] = Field(..., description="要评分的记忆卡片内容")
+
+@app.post("/memory_card/merge")
+async def memory_card_merge_server(request: Memory_card_list_Request):
+    """
+    记忆卡片质量评分
+    接收一个记忆卡片内容字符串，并返回其质量评分。
+    """
+    result = memory_card_merge(memory_cards=request.memory_cards)
+    return {
+        "message": "memory card merge successfully",
+        "result": result
+    }
+
+
+
+
 
 
 class LifeTopicScoreRequest(BaseModel):
@@ -183,6 +201,9 @@ async def life_aggregate_scheduling_score_server(request: ScoreRequest):
 
 
 
+
+
+
 import uuid
 import asyncio
 from typing import Dict, Any, Optional
@@ -195,10 +216,9 @@ class BiographyRequest(BaseModel):
     """
     请求传记生成的数据模型。
     """
-    person_name: str = Field(..., description="要生成传记的人名。")
-    key_achievements: Optional[str] = Field(None, description="此人的关键成就，用于指导生成。")
-    birth_year: Optional[int] = Field(None, description="此人的出生年份。")
-    death_year: Optional[int] = Field(None, description="此人的逝世年份。")
+    user_name: str = Field(None, description="用户名字")
+    vitae: str = Field(None, description="用户简历")
+    memory_cards: list[str] = Field(..., description="记忆卡片列表")
     # 可以在这里添加更多用于生成传记的输入字段
 
 class BiographyResult(BaseModel):
@@ -207,46 +227,88 @@ class BiographyResult(BaseModel):
     """
     task_id: str = Field(..., description="任务的唯一标识符。")
     status: str = Field(..., description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').")
+    biography_brief: Optional[str] = Field(None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。")
     biography_text: Optional[str] = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
+    biography_name: Optional[str] = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
+    biography_place: Optional[str] = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
     error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
     progress: float = Field(0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。")
 
-async def _generate_biography_mock(task_id: str, request_data: BiographyRequest):
+async def _generate_biography(task_id: str, request_data: BiographyRequest):
     """
     模拟一个耗时的传记生成过程。
     在真实场景中，这里会调用LLM或其他复杂的生成逻辑。
     """
+
     try:
         task_store[task_id]["status"] = "PROCESSING"
         task_store[task_id]["progress"] = 0.1
-        print(f"Task {task_id}: Starting generation for {request_data.person_name}")
+        logger.info(f"Task {task_id}: Starting generation ")
 
         # 模拟LLM调用和处理时间
-        await asyncio.sleep(5)  # 模拟第一阶段处理
+
+
+        # 在后台启动异步任务
+        bg = BiographyGenerate()
+
+        # 素材整理
+        material = bg.material_generate(vitae = request_data.vitae, memory_cards = request_data.memory_cards)
+        task_store[task_id]["progress"] = 0.2
+
+        # 生成大纲
+        outline = bg.outline_generate(material)
+
+        task_store[task_id]["progress"] = 0.3
+
+        # 生成传记简介
+        brief = bg.gener_biography_brief(outline)
 
         task_store[task_id]["progress"] = 0.5
         await asyncio.sleep(5)  # 模拟第二阶段处理
 
-        # 假设生成成功
-        generated_text = (
-            f"传记：{request_data.person_name}"
-            f"出生年份：{request_data.birth_year if request_data.birth_year else '未知'}"
-            f"逝世年份：{request_data.death_year if request_data.death_year else '未知'}"
-            f"关键成就：{request_data.key_achievements if request_data.key_achievements else '未提供'}"
-            "这是一段关于其生平的详细描述，涵盖了其早年经历、职业生涯、重大贡献以及对后世的影响。 "
-            "通过深入研究其作品和历史文献，我们得以勾勒出这位杰出人物的传奇人生。"
-            "（此为模拟生成的传记文本，实际内容将由LLM生成。）"
-        )
-        task_store[task_id]["biography_text"] = generated_text
+        tasks = []
+        for part,chapters in outline.items():
+            for chapter in chapters:
+                logger.info(f"Creating task for chapter: {chapter.get('chapter_number')} {chapter.get('title')}")
+                tasks.append(bg.awrite_chapter(chapter,master = request_data.user_name,
+                                               material = material,
+                                               outline = outline))
+        results = await asyncio.gather(*tasks, return_exceptions=False) 
+
+        # content = ""
+        biography_json = {}
+        biography_name = []
+        biography_place = []
+        for part,chapters in outline.items():
+            biography_json[part] = []
+            # content += f'# {part}'
+            # content += "\n"
+            for chapter in chapters:
+                chapter_number = chapter.get("chapter_number")
+                for x in results:
+                    if x.get('chapter_number') == chapter_number:
+                        # content += x.get("article")
+                        # content += "\n"
+                        biography_json[part].append(x.get("article"))
+                        biography_name += x.get("chapter_name")
+                        biography_place += x.get("chapter_place")
+
+        task_store[task_id]["biography_brief"] = brief
+        task_store[task_id]["biography_text"] = biography_json
+        task_store[task_id]["biography_name"] = biography_name
+        task_store[task_id]["biography_place"] = biography_place
         task_store[task_id]["status"] = "COMPLETED"
         task_store[task_id]["progress"] = 1.0
-        print(f"Task {task_id}: Generation completed for {request_data.person_name}")
 
     except Exception as e:
         task_store[task_id]["status"] = "FAILED"
         task_store[task_id]["error_message"] = str(e)
         task_store[task_id]["progress"] = 1.0
-        print(f"Task {task_id}: Generation failed for {request_data.person_name} with error: {e}")
+        logger.info(f"Task {task_id}: Generation failed with error: {e}")
+
+from diglife.core import BiographyGenerate
+
+
 
 @app.post("/generate_biography", response_model=BiographyResult, summary="提交传记生成请求")
 async def generate_biography(request: BiographyRequest):
@@ -260,14 +322,16 @@ async def generate_biography(request: BiographyRequest):
     task_store[task_id] = {
         "task_id": task_id,
         "status": "PENDING",
+        "biography_brief": None,
         "biography_text": None,
+        "biography_name": None,
+        "biography_place": None,
         "error_message": None,
         "progress": 0.0,
         "request_data": request.model_dump() # 存储请求数据以备后续使用
     }
 
-    # 在后台启动异步任务
-    asyncio.create_task(_generate_biography_mock(task_id, request))
+    asyncio.create_task(_generate_biography(task_id, request))
 
     return BiographyResult(
         task_id=task_id,
@@ -287,48 +351,53 @@ async def get_biography_result(task_id: str):
     return BiographyResult(
         task_id=task_info["task_id"],
         status=task_info["status"],
+        biography_brief=task_info.get("biography_brief"),
         biography_text=task_info.get("biography_text"),
+        biography_name=task_info.get("biography_name"),
+        biography_place=task_info.get("biography_place"),
         error_message=task_info.get("error_message"),
         progress=task_info.get("progress", 0.0)
     )
 
-
-
-
-
-
-# 付费版传记优化
-@app.get("/")
-async def root():
-    """ x """
-    return {"message": "LLM Service is running."}
+from diglife.core import generate_biography_free
 
 # 免费版传记优化
-@app.get("/")
-async def root():
+@app.post("/generate_biography_free", summary="提交传记生成请求")
+async def generate_biography(request: BiographyRequest):
+    """
+    提交一个传记生成请求。
+    
+    此接口会立即返回一个任务ID，客户端可以使用此ID查询生成进度和结果。
+    实际的生成过程会在后台异步执行。
+    """
+    request.user_name
+    request.memory_cards
+    request.vitae
+    result = generate_biography_free(user_name = request.user_name,
+                            memory_cards = request.memory_cards,
+                            vitae = request.vitae,
+                            )
+    
+
+    return {
+            "message": "generate_biography_free successfully",
+            "result": result
+        }
+
+
+# 用户关系提取
+@app.get("/user_relationship_extraction")
+async def user_relationship_extraction():
     """ x """
     return {"message": "LLM Service is running."}
 
-# 传记人名提取
-@app.get("/biography_extract_name")
-async def root():
+
+
+# 用户概述
+@app.get("/user_dverview")
+async def user_dverview():
     """ x """
     return {"message": "LLM Service is running."}
-
-# 传记地名提取
-@app.get("/biography_extract_place")
-async def root():
-    """ x """
-    return {"message": "LLM Service is running."}
-
-# 传记介绍
-@app.get("/biography_brief")
-async def root():
-    """ x """
-    return {"message": "LLM Service is running."}
-
-
-
 
 
 
@@ -340,21 +409,6 @@ async def root():
 
 
 
-
-
-# 用户关系提取
-@app.get("/")
-async def root():
-    """ x """
-    return {"message": "LLM Service is running."}
-
-
-
-# 用户概述
-@app.get("/")
-async def root():
-    """ x """
-    return {"message": "LLM Service is running."}
 
 
 
@@ -379,7 +433,7 @@ if __name__ == "__main__":
     from .log import Log
     
     
-    default=8008
+    default=8007
     
 
     parser = argparse.ArgumentParser(

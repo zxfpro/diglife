@@ -89,7 +89,18 @@ A single, cohesive, first-person narrative reflecting the user's experiences.
 
 def memory_card_polish(memory_card:str):
     result = bx.product(memory_card_polish_prompt + "\n" + memory_card)
+    return json.loads(extract_json(result))
+
+memory_card_merge_prompt = """
+我会给你多个文本,帮我融合成一个文本
+"""
+
+
+def memory_card_merge(memory_cards:list[str]):
+    result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
     return result
+
+    
 
 
 
@@ -106,7 +117,7 @@ extract_person_name_prompt = """
 
 def extract_person_name(bio_chunk:str):
     result = bx.product(extract_person_name_prompt + "\n" + bio_chunk)
-    return result
+    return json.loads(extract_json(result))
 
 
 
@@ -144,6 +155,7 @@ async def agenerate_memory_card(chat_history_str:str, weight:int = 1000):
 
 
 
+
 ####
 
 
@@ -175,7 +187,7 @@ class BiographyGenerate():
         bx.set_model(model_name=model_name)
         self.bx = bx
 
-    def material_generate(self,vitae:str,memory_cards:str)->str: # 简历, 
+    def material_generate(self,vitae:str,memory_cards:list[str])->str: # 简历, 
         """
         素材整理
         vitae : 简历
@@ -204,9 +216,15 @@ class BiographyGenerate():
         """
         大纲生成
         """
-        outline = self.bx.product(outline_prompt + material)
-        return outline
+        outline_origin = self.bx.product(outline_prompt + material)
+        outline = extract_json(outline_origin)
+        return json.loads(outline)
 
+    async def gener_biography_brief(self,outline:dict)->str:
+        outline = json.dumps(outline)
+
+        brief = self.bx.product(f'帮我根据大纲写一个传记的简介: {outline}')
+        return brief
 
     async def awrite_chapter(self,chapter,
                              master = "",
@@ -223,12 +241,21 @@ class BiographyGenerate():
                                         material = material ,reference = "",
                                         port_chapter_summery = '' )
             article = await asyncio.to_thread(self.bx.product, words) # Python 3.9+
-            # return extract_article(article), material, created_material
+
+            chapter_name = await asyncio.to_thread(extract_person_name, chapter) 
+            chapter_place = await asyncio.to_thread(extract_person_place, chapter)
+            
             return {"chapter_number":chapter.get("chapter_number"),"article": extract_article(article),
-                    "material":material,"created_material":created_material}
+                    "material":material,"created_material":created_material,
+                    "chapter_name":chapter_name,
+                    "chapter_place":chapter_place}
         
         except Exception as e:
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
             return None
 
 
+
+
+def generate_biography_free(user_name, vitae, memory_cards):
+    pass
