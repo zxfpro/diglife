@@ -89,7 +89,8 @@ A single, cohesive, first-person narrative reflecting the user's experiences.
 
 def memory_card_polish(memory_card:str):
     result = bx.product(memory_card_polish_prompt + "\n" + memory_card)
-    return json.loads(extract_json(result))
+    # return json.loads(extract_json(result))
+    return result
 
 memory_card_merge_prompt = """
 我会给你多个文本,帮我融合成一个文本
@@ -258,4 +259,12 @@ class BiographyGenerate():
 
 
 def generate_biography_free(user_name, vitae, memory_cards):
-    pass
+    result = bx.product(extract_person_name_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
+    return result
+
+
+
+
+# 推荐算法
+
+

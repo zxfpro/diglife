@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 from diglife.log import Log
-
+from fastapi import FastAPI, HTTPException, Header, status
 logger = Log.logger
 
 # TODO ADD
@@ -38,6 +38,7 @@ from diglife.core import score_from_memory_card
 from typing import List, Annotated
 from diglife.core import agenerate_memory_card
 from diglife.core import get_score
+from diglife.core import memory_card_merge
 
 
 @app.get("/")
@@ -45,83 +46,45 @@ async def root():
     """ x """
     return {"message": "LLM Service is running."}
 
+class ScoreRequest(BaseModel):
+    S_list: List[float] = Field(..., description="List of string representations of scores, each between 1 and 10.")
+    K: float = Field(0.3, description="Coefficient K for score calculation.")
+    total_score: int = Field(0, description="Total score to be added.")
+    epsilon: float = Field(0.0001, description="Epsilon value for score calculation.")
 
-class MemoryCardGenerateRequest(BaseModel):
-    text_str: str = Field(..., description="聊天内容或者文本内容")
+    @model_validator(mode='after')
+    def check_s_list_values(self):
+        for s_val in self.S_list:
+            try:
+                int_s_val = float(s_val)
+                if not (1 <= int_s_val <= 100):
+                    raise ValueError("Each element in 'S_list' must be an integer between 1 and 10.")
+            except ValueError:
+                raise ValueError("Each element in 'S_list' must be a valid integer string.")
+        return self
 
-@app.post("/memory_card/generate")
-async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
-    """ 记忆卡片生成优化 """
-    # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
-    result = await agenerate_memory_card(chat_history_str=request.text_str,
-                                         weight=1000)
-    return {"message": "memory card generate successfully",
-            "result": result}
-
-@app.post("/memory_card/generate_by_text")
-async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
-    """ 上传文件生成记忆卡片 """
-    # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
-    result = await agenerate_memory_card(chat_history_str=request.text_str,
-                                         weight=1000)
-    return {"message": "memory card generate by text successfully",
-            "result": result}
-
-
-
-class MemoryCardPolishRequest(BaseModel):
-    memory_card: str = Field(..., description="记忆卡片内容")
-
-@app.post("/memory_card/polish", summary="记忆卡片发布AI润色")
-async def memory_card_polish_server(request: MemoryCardPolishRequest) -> dict:
+@app.post("/life_aggregate_scheduling_score")
+async def life_aggregate_scheduling_score_server(request: ScoreRequest):
     """
-    记忆卡片发布AI润色接口。
-    接收记忆卡片内容，并返回AI润色后的结果。
+    Calculates the life aggregate scheduling score based on the provided parameters.
+    S_list: List of scores (as strings, will be converted to integers)
+    K: Coefficient K (default 0.8)
+    total_score: Total score to add (default 0)
+    epsilon: Epsilon value (default 0.001)
     """
-    result = memory_card_polish(memory_card=request.memory_card)
-    return {
-        "message": "memory card polish successfully",
-        "result": result
-    }
-
-
-class Memory_cardRequest(BaseModel):
-    memory_card: str = Field(..., description="要评分的记忆卡片内容")
-
-@app.post("/memory_card/score")
-async def score_from_memory_card_server(request: Memory_cardRequest):
-    """
-    记忆卡片质量评分
-    接收一个记忆卡片内容字符串，并返回其质量评分。
-    """
-    result = score_from_memory_card(memory_card=request.memory_card)
-    return {
-        "message": "memory card score successfully",
-        "result": result
-    }
-
-from diglife.core import memory_card_merge
-
-# 记忆合并
-class Memory_card_list_Request(BaseModel):
-    memory_cards: list[str] = Field(..., description="要评分的记忆卡片内容")
-
-@app.post("/memory_card/merge")
-async def memory_card_merge_server(request: Memory_card_list_Request):
-    """
-    记忆卡片质量评分
-    接收一个记忆卡片内容字符串，并返回其质量评分。
-    """
-    result = memory_card_merge(memory_cards=request.memory_cards)
-    return {
-        "message": "memory card merge successfully",
-        "result": result
-    }
-
-
-
-
-
+    try:
+        result = get_score(request.S_list, total_score=request.total_score, epsilon=request.epsilon, K=request.K)
+        return {
+            "message": "life aggregate scheduling score successfully",
+            "result": result
+        }
+    except HTTPException as e:
+        raise e # Re-raise FastAPI HTTPExceptions
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred during score calculation: {str(e)}"
+        )
 
 class LifeTopicScoreRequest(BaseModel):
     S_list: List[int] = Field(..., description="List of scores, each between 1 and 10.")
@@ -158,45 +121,80 @@ async def life_topic_score_server(request: LifeTopicScoreRequest):
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
 
-class ScoreRequest(BaseModel):
-    S_list: List[int] = Field(..., description="List of string representations of scores, each between 1 and 10.")
-    K: float = Field(0.3, description="Coefficient K for score calculation.")
-    total_score: int = Field(0, description="Total score to be added.")
-    epsilon: float = Field(0.0001, description="Epsilon value for score calculation.")
+class Memory_cardRequest(BaseModel):
+    memory_card: str = Field(..., description="要评分的记忆卡片内容")
 
-    @model_validator(mode='after')
-    def check_s_list_values(self):
-        for s_val in self.S_list:
-            try:
-                int_s_val = int(s_val)
-                if not (1 <= int_s_val <= 10):
-                    raise ValueError("Each element in 'S_list' must be an integer between 1 and 10.")
-            except ValueError:
-                raise ValueError("Each element in 'S_list' must be a valid integer string.")
-        return self
+@app.post("/memory_card/score")
+async def score_from_memory_card_server(request: Memory_cardRequest):
+    """
+    记忆卡片质量评分
+    接收一个记忆卡片内容字符串，并返回其质量评分。
+    """
+    result = score_from_memory_card(memory_card=request.memory_card)
+    return {
+        "message": "memory card score successfully",
+        "result": result
+    }
 
-@app.post("/life_aggregate_scheduling_score")
-async def life_aggregate_scheduling_score_server(request: ScoreRequest):
+class MemoryCardGenerateRequest(BaseModel):
+    text_str: str = Field(..., description="聊天内容或者文本内容")
+
+@app.post("/memory_card/generate_by_text")
+async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
+    """ 上传文件生成记忆卡片 """
+    # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
+    result = await agenerate_memory_card(chat_history_str=request.text_str,
+                                         weight=1000)
+    return {"message": "memory card generate by text successfully",
+            "result": result}
+
+@app.post("/memory_card/generate")
+async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
+    """ 记忆卡片生成优化 """
+    # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
+    result = await agenerate_memory_card(chat_history_str=request.text_str,
+                                         weight=1000)
+    return {"message": "memory card generate successfully",
+            "result": result}
+
+
+# 记忆合并
+class Memory_card_list_Request(BaseModel):
+    memory_cards: list[str] = Field(..., description="要评分的记忆卡片内容")
+
+@app.post("/memory_card/merge")
+async def memory_card_merge_server(request: Memory_card_list_Request):
     """
-    Calculates the life aggregate scheduling score based on the provided parameters.
-    S_list: List of scores (as strings, will be converted to integers)
-    K: Coefficient K (default 0.8)
-    total_score: Total score to add (default 0)
-    epsilon: Epsilon value (default 0.001)
+    记忆卡片质量评分
+    接收一个记忆卡片内容字符串，并返回其质量评分。
     """
-    try:
-        result = get_score(request.S_list, total_score=request.total_score, epsilon=request.epsilon, K=request.K)
-        return {
-            "message": "life aggregate scheduling score successfully",
-            "result": result
-        }
-    except HTTPException as e:
-        raise e # Re-raise FastAPI HTTPExceptions
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"An error occurred during score calculation: {str(e)}"
-        )
+    result = memory_card_merge(memory_cards=request.memory_cards)
+    return {
+        "message": "memory card merge successfully",
+        "result": result
+    }
+
+
+
+
+class MemoryCardPolishRequest(BaseModel):
+    memory_card: str = Field(..., description="记忆卡片内容")
+
+@app.post("/memory_card/polish", summary="记忆卡片发布AI润色")
+async def memory_card_polish_server(request: MemoryCardPolishRequest) -> dict:
+    """
+    记忆卡片发布AI润色接口。
+    接收记忆卡片内容，并返回AI润色后的结果。
+    """
+    result = memory_card_polish(memory_card=request.memory_card)
+    return {
+        "message": "memory card polish successfully",
+        "result": result
+    }
+
+
+
+
 
 
 
@@ -387,17 +385,250 @@ async def generate_biography(request: BiographyRequest):
 
 # 用户关系提取
 @app.get("/user_relationship_extraction")
-async def user_relationship_extraction():
+async def user_relationship_extraction(chat_history:str,
+                                       order_relationship:dict,
+
+                                       ):
     """ x """
-    return {"message": "LLM Service is running."}
+    return {"message": "LLM Service is running.",
+            "output_relation":
+                {
+                "关系1":
+                    {
+                    "姓名":"姓名",
+                    "关系":"关系",
+                    "职业":"职业",
+                    "出生日期":"出生日期"
+                    },
+                "关系2":
+                    {
+                    "姓名":"姓名",
+                    "关系":"关系",
+                    "职业":"职业",
+                    "出生日期":"出生日期"
+                    }
+            }}
+
+
 
 
 
 # 用户概述
 @app.get("/user_dverview")
-async def user_dverview():
+async def user_dverview(old_dverview:str,memory_cards:list[str]):
     """ x """
-    return {"message": "LLM Service is running."}
+    result = ""
+    return {"message": "LLM Service is running.",
+            "dverview": result}
+
+
+# 推荐算法
+from diglife.embedding_pool import EmbeddingPool
+ep = EmbeddingPool()
+
+
+class UpdateItem(BaseModel):
+    text: str = Field(..., min_length=1, max_length=2000, description="要更新的文本内容。")
+    id: str = Field(..., min_length=1, max_length=100, description="与文本关联的唯一ID。")
+    type: int = Field(..., description="上传的类型")
+
+@app.post(
+    "/recommended/update", # 推荐使用POST请求进行数据更新
+    summary="更新或添加文本嵌入",
+    description="将给定的文本内容与一个ID关联并更新到Embedding池中。",
+    response_description="表示操作是否成功。"
+)
+def recommended_update(item: UpdateItem):
+    """
+    接收文本和ID，并将其添加到Embedding池中。
+    - **text**: 要嵌入的文本。
+    - **id**: 关联的唯一标识符。
+    """
+    """ 记忆卡片是0  传记是1 
+    cache 
+    biographies_and_cards
+    figure_person
+
+
+    """
+    try:
+        if type == 0: #上传的是卡片
+            pass
+            ep.update(text=item.text, id=item.id)
+        elif type == 1: #上传的是传记
+            pass
+            ep.update(text=item.text, id=item.id)
+        elif type == 2: #上传的是数字分身简介
+            pass
+            ep.update(text=item.text, id=item.id)
+        else:
+            logger.error(f"Error updating EmbeddingPool for ID '{item.id}': {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to update embedding for ID '{item.id}': {e}"
+            )
+        
+        return {"status": "success", "message": f"ID '{item.id}' updated successfully."}
+    
+    except ValueError as e: # 假设EmbeddingPool.update可能抛出ValueError
+        logger.warning(f"Validation error during update: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        logger.error(f"Error updating EmbeddingPool for ID '{item.id}': {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update embedding for ID '{item.id}': {e}"
+        )
+
+
+recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
+recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
+recommended_biographies_cache_max_leng = 2
+recommended_cache_max_leng = 2
+
+class QueryItem(BaseModel):
+    user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
+
+@app.post(
+    "/recommended/search_biographies_and_cards",
+    summary="搜索文本嵌入",
+    description="根据查询文本在Embedding池中搜索相关内容。",
+    response_description="搜索结果列表。"
+)
+async def recommended_biographies_and_cards(query_item: QueryItem):
+    """ 记忆卡片是0  传记是1 
+    cache 
+        user_id = user_id
+        result = [
+                    {
+                        "id": "324324223", # 传记ID
+                        "type": 1,
+                        "order": 0,
+                    },
+                    {
+                        "id": "3243532223", # 卡片ID
+                        "type": 0,
+                        "order": 1,
+                    },
+                    {
+                        "id": "442324324223", # 传记ID
+                        "type": 1,
+                        "order": 2,
+                    },
+                ]
+    """
+    # recommended_biographies_cache.get(query_item.user_id) # ["442324324223","3243532223"]
+
+    try:
+        # result = ep.search(query=query_item.user_id)
+        result = [
+            {
+                "id": "324324223", # 传记ID
+                "type": 1,
+                "order": 0,
+            },
+            {
+                "id": "3243532223", # 卡片ID
+                "type": 0,
+                "order": 1,
+            },
+            {
+                "id": "442324324223", # 传记ID
+                "type": 1,
+                "order": 2,
+            },
+        ]
+        if recommended_biographies_cache.get(query_item.user_id):
+            clear_result = [i for i in result if i.get('id') not in recommended_biographies_cache.get(query_item.user_id)]
+        else:
+            recommended_biographies_cache[query_item.user_id] = []
+            clear_result = result
+        
+        recommended_biographies_cache[query_item.user_id] += [i.get('id') for i in result]
+        recommended_biographies_cache[query_item.user_id] = list(set(recommended_biographies_cache[query_item.user_id]))
+        if len(recommended_biographies_cache[query_item.user_id]) > recommended_biographies_cache_max_leng:
+            recommended_biographies_cache[query_item.user_id] = []
+
+        return {"status": "success", "result": clear_result, "query": query_item.user_id}
+
+    except Exception as e:
+        logger.error(f"Error searching EmbeddingPool for query '{query_item.user_id}': {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to perform search: {e}"
+        )
+
+
+@app.post(
+    "/recommended/search_figure_person",
+)
+async def recommended_figure_person(query_item: QueryItem):
+    """ 记忆卡片是0  传记是1 
+    cache 
+        user_id = user_id
+        result = [
+                    {
+                        "id": "324324223", # 传记ID
+                        "type": 2,
+                        "order": 0,
+                    },
+                    {
+                        "id": "3243532223", # 卡片ID
+                        "type": 2,
+                        "order": 1,
+                    },
+                    {
+                        "id": "442324324223", # 传记ID
+                        "type": 2,
+                        "order": 2,
+                    },
+                ]
+    """
+    # recommended_figure_cache.get(query_item.user_id) # ["442324324223","3243532223"]
+    
+    try:
+        # result = ep.search(query=query_item.user_id) # 100+
+
+        result = [
+            {
+                "id": "324324223", # 传记ID
+                "type": 2,
+                "order": 0,
+            },
+            {
+                "id": "3243532223", # 卡片ID
+                "type": 2,
+                "order": 1,
+            },
+            {
+                "id": "442324324223", # 传记ID
+                "type": 2,
+                "order": 2,
+            },
+        ]
+        
+        if recommended_figure_cache.get(query_item.user_id):
+            # 不需要创建
+            clear_result = [i for i in result if i.get('id') not in recommended_figure_cache.get(query_item.user_id)]
+        else:
+            recommended_figure_cache[query_item.user_id] = []
+            clear_result = result
+
+        recommended_figure_cache[query_item.user_id] += [i.get('id') for i in result]
+        recommended_figure_cache[query_item.user_id] = list(set(recommended_figure_cache[query_item.user_id]))
+        if len(recommended_figure_cache[query_item.user_id]) > recommended_cache_max_leng:
+            recommended_figure_cache[query_item.user_id] = []
+        return {"status": "success", "result": clear_result, "query": query_item.user_id}
+
+    except Exception as e:
+        logger.error(f"Error searching EmbeddingPool for query '{query_item.user_id}': {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to perform search: {e}"
+        )
 
 
 
@@ -408,18 +639,11 @@ async def root():
     return {"message": "LLM Service is running."}
 
 
-
-
-
-
-# 推荐算法
+# 数字分身敏感信息消除
 @app.get("/")
 async def root():
     """ x """
     return {"message": "LLM Service is running."}
-
-
-# 数字分身敏感信息消除
 
 
 

@@ -1,7 +1,10 @@
 README.md
 pyproject.toml
 src/diglife/__init__.py
+src/diglife/config.yaml
 src/diglife/core.py
+src/diglife/embedding_model.py
+src/diglife/embedding_pool.py
 src/diglife/log.py
 src/diglife/prompt.py
 src/diglife/server.py
