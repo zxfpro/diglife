@@ -1,35 +1,21 @@
 # 
 
-
-def get_score(S:list[int],total_score:int = 0,epsilon:float = 0.001,K:float = 0.8)->float:
-    # 一个根据 列表分数 计算总分数的方法 如[1,4,5,7,1,5] 其中元素是 1-10 的整数
-
-    # 一个非常小的正数，确保0分也有微弱贡献，100分也不是完美1
-    # 调整系数，0 < K <= 1。K越大，总分增长越快。
-
-
-    # 数字人生总进度 
-    # 人生主题分值计算
-    
-    for score in S:
-        # 1. 标准化每个分数到 (0, 1) 区间
-        normalized_score = (score + epsilon) / (10 + epsilon)
-
-        # 2. 更新总分
-        # 每次增加的是“距离满分的剩余空间”的一个比例
-        total_score = total_score + (100 - total_score) * normalized_score * K
-
-        # 确保不会因为浮点数精度问题略微超过100，虽然理论上不会
-        if total_score >= 100 - 1e-9: # 留一点点余地，避免浮点数误差导致判断为100
-            total_score = 100 - 1e-9 # 强制设置一个非常接近100但不等于100的值
-            break # 如果已经非常接近100，可以提前终止
-
-    return total_score
-
+import time
+import asyncio
+import json
+from diglife.utils import extract_json, extract_article
+from diglife.prompt import prompt_get_infos, prompt_base
+from diglife.prompt import outline_prompt
+from diglife.prompt import interview_material_clean_prompt, interview_material_add_prompt
+from diglife.prompt import memory_card_system_prompt
+from llmada.core import BianXieAdapter
+from diglife.utils import super_print
 
 from llmada.core import BianXieAdapter
-
+import json
+from diglife.utils import extract_json
 bx = BianXieAdapter()
+
 
 score_memory_card_prompt = """
 我会给到你一段文本描写, 我希望你可以对它进行打分  
@@ -50,13 +36,6 @@ score_memory_card_prompt = """
 
 好的，请您给出文本描写，我会按照您的评分规则进行打分。
 """
-
-import json
-from diglife.utils import extract_json
-def score_from_memory_card(memory_card:str):
-    result = bx.product(score_memory_card_prompt + "\n" + memory_card)
-    return json.loads(extract_json(result))
-
 
 memory_card_polish_prompt = """
 **System Prompt for Generating a Short Personal Autobiography from Interview Transcripts**
@@ -87,26 +66,83 @@ You will be provided with interview segments, typically in a Q&A format (e.g., `
 A single, cohesive, first-person narrative reflecting the user's experiences.
 """
 
-def memory_card_polish(memory_card:str):
-    result = bx.product(memory_card_polish_prompt + "\n" + memory_card)
-    # return json.loads(extract_json(result))
-    return result
-
 memory_card_merge_prompt = """
 我会给你多个文本,帮我融合成一个文本
 """
 
+class MemoryCardManager():
+    def __init__(self):
+        self.bx = BianXieAdapter()
 
-def memory_card_merge(memory_cards:list[str]):
-    result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
-    return result
+    @staticmethod
+    def get_score(S:list[int],total_score:int = 0,epsilon:float = 0.001,K:float = 0.8)->float:
+        # 一个根据 列表分数 计算总分数的方法 如[1,4,5,7,1,5] 其中元素是 1-10 的整数
+
+        # 一个非常小的正数，确保0分也有微弱贡献，100分也不是完美1
+        # 调整系数，0 < K <= 1。K越大，总分增长越快。
+
+
+        # 数字人生总进度 
+        # 人生主题分值计算
+        
+        for score in S:
+            # 1. 标准化每个分数到 (0, 1) 区间
+            normalized_score = (score + epsilon) / (10 + epsilon)
+
+            # 2. 更新总分
+            # 每次增加的是“距离满分的剩余空间”的一个比例
+            total_score = total_score + (100 - total_score) * normalized_score * K
+
+            # 确保不会因为浮点数精度问题略微超过100，虽然理论上不会
+            if total_score >= 100 - 1e-9: # 留一点点余地，避免浮点数误差导致判断为100
+                total_score = 100 - 1e-9 # 强制设置一个非常接近100但不等于100的值
+                break # 如果已经非常接近100，可以提前终止
+
+        return total_score
+    
+    def score_from_memory_card(self,memory_cards:list[str]):
+        results = []
+        for memory_card in memory_cards:
+            result = self.bx.product(score_memory_card_prompt + "\n" + memory_card)
+            results.append(json.loads(extract_json(result)))
+
+        return results
+
+    def memory_card_polish(self,memory_cards:list[str]):
+        # 记忆卡片润色
+        results = []
+        for memory_card in memory_cards:
+            result = bx.product(memory_card_polish_prompt + "\n" + memory_card)
+            results.append(result)
+        # return json.loads(extract_json(result))
+        return results
+
+
+    def memory_card_merge(self,memory_cards:list[str]):
+        # 记忆卡片合并
+        result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
+        return result
 
     
+    async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
+        
+        number_ = len(chat_history_str)//weight
+
+        base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
+        try:
+            result = await asyncio.to_thread(bx.product, base_prompt) 
+            result_json_str = extract_json(result)
+
+            if result_json_str:
+                return json.loads(result_json_str), chat_history_str
+            else:
+                return ""
+        except Exception as e:
+            print(f"Error processing  {chat_history_str[:30]}: {e}")
+            return ""
 
 
-
-# 提取人名
-
+####
 extract_person_name_prompt = """
 我这里有一段个人传记的小章节, 由于我想校验传记中的人名是否正确, 所以我希望你帮我总结出这个篇章里面的所有人名,  
 输出格式:  
@@ -114,14 +150,6 @@ extract_person_name_prompt = """
 [‘人名‘,…]  
 ```  
 """
-
-
-def extract_person_name(bio_chunk:str):
-    result = bx.product(extract_person_name_prompt + "\n" + bio_chunk)
-    return json.loads(extract_json(result))
-
-
-
 
 extract_place_name_prompt = """
 我这里有一段个人传记的小章节, 由于我想校验传记中的地名是否正确, 所以我希望你帮我总结出这个篇章里面的所有地名,  
@@ -131,53 +159,15 @@ extract_place_name_prompt = """
 ```  
 """
 
-def extract_person_place(bio_chunk:str):
-    result = bx.product(extract_place_name_prompt + "\n" + bio_chunk)
-    return result
 
+biography_free_prompt = """
+帮我利用下面这些信息,生成一篇个人传记:
 
-
-async def agenerate_memory_card(chat_history_str:str, weight:int = 1000):
-    
-    number_ = len(chat_history_str)//weight
-
-    base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
-    try:
-        result = await asyncio.to_thread(bx.product, base_prompt) 
-        result_json_str = extract_json(result)
-
-        if result_json_str:
-            return json.loads(result_json_str), chat_history_str
-        else:
-            return ""
-    except Exception as e:
-        print(f"Error processing  {chat_history_str[:30]}: {e}")
-        return ""
-
-
-
-
-####
-
-
-'''
-Author: 823042332@qq.com 823042332@qq.com
-Date: 2025-09-01 10:15:21
-LastEditors: 823042332@qq.com 823042332@qq.com
-LastEditTime: 2025-09-03 14:49:17
-FilePath: /diglife/src/diglife/core.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-'''
-import time
-import asyncio
-import json
-from diglife.utils import extract_json, extract_article
-from diglife.prompt import prompt_get_infos, prompt_base
-from diglife.prompt import outline_prompt
-from diglife.prompt import interview_material_clean_prompt, interview_material_add_prompt
-from diglife.prompt import memory_card_system_prompt
-from llmada.core import BianXieAdapter
-from diglife.utils import super_print
+输出格式:  
+```article
+<content>
+```  
+"""
 
 
 class BiographyGenerate():
@@ -187,6 +177,17 @@ class BiographyGenerate():
         bx.model_pool.append(model_name)
         bx.set_model(model_name=model_name)
         self.bx = bx
+
+
+    def extract_person_name(self,bio_chunk:str):
+        result = bx.product(extract_person_name_prompt + "\n" + bio_chunk)
+        return json.loads(extract_json(result))
+
+
+    def extract_person_place(self,bio_chunk:str):
+        result = bx.product(extract_place_name_prompt + "\n" + bio_chunk)
+        return result
+
 
     def material_generate(self,vitae:str,memory_cards:list[str])->str: # 简历, 
         """
@@ -243,8 +244,8 @@ class BiographyGenerate():
                                         port_chapter_summery = '' )
             article = await asyncio.to_thread(self.bx.product, words) # Python 3.9+
 
-            chapter_name = await asyncio.to_thread(extract_person_name, chapter) 
-            chapter_place = await asyncio.to_thread(extract_person_place, chapter)
+            chapter_name = await asyncio.to_thread(self.extract_person_name, chapter) 
+            chapter_place = await asyncio.to_thread(self.extract_person_place, chapter)
             
             return {"chapter_number":chapter.get("chapter_number"),"article": extract_article(article),
                     "material":material,"created_material":created_material,
@@ -255,16 +256,9 @@ class BiographyGenerate():
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
             return None
 
-
-
-
-def generate_biography_free(user_name, vitae, memory_cards):
-    result = bx.product(extract_person_name_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
-    return result
-
-
-
-
-# 推荐算法
-
+    def generate_biography_free(self,user_name, vitae, memory_cards):
+        # 简要版说法
+        result = bx.product(biography_free_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
+        result = extract_article(result)
+        return result
 
