@@ -520,7 +520,7 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
     # TODO 日志打印
     # TODO 重调机制
     try:
-        result = ep.search(query=query_item.user_id)
+        # result = ep.search(query=query_item.user_id)
         result = [
             {
                 "id": "1916693308020916225",  # 传记ID
