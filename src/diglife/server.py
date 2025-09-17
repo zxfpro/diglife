@@ -14,7 +14,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 logger = Log.logger
 
-# TODO ADD
 app = FastAPI(
     title="LLM Service",
     description="Provides an OpenAI-compatible API for custom large language models.",
@@ -105,6 +104,7 @@ async def life_topic_score_server(request: LifeTopicScoreRequest):
     Calculates the life topic score based on the provided parameters.
     S_list elements must be integers between 1 and 10.
     """
+    logger.info('running life_topic_score')
     try:
         result = MemoryCardManager.get_score(
             S=request.S_list,
@@ -112,7 +112,8 @@ async def life_topic_score_server(request: LifeTopicScoreRequest):
             epsilon=request.epsilon,
             K=request.K,
         )
-        return {"message": "Life topic score calculated successfully", "result": result}
+        return {"message": "Life topic score calculated successfully", 
+                "result": int(result)}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
@@ -129,6 +130,7 @@ async def life_aggregate_scheduling_score_server(request: ScoreRequest):
     total_score: Total score to add (default 0)
     epsilon: Epsilon value (default 0.001)
     """
+    logger.info('running life_aggregate_scheduling_score')
     try:
         result = MemoryCardManager.get_score(
             request.S_list,
@@ -140,12 +142,11 @@ async def life_aggregate_scheduling_score_server(request: ScoreRequest):
             "message": "life aggregate scheduling score successfully",
             "result": result,
         }
-    except HTTPException as e:
-        raise e  # Re-raise FastAPI HTTPExceptions
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(
-            status_code=500,
-            detail=f"An error occurred during score calculation: {str(e)}",
+            status_code=500, detail=f"An unexpected error occurred: {str(e)}"
         )
 
 
@@ -156,39 +157,75 @@ class MemoryCardsRequest(BaseModel):
 class MemoryCardGenerateRequest(BaseModel):
     text: str = Field(..., description="聊天内容或者文本内容")
 
+class MemoryCardResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    memory_card: str = Field(..., description="优化好的记忆卡片")
+
+class MemoryCardsResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    memory_cards: list[str] = Field(..., description="优化好的记忆卡片")
+
+
 @app.post("/memory_card/score")
 async def score_from_memory_card_server(request: MemoryCardsRequest):
     """
     记忆卡片质量评分
     接收一个记忆卡片内容字符串，并返回其质量评分。
-
     """
-
+    logger.info('running memory_card/score')
     results = MCmanager.score_from_memory_card(memory_cards=request.memory_cards)
+    try:
+        for result in results:
+            assert isinstance(result, int)
+    except AssertionError:
+        logger.error("memory card score failed because llm generate score is not int")
+        return {"message": "memory card score failed because llm generate score is not int", "result": []}
     return {"message": "memory card score successfully", "result": results}
 
-@app.post("/memory_card/merge")
+
+
+
+@app.post("/memory_card/merge",
+          response_model=MemoryCardResult)
 async def memory_card_merge_server(request: MemoryCardsRequest) -> dict:
     """
     记忆卡片质量评分
     接收一个记忆卡片内容字符串，并返回其质量评分。
     """
+
+    logger.info("running memory_card_merge")
     result = MCmanager.memory_card_merge(memory_cards=request.memory_cards)
-    return {"message": "memory card merge successfully", "result": result}
+
+    return MemoryCardResult(message = "memory card merge successfully",
+                            memory_card = result )
 
 
-@app.post("/memory_card/polish", summary="记忆卡片发布AI润色")
+@app.post("/memory_card/polish",
+          response_model=MemoryCardResult,
+          summary="记忆卡片发布AI润色")
 async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
     """
     记忆卡片发布AI润色接口。
     接收记忆卡片内容，并返回AI润色后的结果。
     """
+    logger.info("running memory_card_polish")
     result = MCmanager.memory_card_polish(memory_cards=request.memory_cards)
-    return {"message": "memory card polish successfully", "result": result}
+    return MemoryCardsResult(message="memory card polish successfully",
+                             memory_cards=result)
 
 @app.post("/memory_card/generate_by_text")
 async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
     """上传文件生成记忆卡片"""
+        # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
+    # TODO 断链机制
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     result = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
@@ -199,6 +236,10 @@ async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest
 @app.post("/memory_card/generate")
 async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
     """记忆卡片生成优化"""
+        # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
+    # TODO 断链机制
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     result = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
@@ -265,7 +306,6 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         brief = bg.gener_biography_brief(outline)
 
         task_store[task_id]["progress"] = 0.5
-        await asyncio.sleep(5)  # 模拟第二阶段处理
 
         tasks = []
         for part, chapters in outline.items():
@@ -390,20 +430,15 @@ async def generate_biography(request: BiographyRequest):
 
     return {"message": "generate_biography_free successfully", "result": result}
 
-class UpdateItem(BaseModel):
-    text: str = Field(
-        ..., min_length=1, max_length=2000, description="要更新的文本内容。"
-    )
-    id: str = Field(
-        ..., min_length=1, max_length=100, description="与文本关联的唯一ID。"
-    )
-    type: int = Field(..., description="上传的类型")
+# 推荐算法
 
+class UpdateItem(BaseModel):
+    text: str = Field(..., min_length=1, max_length=2000, description="要更新的文本内容。")
+    id: str = Field(..., min_length=1, max_length=100, description="与文本关联的唯一ID。")
+    type: int = Field(..., description="上传的类型")
 
 class QueryItem(BaseModel):
     user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
-
-
 
 @app.post(
     "/recommended/update",  # 推荐使用POST请求进行数据更新
@@ -412,28 +447,25 @@ class QueryItem(BaseModel):
     response_description="表示操作是否成功。",
 )
 def recommended_update(item: UpdateItem):
-    """
-    接收文本和ID，并将其添加到Embedding池中。
-    - **text**: 要嵌入的文本。
-    - **id**: 关联的唯一标识符。
-    """
     """ 记忆卡片是0  传记是1 
-    cache 
-    biographies_and_cards
-    figure_person
+    记忆卡片是0 
+    记忆卡片上传的是记忆卡片的内容 str
+    记忆卡片id
+    0
 
+    传记是1 
+    上传的是传记简介  str
+    传记id  
+    1
 
+    数字分身是2
+    上传数字分身简介和性格描述  str
+    数字分身id
+    2
     """
     try:
-        if type == 0:  # 上传的是卡片
-            pass
-            ep.update(text=item.text, id=item.id)
-        elif type == 1:  # 上传的是传记
-            pass
-            ep.update(text=item.text, id=item.id)
-        elif type == 2:  # 上传的是数字分身简介
-            pass
-            ep.update(text=item.text, id=item.id)
+        if item.type in [0,1,2]:  # 上传的是卡片
+            ep.update(text=item.text, id=item.id,type = item.type)
         else:
             logger.error(f"Error updating EmbeddingPool for ID '{item.id}': {e}")
             raise HTTPException(
@@ -483,9 +515,12 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
                 ]
     """
     # recommended_biographies_cache.get(query_item.user_id) # ["442324324223","3243532223"]
-
+        # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     try:
-        # result = ep.search(query=query_item.user_id)
+        result = ep.search(query=query_item.user_id)
         result = [
             {
                 "id": "1916693308020916225",  # 传记ID
@@ -569,23 +604,26 @@ async def recommended_figure_person(query_item: QueryItem):
                 ]
     """
     # recommended_figure_cache.get(query_item.user_id) # ["442324324223","3243532223"]
-
+    # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     try:
         # result = ep.search(query=query_item.user_id) # 100+
 
         result = [
             {
-                "id": "324324223",  # 传记ID
+                "id": "1905822448827469825",  # 传记ID
                 "type": 2,
                 "order": 0,
             },
             {
-                "id": "3243532223",  # 卡片ID
+                "id": "1902278304670625793",  # 卡片ID
                 "type": 2,
                 "order": 1,
             },
             {
-                "id": "442324324223",  # 传记ID
+                "id": "1905819574433087490",  # 传记ID
                 "type": 2,
                 "order": 2,
             },
@@ -637,6 +675,10 @@ async def user_relationship_extraction(
     order_relationship: dict,
 ):
     """x"""
+        # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     return {
         "message": "LLM Service is running.",
         "output_relation": {
@@ -660,6 +702,10 @@ async def user_relationship_extraction(
 @app.get("/user_dverview")
 async def user_dverview(old_dverview: str, memory_cards: list[str]):
     """x"""
+        # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     result = ""
     return {"message": "LLM Service is running.", "dverview": result}
 
@@ -670,6 +716,10 @@ async def user_dverview(old_dverview: str, memory_cards: list[str]):
 @app.get("/digital_avatar/brief")
 async def digital_avatar_brief(memory_cards: list[str]):
     """x"""
+        # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     return {"message": "LLM Service is running."}
 
 
@@ -677,6 +727,10 @@ async def digital_avatar_brief(memory_cards: list[str]):
 @app.get("/digital_avatar/personality_extraction")
 async def digital_avatar_personality_extraction(memory_cards: list[str]):
     """x"""
+        # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     return {"message": "LLM Service is running."}
 
 
@@ -684,6 +738,10 @@ async def digital_avatar_personality_extraction(memory_cards: list[str]):
 @app.get("/digital_avatar/desensitization")
 async def digital_avatar_desensitization(memory_cards:list[str]):
     """x"""
+    # TODO 功能实现
+    # TODO 做AI防失联问题
+    # TODO 日志打印
+    # TODO 重调机制
     return {"message": "LLM Service is running."}
 
 

@@ -22,7 +22,7 @@ class EmbeddingPool():
     def __init__(self):
         self.reload()
 
-    def create_collection(self,collection_name:str = "diglife",vector_dimension:str = 1536):
+    def create_collection(self,collection_name:str = "diglife",vector_dimension:str = 2560):
         distance_metric = models.Distance.COSINE # 使用余弦相似度
 
         # 2. 定义 Collection 参数
@@ -53,7 +53,7 @@ class EmbeddingPool():
             host=config.get("host","localhost"),
             port=config.get("port",6333),
         )
-        vector_store = QdrantVectorStore(client=client, collection_name=config.get("collection_name","loveroom"))
+        vector_store = QdrantVectorStore(client=client, collection_name=config.get("collection_name","diglife"))
         self.embed_model = VolcanoEmbedding(model_name = config.get("model_name","doubao-embedding-text-240715"),
                                             api_key =config.get("api_key",''))
         self.index = VectorStoreIndex.from_vector_store(vector_store,embed_model=self.embed_model)
@@ -63,9 +63,15 @@ class EmbeddingPool():
         logger.debug(self.postprocess)
 
 
-    def update(self,text:str,id:str)->str:
+    def update(self,text:str,id:str,type:int)->str:
         logger.info('update')
         # splitter
+        # type
+        doc = Document(text = text,
+                       id_=id,
+                        metadata={"type":type},
+                        excluded_embed_metadata_keys=['type'],
+                    )
         doc=Document(text = text,id_=id)
         self.index.update(document=doc)
 
@@ -76,6 +82,7 @@ class EmbeddingPool():
     def search(self,query:str)->str:
         logger.info('search')
         result = self.retriver.retrieve(query)
+        print(result[0].text,'resultresultresultresultresultresult')
         logger.debug(result)
         result_p = self.postprocess.postprocess_nodes(result)
         return '\n\n'.join([i.text for i in result_p])

@@ -8,6 +8,7 @@ src/diglife/embedding_pool.py
 src/diglife/log.py
 src/diglife/prompt.py
 src/diglife/server.py
+src/diglife/tttt.py
 src/diglife/utils.py
 src/diglife.egg-info/PKG-INFO
 src/diglife.egg-info/SOURCES.txt

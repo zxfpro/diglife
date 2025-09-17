@@ -69,6 +69,34 @@ A single, cohesive, first-person narrative reflecting the user's experiences.
 memory_card_merge_prompt = """
 我会给你多个文本,帮我融合成一个文本
 """
+####
+extract_person_name_prompt = """
+我这里有一段个人传记的小章节, 由于我想校验传记中的人名是否正确, 所以我希望你帮我总结出这个篇章里面的所有人名,  
+输出格式:  
+```json  
+[‘人名‘,…]  
+```  
+"""
+
+extract_place_name_prompt = """
+我这里有一段个人传记的小章节, 由于我想校验传记中的地名是否正确, 所以我希望你帮我总结出这个篇章里面的所有地名,  
+输出格式:  
+```json  
+[‘地名‘,…]  
+```  
+"""
+
+
+biography_free_prompt = """
+帮我利用下面这些信息,生成一篇个人传记:
+
+输出格式:  
+```article
+<content>
+```  
+"""
+
+# TODO 重调机制应该通过改进llmada 来实现
 
 class MemoryCardManager():
     def __init__(self):
@@ -100,7 +128,7 @@ class MemoryCardManager():
 
         return total_score
     
-    def score_from_memory_card(self,memory_cards:list[str]):
+    def score_from_memory_card(self,memory_cards:list[str])->list[int]:
         results = []
         for memory_card in memory_cards:
             result = self.bx.product(score_memory_card_prompt + "\n" + memory_card)
@@ -108,7 +136,7 @@ class MemoryCardManager():
 
         return results
 
-    def memory_card_polish(self,memory_cards:list[str]):
+    def memory_card_polish(self,memory_cards:list[str])->list[str]:
         # 记忆卡片润色
         results = []
         for memory_card in memory_cards:
@@ -134,7 +162,7 @@ class MemoryCardManager():
             result_json_str = extract_json(result)
 
             if result_json_str:
-                return json.loads(result_json_str), chat_history_str
+                return json.loads(result_json_str)
             else:
                 return ""
         except Exception as e:
@@ -142,33 +170,7 @@ class MemoryCardManager():
             return ""
 
 
-####
-extract_person_name_prompt = """
-我这里有一段个人传记的小章节, 由于我想校验传记中的人名是否正确, 所以我希望你帮我总结出这个篇章里面的所有人名,  
-输出格式:  
-```json  
-[‘人名‘,…]  
-```  
-"""
-
-extract_place_name_prompt = """
-我这里有一段个人传记的小章节, 由于我想校验传记中的地名是否正确, 所以我希望你帮我总结出这个篇章里面的所有地名,  
-输出格式:  
-```json  
-[‘地名‘,…]  
-```  
-"""
-
-
-biography_free_prompt = """
-帮我利用下面这些信息,生成一篇个人传记:
-
-输出格式:  
-```article
-<content>
-```  
-"""
-
+### 
 
 class BiographyGenerate():
     def __init__(self):
@@ -235,6 +237,7 @@ class BiographyGenerate():
                              suggest_number_words = 3000):
         created_material =""
         try:
+            print()
             material_prompt = prompt_get_infos.format(material= material,frame = json.dumps(outline), requirements = json.dumps(chapter))
             material = await asyncio.to_thread(self.bx.product, material_prompt) 
             words = prompt_base.format(master = master, chapter = f'{chapter.get("chapter_number")} {chapter.get("title")}', 
@@ -244,8 +247,8 @@ class BiographyGenerate():
                                         port_chapter_summery = '' )
             article = await asyncio.to_thread(self.bx.product, words) # Python 3.9+
 
-            chapter_name = await asyncio.to_thread(self.extract_person_name, chapter) 
-            chapter_place = await asyncio.to_thread(self.extract_person_place, chapter)
+            chapter_name = await asyncio.to_thread(self.extract_person_name, article) 
+            chapter_place = await asyncio.to_thread(self.extract_person_place, article)
             
             return {"chapter_number":chapter.get("chapter_number"),"article": extract_article(article),
                     "material":material,"created_material":created_material,
