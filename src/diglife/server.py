@@ -301,13 +301,12 @@ class BiographyResult(BaseModel):
     """
     传记生成结果的数据模型。
     """
-
     task_id: str = Field(..., description="任务的唯一标识符。")
     status: str = Field(...,description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').",)
     biography_brief: Optional[str] = Field(None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。")
-    biography_text: Optional[str] = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
-    biography_name: Optional[str] = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
-    biography_place: Optional[str] = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
+    biography_text: dict | None = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
+    biography_name: list[str] | None = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
+    biography_place: list[str] | None = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
     error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
     progress: float = Field(0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。")
 
@@ -327,20 +326,25 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         # 在后台启动异步任务
 
         # 素材整理
-        material = bg.material_generate(
+        material = await bg.amaterial_generate(
             vitae=request_data.vitae, memory_cards=request_data.memory_cards
         )
         task_store[task_id]["progress"] = 0.2
-
+        task_store[task_id]["material"] = material
         # 生成大纲
-        outline = bg.outline_generate(material)
+        outline = await bg.aoutline_generate(material)
 
         task_store[task_id]["progress"] = 0.3
+        task_store[task_id]["outline"] = outline
 
         # 生成传记简介
-        brief = bg.gener_biography_brief(outline)
+        brief = await bg.agener_biography_brief(outline)
+        task_store[task_id]["biography_brief"] = brief
 
         task_store[task_id]["progress"] = 0.5
+        biography_json = {}
+        biography_name = []
+        biography_place = []
 
         tasks = []
         for part, chapters in outline.items():
@@ -359,9 +363,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         results = await asyncio.gather(*tasks, return_exceptions=False)
 
         # content = ""
-        biography_json = {}
-        biography_name = []
-        biography_place = []
+
         for part, chapters in outline.items():
             biography_json[part] = []
             # content += f'# {part}'
@@ -376,7 +378,6 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
                         biography_name += x.get("chapter_name")
                         biography_place += x.get("chapter_place")
 
-        task_store[task_id]["biography_brief"] = brief
         task_store[task_id]["biography_text"] = biography_json
         task_store[task_id]["biography_name"] = biography_name
         task_store[task_id]["biography_place"] = biography_place
@@ -388,7 +389,6 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["error_message"] = str(e)
         task_store[task_id]["progress"] = 1.0
         logger.info(f"Task {task_id}: Generation failed with error: {e}")
-
 
 @app.post(
     "/generate_biography", response_model=BiographyResult, summary="提交传记生成请求"
@@ -417,7 +417,6 @@ async def generate_biography(request: BiographyRequest):
 
     return BiographyResult(task_id=task_id, status="PENDING", progress=0.0)
 
-
 @app.get(
     "/get_biography_result/{task_id}",
     response_model=BiographyResult,
@@ -428,6 +427,7 @@ async def get_biography_result(task_id: str):
     根据任务ID查询传记生成任务的状态和结果。
     """
     task_info = task_store.get(task_id)
+    logger.info(task_info)
     if not task_info:
         raise HTTPException(
             status_code=404, detail=f"Task with ID '{task_id}' not found."
@@ -436,10 +436,10 @@ async def get_biography_result(task_id: str):
     return BiographyResult(
         task_id=task_info["task_id"],
         status=task_info["status"],
-        biography_brief=task_info.get("biography_brief"),
-        biography_text=task_info.get("biography_text"),
-        biography_name=task_info.get("biography_name"),
-        biography_place=task_info.get("biography_place"),
+        biography_brief=task_info.get("biography_brief",""),
+        biography_text=task_info.get("biography_text",{}),
+        biography_name=task_info.get("biography_name",[]),
+        biography_place=task_info.get("biography_place",[]),
         error_message=task_info.get("error_message"),
         progress=task_info.get("progress", 0.0),
     )
@@ -569,6 +569,22 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
     #         "order": 2,
     #     },
     # ]
+
+    {
+    "text":"这是一个传记001",
+    "id":"1916693308020916225",
+    "type":1
+}
+{
+    "text":"这是一个传记002",
+    "id":"1916389315373727745",
+    "type":1
+}
+{
+    "text":"这是一个卡片001",
+    "id":"1962459564012359682",
+    "type":0
+}
     """
     try:
         #TODO 调用id 获得对应的用户简介 query_item.user_id
@@ -622,21 +638,37 @@ async def recommended_figure_person(query_item: QueryItem):
     """
     result = [
         {
-            "id": "1905822448827469825",  # 传记ID
+            "id": "1905822448827469825",  # 分身
             "type": 2,
             "order": 0,
         },
         {
-            "id": "1902278304670625793",  # 卡片ID
+            "id": "1902278304670625793",  # 分身
             "type": 2,
             "order": 1,
         },
         {
-            "id": "1905819574433087490",  # 传记ID
+            "id": "1905819574433087490",  ## 分身
             "type": 2,
             "order": 2,
         },
     ]
+
+    {
+    "text":"这是一个分身001",
+    "id":"1905822448827469825",
+    "type":2
+}
+{
+    "text":"这是一个分身002",
+    "id":"1902278304670625793",
+    "type":2
+}
+{
+    "text":"这是一个分身003",
+    "id":"1905819574433087490",
+    "type":2
+}
     """
 
     try:

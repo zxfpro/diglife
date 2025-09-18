@@ -215,6 +215,31 @@ class BiographyGenerate():
                 material = self.bx.product(interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
         return material
 
+    async def amaterial_generate(self,vitae:str,memory_cards:list[str])->str:
+        """
+        素材整理
+        vitae : 简历
+        memory_cards : 记忆卡片们
+        """
+        def split_into_chunks(my_list, chunk_size = 5):
+            """
+            使用列表推导式将列表分割成大小为 chunk_size 的块。
+            """
+            return [my_list[i:i + chunk_size] for i in range(0, len(my_list), chunk_size)]
+
+        # --- 示例 ---
+        chunks = split_into_chunks(memory_cards, chunk_size = 5)
+
+        material = ""
+        for i,chunk in enumerate(chunks):
+            chunk = json.dumps(chunk,ensure_ascii = False)
+            if i == 0:
+                material = await asyncio.to_thread(self.bx.product, 
+                                                   interview_material_clean_prompt + vitae + chunk)
+            else:
+                material = await asyncio.to_thread(self.bx.product, 
+                                                   interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
+        return material
 
     def outline_generate(self,material:str)->str:
         """
@@ -223,11 +248,21 @@ class BiographyGenerate():
         outline_origin = self.bx.product(outline_prompt + material)
         outline = extract_json(outline_origin)
         return json.loads(outline)
+    
+    async def aoutline_generate(self,material:str)->str:
+        """
+        大纲生成
+        """
+        outline_origin = await asyncio.to_thread(self.bx.product, 
+                                                   outline_prompt + material)
+        outline = extract_json(outline_origin)
+        return json.loads(outline)
 
-    async def gener_biography_brief(self,outline:dict)->str:
+    async def agener_biography_brief(self,outline:dict)->str:
         outline = json.dumps(outline)
-
-        brief = self.bx.product(f'帮我根据大纲写一个传记的简介: {outline}')
+        brief = ""
+        brief = await asyncio.to_thread(self.bx.product, 
+                                        f'帮我根据大纲写一个传记的简介: {outline}')
         return brief
 
     async def awrite_chapter(self,chapter,
@@ -237,7 +272,7 @@ class BiographyGenerate():
                              suggest_number_words = 3000):
         created_material =""
         try:
-            print()
+
             material_prompt = prompt_get_infos.format(material= material,frame = json.dumps(outline), requirements = json.dumps(chapter))
             material = await asyncio.to_thread(self.bx.product, material_prompt) 
             words = prompt_base.format(master = master, chapter = f'{chapter.get("chapter_number")} {chapter.get("title")}', 
