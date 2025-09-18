@@ -265,3 +265,74 @@ class BiographyGenerate():
         result = extract_article(result)
         return result
 
+class DigitalAvatar():
+    def __init__(self):
+        pass
+
+    def brief(self,memory_cards:list[str])->str:
+        """
+        数字分身介绍
+        """
+        return {"title":"我的数字分身标题","content":"我的数字分身简介"}
+    
+    def personality_extraction(self,memory_cards:list[str])->str:
+        feature = bx.product('帮我提取他的MBTI性格特征'+ "\n".join(memory_cards))
+        return feature
+    
+
+    def desensitization(self,memory_cards:list[str])->list[str]:
+        result = []
+        for memory_card in memory_cards:
+            clear_memory_card = bx.product('帮我去掉内容的电话号码'+ memory_card)
+            result.append(clear_memory_card)
+
+        return result
+    
+
+def user_dverview(old_dverview: str, memory_cards: list[str])->str:
+    "生成用户概述"
+    return "生成的用户概述"
+
+
+def user_relationship_extraction(chat_history: str,order_relationship: dict)->dict:
+    """
+    用户关系提取
+    """
+    order_relationship = {
+            "关系1": {
+                "姓名": "姓名",
+                "关系": "关系",
+                "职业": "职业",
+                "出生日期": "出生日期",
+            },
+            "关系2": {
+                "姓名": "姓名",
+                "关系": "关系",
+                "职业": "职业",
+                "出生日期": "出生日期",
+            },
+        }
+
+
+    return {
+            "关系1": {
+                "姓名": "姓名",
+                "关系": "关系",
+                "职业": "职业",
+                "出生日期": "出生日期",
+            },
+            "关系2": {
+                "姓名": "姓名",
+                "关系": "关系",
+                "职业": "职业",
+                "出生日期": "出生日期",
+            },
+        }
+
+
+# TOOD 重调机制 如果bianxieapi 发生问题, 进行重钓,llmada 这边负责, 保证绝对给对外做好支持
+
+# TODO 函数这边做好绝对的输入输出的确定性, 但日志不打在这里, 日志要打在服务上
+
+
+

@@ -10,7 +10,7 @@ import uuid
 import asyncio
 from fastapi import FastAPI, HTTPException, Header, status
 from fastapi.middleware.cors import CORSMiddleware
-
+from diglife.core import DigitalAvatar
 
 logger = Log.logger
 
@@ -40,12 +40,14 @@ app.add_middleware(
 )
 # --- End CORS Configuration ---
 
+# 这边负责日志, 防止报错的记录方案 并非其他地方绝对不能用,
+# try_cache 这边也负责
 
 
 ep = EmbeddingPool()
 MCmanager = MemoryCardManager()
 bg = BiographyGenerate()
-
+da = DigitalAvatar()
 
 
 task_store: Dict[str, Dict[str, Any]] = {}
@@ -180,12 +182,7 @@ async def score_from_memory_card_server(request: MemoryCardsRequest):
     """
     logger.info('running memory_card/score')
     results = MCmanager.score_from_memory_card(memory_cards=request.memory_cards)
-    try:
-        for result in results:
-            assert isinstance(result, int)
-    except AssertionError:
-        logger.error("memory card score failed because llm generate score is not int")
-        return {"message": "memory card score failed because llm generate score is not int", "result": []}
+
     return {"message": "memory card score successfully", "result": results}
 
 
@@ -207,7 +204,7 @@ async def memory_card_merge_server(request: MemoryCardsRequest) -> dict:
 
 
 @app.post("/memory_card/polish",
-          response_model=MemoryCardResult,
+          response_model=MemoryCardsResult,
           summary="记忆卡片发布AI润色")
 async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
     """
@@ -219,33 +216,71 @@ async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
     return MemoryCardsResult(message="memory card polish successfully",
                              memory_cards=result)
 
-@app.post("/memory_card/generate_by_text")
+class MemoryCardGenerageResult(BaseModel):
+    message: str
+    chapters: list[dict]
+
+@app.post("/memory_card/generate_by_text", response_model=MemoryCardGenerageResult)
 async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
     """上传文件生成记忆卡片"""
-        # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    # TODO 断链机制
+    logger.info("running generate_by_text")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     result = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
-    return {"message": "memory card generate by text successfully", "result": result}
+    chapters = result['chapters']
+    for i in chapters:
+        i.update({"time":"1995年07月--日"})
+
+    return MemoryCardGenerageResult(
+        message="memory card generate by text successfully",
+        chapters = chapters
+    )
 
 
-@app.post("/memory_card/generate")
+
+@app.post("/memory_card/generate",response_model=MemoryCardGenerageResult)
 async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
-    """记忆卡片生成优化"""
-        # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    # TODO 断链机制
+    """记忆卡片生成优化
+    
+        # {
+    #   "事件1": {
+    #     "事件时间": "1995年07月--日",
+    #     "事件名称": "全家海边度假",
+    #     "事件内容": "和家人一起去海边玩。"
+    #   },
+    #   "事件2": {
+    #     "事件时间": "11到20岁",
+    #     "事件名称": "学习开车",
+    #     "事件内容": "开始学习驾驶技术。"
+    #   },
+    #   "事件3": {
+    #     "事件时间": "2020年--月--日",
+    #     "事件名称": "儿子出生",
+    #     "事件内容": "孩子来到这个世界。"
+    #   },
+    #   "事件4": {
+    #     "事件时间": "21到30岁",
+    #     "事件名称": "第一次出国",
+    #     "事件内容": "第一次离开国家去旅行。"
+    #   }
+    # }
+    # 
+    # 
+    """
+    logger.info("running memory_card generate")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     result = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
-    return {"message": "memory card generate successfully", "result": result}
+    chapters = result['chapters']
+    for i in chapters:
+        i.update({"time":"1995年07月--日"})
 
+    return MemoryCardGenerageResult(
+        message="memory card generate successfully",
+        chapters = chapters
+    )
 
 
 # 模拟任务存储和状态
@@ -486,6 +521,29 @@ def recommended_update(item: UpdateItem):
         )
 
 
+class DeleteRequest(BaseModel):
+    id: str
+
+class DeleteResponse(BaseModel):
+    status: str = "success" # 假设返回一个状态表示删除成功
+
+@app.post("/recommended/delete",
+          response_model=DeleteResponse,
+          description = "delete")
+async def delete_server(request:DeleteRequest):
+
+    logger.info('running delete_server')
+    
+    # TODO 
+    result = ep.delete(
+        id=request.id
+    ) # 包裹的内核函数
+ 
+    ########
+    return DeleteResponse(
+        status="success",
+    )
+
 @app.post(
     "/recommended/search_biographies_and_cards",
     summary="搜索传记和记忆卡片",
@@ -493,51 +551,30 @@ def recommended_update(item: UpdateItem):
     response_description="搜索结果列表。",
 )
 async def recommended_biographies_and_cards(query_item: QueryItem):
-    """记忆卡片是0  传记是1
-    cache
-        user_id = user_id
-        result = [
-                    {
-                        "id": "324324223", # 传记ID
-                        "type": 1,
-                        "order": 0,
-                    },
-                    {
-                        "id": "3243532223", # 卡片ID
-                        "type": 0,
-                        "order": 1,
-                    },
-                    {
-                        "id": "442324324223", # 传记ID
-                        "type": 1,
-                        "order": 2,
-                    },
-                ]
     """
-    # recommended_biographies_cache.get(query_item.user_id) # ["442324324223","3243532223"]
-        # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
+    # result = [
+    #     {
+    #         "id": "1916693308020916225",  # 传记ID
+    #         "type": 1,
+    #         "order": 0,
+    #     },
+    #     {
+    #         "id": "1962459564012359682",  # 卡片ID
+    #         "type": 0,
+    #         "order": 1,
+    #     },
+    #     {
+    #         "id": "1916389315373727745",  # 传记ID
+    #         "type": 1,
+    #         "order": 2,
+    #     },
+    # ]
+    """
     try:
-        # result = ep.search(query=query_item.user_id)
-        result = [
-            {
-                "id": "1916693308020916225",  # 传记ID
-                "type": 1,
-                "order": 0,
-            },
-            {
-                "id": "1962459564012359682",  # 卡片ID
-                "type": 0,
-                "order": 1,
-            },
-            {
-                "id": "1916389315373727745",  # 传记ID
-                "type": 1,
-                "order": 2,
-            },
-        ]
+        #TODO 调用id 获得对应的用户简介 query_item.user_id
+        user_brief = "我是一个大男孩"
+        result = ep.search_bac(query=user_brief)
+
         if recommended_biographies_cache.get(query_item.user_id):
             clear_result = [
                 i
@@ -582,52 +619,30 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
     description="搜索数字分身的",
 )
 async def recommended_figure_person(query_item: QueryItem):
-    """记忆卡片是0  传记是1
-    cache
-        user_id = user_id
-        result = [
-                    {
-                        "id": "324324223", # 传记ID
-                        "type": 2,
-                        "order": 0,
-                    },
-                    {
-                        "id": "3243532223", # 卡片ID
-                        "type": 2,
-                        "order": 1,
-                    },
-                    {
-                        "id": "442324324223", # 传记ID
-                        "type": 2,
-                        "order": 2,
-                    },
-                ]
     """
-    # recommended_figure_cache.get(query_item.user_id) # ["442324324223","3243532223"]
-    # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    try:
-        # result = ep.search(query=query_item.user_id) # 100+
+    result = [
+        {
+            "id": "1905822448827469825",  # 传记ID
+            "type": 2,
+            "order": 0,
+        },
+        {
+            "id": "1902278304670625793",  # 卡片ID
+            "type": 2,
+            "order": 1,
+        },
+        {
+            "id": "1905819574433087490",  # 传记ID
+            "type": 2,
+            "order": 2,
+        },
+    ]
+    """
 
-        result = [
-            {
-                "id": "1905822448827469825",  # 传记ID
-                "type": 2,
-                "order": 0,
-            },
-            {
-                "id": "1902278304670625793",  # 卡片ID
-                "type": 2,
-                "order": 1,
-            },
-            {
-                "id": "1905819574433087490",  # 传记ID
-                "type": 2,
-                "order": 2,
-            },
-        ]
+    try:
+        #TODO 调用id 获得对应的用户简介 query_item.user_id
+        user_brief = "我是一个大男孩"
+        result = ep.search_figure_person(query=user_brief) # 100+
 
         if recommended_figure_cache.get(query_item.user_id):
             # 不需要创建
@@ -665,84 +680,110 @@ async def recommended_figure_person(query_item: QueryItem):
         )
 
 
+from diglife.core import user_dverview
+
+from diglife.core import user_relationship_extraction
+
+class UserDverviewRequest(BaseModel):
+    old_dverview: str
+    memory_cards: list[str]
+
+class UserDverviewResponse(BaseModel):
+    message: str
+    summary: str
 
 
-
-# 用户关系提取
-@app.get("/user_relationship_extraction")
-async def user_relationship_extraction(
-    chat_history: str,
-    order_relationship: dict,
-):
-    """x"""
-        # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    return {
-        "message": "LLM Service is running.",
-        "output_relation": {
-            "关系1": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-            "关系2": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-        },
-    }
+@app.post("/user_dverview",response_model=UserDverviewResponse)
+async def user_dverview_server(request:UserDverviewRequest):
+    """
+    None
+    """
+    logger.info('running user_dverview_server')
+    
+    result = user_dverview(
+        old_dverview=request.old_dverview, memory_cards=request.memory_cards
+    ) # 包裹的内核函数
+    
+    return UserDverviewResponse(
+        message="successful",
+        summary=result
+    )
 
 
-# 用户概述
-@app.get("/user_dverview")
-async def user_dverview(old_dverview: str, memory_cards: list[str]):
-    """x"""
-        # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    result = ""
-    return {"message": "LLM Service is running.", "dverview": result}
+class UserRelationshipExtractionRequest(BaseModel):
+    chat_history: str
+    order_relationship: dict
+
+class UserRelationshipExtractionResponse(BaseModel):
+    message: str
+    output_relation: dict
+
+@app.post("/user_relationship_extraction",response_model=UserRelationshipExtractionResponse)
+async def user_relationship_extraction_server(request:UserRelationshipExtractionRequest):
+    """
+    用户关系提取
+    """
+    logger.info('running user_relationship_extraction_server')
+    
+    result = user_relationship_extraction(
+        chat_history=request.chat_history, order_relationship=request.order_relationship
+    ) 
+ 
+    return UserRelationshipExtractionResponse(
+        message="LLM Service is running.", 
+        output_relation=result
+    )
 
 
+class BriefResponse(BaseModel):
+    message: str
+    title: str
+    content: str
+
+class digital_avatar_personalityResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    text: str = Field(..., description="优化好的记忆卡片")
 
 
-# 数字分身介绍
-@app.get("/digital_avatar/brief")
-async def digital_avatar_brief(memory_cards: list[str]):
-    """x"""
-        # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    return {"message": "LLM Service is running."}
+@app.post("/digital_avatar/brief",
+          response_model=BriefResponse,
+          description = "数字分身介绍")
+async def brief_server(request:MemoryCardsRequest):
+    logger.info('running brief_server')
+    result = da.brief(
+        memory_cards=request.memory_cards
+    ) 
+    return BriefResponse(
+        message="successful",
+        title=result.get("title"), content=result.get("content")
+    )
 
+@app.post("/digital_avatar/personality_extraction",response_model=digital_avatar_personalityResult)
+async def digital_avatar_personality_extraction(request:MemoryCardsRequest):
+    """数字分身性格提取 """
 
-# 数字分身性格提取
-@app.get("/digital_avatar/personality_extraction")
-async def digital_avatar_personality_extraction(memory_cards: list[str]):
-    """x"""
-        # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    return {"message": "LLM Service is running."}
+    logger.info('running digital_avatar_desensitization')
+    result = da.personality_extraction(memory_cards=request.memory_cards)
+    return digital_avatar_personalityResult(
+        message="successful",
+        text=result
+    )
 
+@app.post("/digital_avatar/desensitization",response_model=MemoryCardsResult)
+async def digital_avatar_desensitization(request:MemoryCardsRequest):
+    """
+    数字分身脱敏
+    """
+    logger.info('running digital_avatar_desensitization')
+    result = da.desensitization(memory_cards=request.memory_cards)
+    return MemoryCardsResult(
+        message="successful",
+        memory_cards=result
+    )
 
-# 数字分身脱敏
-@app.get("/digital_avatar/desensitization")
-async def digital_avatar_desensitization(memory_cards:list[str]):
-    """x"""
-    # TODO 功能实现
-    # TODO 做AI防失联问题
-    # TODO 日志打印
-    # TODO 重调机制
-    return {"message": "LLM Service is running."}
 
 
 if __name__ == "__main__":

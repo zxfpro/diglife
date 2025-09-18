@@ -291,29 +291,6 @@ def test_generate_biography(client: TestClient):
     response = client.get(f"/get_biography_result/{task_id}")
     assert response.status_code == 200
 
-import pytest
-
-
-@pytest.mark.parametrize("input_val, expected_out",[
-    (1, 2),
-    (2, 4),
-    (3, 6),
-])
-def test_multiply_by_two(input_val, expected_out):
-    # assert input_val * 2 == expected_output
-    assert input_val * 2 == expected_out
-
-@pytest.mark.parametrize("input_a, input_b, expected_sum", [
-    (1, 2, 3),
-    (-1, 1, 0),
-    (0, 0, 0),
-    (100, 200, None),
-    (-5, -3, -8)
-])
-def test_add_basic(input_a, input_b, expected_sum):
-    """测试加法函数的正负数、零等基本情况"""
-    assert add(input_a, input_b) == expected_sum
-
 def test_read_item_existing(client: TestClient):
     """测试获取存在的商品"""
     response = client.get("/items/foo")

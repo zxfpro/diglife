@@ -11,6 +11,11 @@ from diglife.embedding_model import VolcanoEmbedding
 from diglife.log import Log
 from llama_index.core import PromptTemplate
 import json
+from llama_index.core.vector_stores import (
+    MetadataFilter,
+    MetadataFilters,
+    FilterOperator,
+)
 
 logger = Log.logger
 def load_config():
@@ -57,36 +62,85 @@ class EmbeddingPool():
         self.embed_model = VolcanoEmbedding(model_name = config.get("model_name","doubao-embedding-text-240715"),
                                             api_key =config.get("api_key",''))
         self.index = VectorStoreIndex.from_vector_store(vector_store,embed_model=self.embed_model)
-        self.retriver = self.index.as_retriever(similarity_top_k=config.get("similarity_top_k",2))
+        """
+            # TODO add more operators
+            EQ = "=="  # default operator (string, int, float)
+            GT = ">"  # greater than (int, float)
+            LT = "<"  # less than (int, float)
+            NE = "!="  # not equal to (string, int, float)
+            GTE = ">="  # greater than or equal to (int, float)
+            LTE = "<="  # less than or equal to (int, float)
+            IN = "in"  # In array (string or number)
+            NIN = "nin"  # Not in array (string or number)
+            ANY = "any"  # Contains any (array of strings)
+            ALL = "all"  # Contains all (array of strings)
+            TEXT_MATCH = "text_match"  # full text match (allows you to search for a specific substring, token or phrase within the text field)
+            TEXT_MATCH_INSENSITIVE = (
+                "text_match_insensitive"  # full text match (case insensitive)
+            )
+            CONTAINS = "contains"  # metadata array contains value (string or number)
+            IS_EMPTY = "is_empty"  # the field is not exist or empty (null or empty array)
+
+        """
+        filters_bac = MetadataFilters(
+            filters=[
+                MetadataFilter(
+                    key="type", value=1, operator=FilterOperator.LTE
+                )  
+            ]
+        )
+        
+        self.retriver_bac = self.index.as_retriever(filters = filters_bac,
+                                                    similarity_top_k=config.get("similarity_top_k",10))
+
+        filters_figure_person = MetadataFilters(
+            filters=[
+                MetadataFilter(
+                    key="type", value=2, operator=FilterOperator.EQ
+                )  
+            ]
+        )
+
+        self.retriver_figure_person = self.index.as_retriever(filters = filters_figure_person,
+                                                              similarity_top_k=config.get("similarity_top_k",10))
 
         logger.debug("== reload start ==")
         logger.debug(self.postprocess)
 
 
     def update(self,text:str,id:str,type:int)->str:
-        logger.info('update')
-        # splitter
-        # type
         doc = Document(text = text,
                        id_=id,
-                        metadata={"type":type},
-                        excluded_embed_metadata_keys=['type'],
+                        metadata={"type":type,
+                                  "id":id},
+                        excluded_embed_metadata_keys=['type',"id"],
                     )
-        doc=Document(text = text,id_=id)
         self.index.update(document=doc)
 
     def delete(self,id:str):
         logger.info('delete')
+        # 2025-09-18 10:37:32,238 - 警告 - llama_index.core.indices.base - base：310 - delete() 方法现已弃用，请使用 delete_ref_doc() 删除已导入的文档和节点，或使用 delete_nodes 删除节点列表。如需异步实现，请使用 delete_ref_docs() 。
         self.index.delete(doc_id = id)
 
-    def search(self,query:str)->str:
-        logger.info('search')
-        result = self.retriver.retrieve(query)
-        print(result[0].text,'resultresultresultresultresultresult')
-        logger.debug(result)
-        result_p = self.postprocess.postprocess_nodes(result)
-        return '\n\n'.join([i.text for i in result_p])
+    def search_bac(self,query:str)->str:
+        results = self.retriver_bac.retrieve(query)
+        output = []
+        for i,result in enumerate(results):
+            dct = result.node.metadata
+            dct.update({"order":i})
+            output.append(dct)
 
+        return output
+
+    def search_figure_person(self,query:str)->str:
+        results = self.retriver_figure_person.retrieve(query)
+        output = []
+        for i,result in enumerate(results):
+            dct = result.node.metadata
+            dct.update({"order":i})
+            output.append(dct)
+
+        return output
 
 import os
 from openai import OpenAI
