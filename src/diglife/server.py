@@ -710,9 +710,9 @@ async def recommended_figure_person(query_item: QueryItem):
         )
 
 
-from diglife.core import user_dverview
+from diglife.core import auser_dverview
 
-from diglife.core import user_relationship_extraction
+from diglife.core import auser_relationship_extraction
 
 class UserDverviewRequest(BaseModel):
     old_dverview: str
@@ -726,11 +726,11 @@ class UserDverviewResponse(BaseModel):
 @app.post("/user_dverview",response_model=UserDverviewResponse)
 async def user_dverview_server(request:UserDverviewRequest):
     """
-    None
+    用户概述
     """
     logger.info('running user_dverview_server')
     
-    result = user_dverview(
+    result = await auser_dverview(
         old_dverview=request.old_dverview, memory_cards=request.memory_cards
     ) # 包裹的内核函数
     
@@ -755,7 +755,7 @@ async def user_relationship_extraction_server(request:UserRelationshipExtraction
     """
     logger.info('running user_relationship_extraction_server')
     
-    result = user_relationship_extraction(
+    result = await auser_relationship_extraction(
         chat_history=request.chat_history, order_relationship=request.order_relationship
     ) 
  
@@ -783,7 +783,7 @@ class digital_avatar_personalityResult(BaseModel):
           description = "数字分身介绍")
 async def brief_server(request:MemoryCardsRequest):
     logger.info('running brief_server')
-    result = da.brief(
+    result = await da.abrief(
         memory_cards=request.memory_cards
     ) 
     return BriefResponse(
@@ -796,7 +796,7 @@ async def digital_avatar_personality_extraction(request:MemoryCardsRequest):
     """数字分身性格提取 """
 
     logger.info('running digital_avatar_desensitization')
-    result = da.personality_extraction(memory_cards=request.memory_cards)
+    result = await da.personality_extraction(memory_cards=request.memory_cards)
     return digital_avatar_personalityResult(
         message="successful",
         text=result
@@ -808,7 +808,7 @@ async def digital_avatar_desensitization(request:MemoryCardsRequest):
     数字分身脱敏
     """
     logger.info('running digital_avatar_desensitization')
-    result = da.desensitization(memory_cards=request.memory_cards)
+    result = await da.desensitization(memory_cards=request.memory_cards)
     return MemoryCardsResult(
         message="successful",
         memory_cards=result

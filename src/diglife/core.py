@@ -97,7 +97,7 @@ biography_free_prompt = """
 ```  
 """
 
-from prompt_writing_assistant.core import intellect,IntellectType,aintellect
+from prompt_writing_assistant.core import intellect,IntellectType,aintellect, get_prompts_from_sql
 
 # TODO 重调机制应该通过改进llmada 来实现
 
@@ -219,7 +219,7 @@ class MemoryCardManager():
 
     async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
         time_prompt = """
-帮我计算这个小篇章发生的时间, 我这里可以提供给你它的原始文本
+帮我计算这个小篇章发生的时间,并为这段内容打分 我这里可以提供给你它的原始文本
 你需要推断它发生的时间,并严格按照时间规则输出
 
 时间规则:
@@ -228,12 +228,22 @@ class MemoryCardManager():
     2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
     3. 优先**具体日期**
 
+评分规则:  
+9-10 分    内容标准: 真实动人  
+7-9  分     内容标准: 细节丰富  
+5-7 分    内容标准: 内容完整  
+3-5  分     内容标准: 略显模糊  
+0-3 分    内容标准: 内容稀薄
+
 例如:
 ```json
-{time: "1995年07月--日" 此类优先}
-{time: "11到20岁",}
-{time: "2020年--月--日",}
-
+{time: "1995年07月--日", #此类优先
+ score:分数(0-10)}
+{time: "11到20岁",
+ score:分数(0-10)}
+{time: "2020年--月--日",
+ score:分数(0-10)}
+```
 """
         number_ = len(chat_history_str)//weight
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
@@ -256,7 +266,7 @@ class MemoryCardManager():
 
     async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
         time_prompt = """
-帮我计算这个小篇章发生的时间, 我这里可以提供给你它的原始文本
+帮我计算这个小篇章发生的时间,并为这段内容打分 我这里可以提供给你它的原始文本
 你需要推断它发生的时间,并严格按照时间规则输出
 
 时间规则:
@@ -265,12 +275,22 @@ class MemoryCardManager():
     2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
     3. 优先**具体日期**
 
+评分规则:  
+9-10 分    内容标准: 真实动人  
+7-9  分     内容标准: 细节丰富  
+5-7 分    内容标准: 内容完整  
+3-5  分     内容标准: 略显模糊  
+0-3 分    内容标准: 内容稀薄
+
 例如:
 ```json
-{time: "1995年07月--日" 此类优先}
-{time: "11到20岁",}
-{time: "2020年--月--日",}
-
+{time: "1995年07月--日", #此类优先
+ score:分数(0-10)}
+{time: "11到20岁",
+ score:分数(0-10)}
+{time: "2020年--月--日",
+ score:分数(0-10)}
+```
 """
         number_ = len(chat_history_str)//weight
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
@@ -425,32 +445,42 @@ class DigitalAvatar():
     def __init__(self):
         pass
 
-    def brief(self,memory_cards:list[str])->str:
+    async def abrief(self,memory_cards:list[str])->str:
         """
         数字分身介绍
         """
-        return {"title":"我的数字分身标题","content":"我的数字分身简介"}
-    
-    def personality_extraction(self,memory_cards:list[str])->str:
-        feature = bx.product('帮我提取他的MBTI性格特征'+ "\n".join(memory_cards))
-        return feature
-    
-
-    def desensitization(self,memory_cards:list[str])->list[str]:
-        result = []
-        for memory_card in memory_cards:
-            clear_memory_card = bx.product('帮我去掉内容的电话号码'+ memory_card)
-            result.append(clear_memory_card)
+        feature = await bx.aproduct('''帮我提取他的MBTI性格特征 按照以下方式输出
+                                    ```json
+                                    {"title":"我的数字分身标题","content":"我的数字分身简介"}
+                                    ```
+                                    '''+ "\n".join(memory_cards))
+        result = json.loads(extract_json(feature))
 
         return result
     
+    async def personality_extraction(self,memory_cards:list[str])->str:
+        feature = await bx.aproduct('帮我提取他的MBTI性格特征'+ "\n".join(memory_cards))
+        return feature
+    
+    
+    async def desensitization(self,memory_cards:list[str])->list[str]:
+        prompt, _  = get_prompts_from_sql("1000002")
+        tasks = []
+        for memory_card in memory_cards:
+            tasks.append(
+                 bx.aproduct(prompt + "\n" + memory_card)
+            )
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+        return results
 
-def user_dverview(old_dverview: str, memory_cards: list[str])->str:
+
+async def auser_dverview(old_dverview: str, memory_cards: list[str])->str:
     "生成用户概述"
-    return "生成的用户概述"
+    result = await bx.aproduct('帮我根据之前的用户的用户概述和新的记忆卡片,生成新的用户概述'+ old_dverview +"\n".join(memory_cards))
+    return result
 
 
-def user_relationship_extraction(chat_history: str,order_relationship: dict)->dict:
+async def auser_relationship_extraction(chat_history: str,order_relationship: dict)->dict:
     """
     用户关系提取
     """
@@ -468,6 +498,7 @@ def user_relationship_extraction(chat_history: str,order_relationship: dict)->di
                 "出生日期": "出生日期",
             },
         }
+    result = await bx.aproduct('帮我根据之前的用户的用户概述和新的记忆卡片,生成新的用户概述'+ old_dverview +"\n".join(memory_cards))
 
 
     return {
