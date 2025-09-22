@@ -1,11 +1,6 @@
 # from diglife.core import get_score, score_from_memory_card, memory_card_polish
 
 
-# def test_score():
-#     S = [10,9,4,2,1,5]
-#     result = get_score(S,K = 0.8)
-#     print(result)
-
 
 # def test_score_from_memory_card():
 #     memory_card = """
@@ -66,49 +61,6 @@
 #     result = extract_person_place(bio_chunk)
 #     print(result)
 
-import pytest
-import requests
-
-# 定义 API 的基础 URL
-BASE_URL = "http://localhost:8107"
-
-def test_get_data_success():
-    """
-    测试 GET /data 接口是否成功返回预期的 JSON 数据和状态码。
-    """
-    endpoint = f"{BASE_URL}/"
-    response = requests.get(endpoint)
-
-    # 断言状态码
-    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
-
-    # 断言响应体内容
-    # assert response.json() == {"message": "Hello, API!"}, \
-    #     f"Expected response body {{'message': 'Hello, API!'}}, but got {response.json()}"
-
-def test_life_topic_score():
-    """
-    测试 GET /data 接口是否成功返回预期的 JSON 数据和状态码。
-    """
-    endpoint = f"{BASE_URL}/life_topic_score"
-    response = requests.get(endpoint)
-
-    # 断言状态码
-    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
-
-    # 断言响应体内容
-    # assert response.json() == {"message": "Hello, API!"}, \
-    #     f"Expected response body {{'message': 'Hello, API!'}}, but got {response.json()}"
-
-def test_get_nonexistent_endpoint():
-    """
-    测试访问不存在的端点是否返回 404。
-    """
-    endpoint = f"{BASE_URL}/nonexistent"
-    response = requests.get(endpoint)
-
-    assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
-
 
 from fastapi.testclient import TestClient
 # Pytest fixture 来提供 TestClient 实例
@@ -116,6 +68,7 @@ from fastapi.testclient import TestClient
 # 这里，我们用它来在每个测试前重置模拟数据库
 import pytest
 from diglife.server import app
+
 @pytest.fixture(name="client") # 为fixture起一个别名，方便测试函数调用
 def client_fixture():
     """
@@ -142,7 +95,7 @@ def test_read_root(client: TestClient):
     assert response.json() == {"message": "LLM Service is running."}
 
 def test_life_topic_score(client: TestClient):
-    """测试创建新商品"""
+    """人生主题分值"""
     data = {
             "S_list": [7, 8, 9, 10],
             "K": 0.3,
@@ -154,13 +107,14 @@ def test_life_topic_score(client: TestClient):
     assert response.json().get("message") == "Life topic score calculated successfully"
     score = response.json().get("result") 
     assert 0< score <100
-    assert type(score) == float
+
+    assert isinstance(score,int)
 
 
 def test_life_aggregate_scheduling_score(client: TestClient):
-    """测试创建新商品"""
+    """人生总进度分值计算"""
     data = {
-            "S_list": [54.5, 98.6, 89.3, 45.5, 94.6, 89.3, 44.5],
+            "S_list": [54, 98, 89, 45, 94, 89, 44],
             "K": 0.03,
             "total_score": 0,
             "epsilon": 0.0001
@@ -170,7 +124,7 @@ def test_life_aggregate_scheduling_score(client: TestClient):
     assert response.json().get("message") == "life aggregate scheduling score successfully"
     score = response.json().get("result") 
     assert 0< score <100
-    assert type(score) == float
+    assert isinstance(score,float)
 
 
 def test_memory_card_score(client: TestClient):

@@ -96,6 +96,8 @@ biography_free_prompt = """
 ```  
 """
 
+from prompt_writing_assistant.core import intellect,IntellectType
+
 # TODO 重调机制应该通过改进llmada 来实现
 
 class MemoryCardManager():
@@ -129,6 +131,24 @@ class MemoryCardManager():
         return total_score
     
     def score_from_memory_card(self,memory_cards:list[str])->list[int]:
+
+score_memory_card_prompt
+        demand = """
+
+"""
+        @intellect(IntellectType.train,prompt_id="1000001",demand = demand)
+        def memory_card_score_(memory_card):
+            result_dict = json.loads(extract_json(memory_card))
+            return result_dict
+        results = []
+        for memory_card in memory_cards:
+            result_dict = memory_card_score_(memory_card)
+            results.append(result_dict)
+
+        return results
+
+    
+    def score_from_memory_card_old(self,memory_cards:list[str])->list[int]:
         results = []
         for memory_card in memory_cards:
             result = self.bx.product(score_memory_card_prompt + "\n" + memory_card)
@@ -363,11 +383,4 @@ def user_relationship_extraction(chat_history: str,order_relationship: dict)->di
                 "出生日期": "出生日期",
             },
         }
-
-
-# TOOD 重调机制 如果bianxieapi 发生问题, 进行重钓,llmada 这边负责, 保证绝对给对外做好支持
-
-# TODO 函数这边做好绝对的输入输出的确定性, 但日志不打在这里, 日志要打在服务上
-
-
 
