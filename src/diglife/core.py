@@ -90,13 +90,14 @@ extract_place_name_prompt = """
 biography_free_prompt = """
 帮我利用下面这些信息,生成一篇个人传记:
 
+
 输出格式:  
 ```article
 <content>
 ```  
 """
 
-from prompt_writing_assistant.core import intellect,IntellectType
+from prompt_writing_assistant.core import intellect,IntellectType,aintellect
 
 # TODO 重调机制应该通过改进llmada 来实现
 
@@ -131,12 +132,7 @@ class MemoryCardManager():
         return total_score
     
     def score_from_memory_card(self,memory_cards:list[str])->list[int]:
-
-score_memory_card_prompt
-        demand = """
-
-"""
-        @intellect(IntellectType.train,prompt_id="1000001",demand = demand)
+        @intellect(IntellectType.inference,prompt_id="1000001",demand = None)
         def memory_card_score_(memory_card):
             result_dict = json.loads(extract_json(memory_card))
             return result_dict
@@ -147,7 +143,15 @@ score_memory_card_prompt
 
         return results
 
-    
+    async def ascore_from_memory_card(self,memory_cards:list[str])->list[int]:
+        tasks = []
+        for memory_card in memory_cards:
+            tasks.append(
+                 self.bx.aproduct(score_memory_card_prompt + "\n" + memory_card)
+            )
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+        return [json.loads(extract_json(result)) for result in results]
+
     def score_from_memory_card_old(self,memory_cards:list[str])->list[int]:
         results = []
         for memory_card in memory_cards:
@@ -156,7 +160,54 @@ score_memory_card_prompt
 
         return results
 
+    def memory_card_merge(self,memory_cards:list[str]):
+        # 记忆卡片合并
+        demand = memory_card_merge_prompt
+        @intellect(IntellectType.train,prompt_id="1000003",demand = demand)
+        def memory_card_merge(memory_cards):
+            return memory_cards
+
+        result =memory_card_merge(json.dumps(memory_cards))
+        
+        return result
+    
+    async def amemory_card_merge(self,memory_cards:list[str]):
+        # 记忆卡片合并
+        result = await bx.aproduct(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
+        return result
+
+
+    def memory_card_merge_old(self,memory_cards:list[str]):
+        # 记忆卡片合并
+        result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
+        return result
+
     def memory_card_polish(self,memory_cards:list[str])->list[str]:
+        # 记忆卡片润色
+        demand = memory_card_polish_prompt
+        @intellect(IntellectType.train,prompt_id="1000002",demand = demand)
+        def memory_card_polish(memory_card):
+            return memory_card
+        results = []
+        for memory_card in memory_cards:
+            result = memory_card_polish(memory_card)
+            results.append(result)
+        return results
+
+
+    async def amemory_card_polish(self,memory_cards:list[str])->list[str]:
+        # 记忆卡片润色
+
+        tasks = []
+        for memory_card in memory_cards:
+            tasks.append(
+                 self.bx.aproduct(memory_card_polish_prompt + "\n" + memory_card)
+            )
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+        return results
+
+
+    def memory_card_polish_old(self,memory_cards:list[str])->list[str]:
         # 记忆卡片润色
         results = []
         for memory_card in memory_cards:
@@ -166,29 +217,79 @@ score_memory_card_prompt
         return results
 
 
-    def memory_card_merge(self,memory_cards:list[str]):
-        # 记忆卡片合并
-        result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
-        return result
-
-    
     async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
-        
-        number_ = len(chat_history_str)//weight
+        time_prompt = """
+帮我计算这个小篇章发生的时间, 我这里可以提供给你它的原始文本
+你需要推断它发生的时间,并严格按照时间规则输出
 
+时间规则:
+- **时间格式 (二选一):**
+    1.  **具体日期:** `YYYY年MM月DD日` (未知月/日用 `--` 代替，如 `1995年07月--日`)
+    2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
+    3. 优先**具体日期**
+
+例如:
+```json
+{time: "1995年07月--日" 此类优先}
+{time: "11到20岁",}
+{time: "2020年--月--日",}
+
+"""
+        number_ = len(chat_history_str)//weight
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
         try:
             result = await asyncio.to_thread(bx.product, base_prompt) 
             result_json_str = extract_json(result)
 
-            if result_json_str:
-                return json.loads(result_json_str)
-            else:
-                return ""
+            result_dict = json.loads(result_json_str)
+            
+            chapters = result_dict['chapters']
+            for i in chapters:
+                time_result = await asyncio.to_thread(bx.product, time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content')) 
+                time_dict = json.loads(extract_json(time_result))
+                i.update(time_dict)
+
+            return chapters
         except Exception as e:
             print(f"Error processing  {chat_history_str[:30]}: {e}")
             return ""
 
+    async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
+        time_prompt = """
+帮我计算这个小篇章发生的时间, 我这里可以提供给你它的原始文本
+你需要推断它发生的时间,并严格按照时间规则输出
+
+时间规则:
+- **时间格式 (二选一):**
+    1.  **具体日期:** `YYYY年MM月DD日` (未知月/日用 `--` 代替，如 `1995年07月--日`)
+    2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
+    3. 优先**具体日期**
+
+例如:
+```json
+{time: "1995年07月--日" 此类优先}
+{time: "11到20岁",}
+{time: "2020年--月--日",}
+
+"""
+        number_ = len(chat_history_str)//weight
+        base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
+        try:
+            result = await asyncio.to_thread(bx.product, base_prompt) 
+            result_json_str = extract_json(result)
+
+            result_dict = json.loads(result_json_str)
+            
+            chapters = result_dict['chapters']
+            for i in chapters:
+                time_result = await asyncio.to_thread(bx.product, time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content')) 
+                time_dict = json.loads(extract_json(time_result))
+                i.update(time_dict)
+
+            return chapters
+        except Exception as e:
+            print(f"Error processing  {chat_history_str[:30]}: {e}")
+            return ""
 
 ### 
 
@@ -314,9 +415,9 @@ class BiographyGenerate():
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
             return None
 
-    def generate_biography_free(self,user_name, vitae, memory_cards):
+    async def agenerate_biography_free(self,user_name, vitae, memory_cards):
         # 简要版说法
-        result = bx.product(biography_free_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
+        result = await bx.aproduct(biography_free_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
         result = extract_article(result)
         return result
 

@@ -181,7 +181,7 @@ async def score_from_memory_card_server(request: MemoryCardsRequest):
     接收一个记忆卡片内容字符串，并返回其质量评分。
     """
     logger.info('running memory_card/score')
-    results = MCmanager.score_from_memory_card(memory_cards=request.memory_cards)
+    results = await MCmanager.ascore_from_memory_card(memory_cards=request.memory_cards)
 
     return {"message": "memory card score successfully", "result": results}
 
@@ -197,7 +197,7 @@ async def memory_card_merge_server(request: MemoryCardsRequest) -> dict:
     """
 
     logger.info("running memory_card_merge")
-    result = MCmanager.memory_card_merge(memory_cards=request.memory_cards)
+    result = await MCmanager.amemory_card_merge(memory_cards=request.memory_cards)
 
     return MemoryCardResult(message = "memory card merge successfully",
                             memory_card = result )
@@ -212,9 +212,10 @@ async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
     接收记忆卡片内容，并返回AI润色后的结果。
     """
     logger.info("running memory_card_polish")
-    result = MCmanager.memory_card_polish(memory_cards=request.memory_cards)
+    result = await MCmanager.amemory_card_polish(memory_cards=request.memory_cards)
     return MemoryCardsResult(message="memory card polish successfully",
                              memory_cards=result)
+
 
 class MemoryCardGenerageResult(BaseModel):
     message: str
@@ -225,13 +226,13 @@ async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest
     """上传文件生成记忆卡片"""
     logger.info("running generate_by_text")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
-    result = await MCmanager.agenerate_memory_card(
+    chapters = await MCmanager.agenerate_memory_card_by_text(
         chat_history_str=request.text, weight=1000
     )
-    chapters = result['chapters']
-    for i in chapters:
-        i.update({"time":"1995年07月--日"})
-
+    # chapters = result['chapters']
+    # for i in chapters:
+    #     i.update({"time":"1995年07月--日"})
+    
     return MemoryCardGenerageResult(
         message="memory card generate by text successfully",
         chapters = chapters
@@ -270,12 +271,12 @@ async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dic
     """
     logger.info("running memory_card generate")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
-    result = await MCmanager.agenerate_memory_card(
+    chapters = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
-    chapters = result['chapters']
-    for i in chapters:
-        i.update({"time":"1995年07月--日"})
+    # chapters = result['chapters']
+    # for i in chapters:
+    #     i.update({"time":"1995年07月--日"})
 
     return MemoryCardGenerageResult(
         message="memory card generate successfully",
@@ -454,10 +455,7 @@ async def generate_biography(request: BiographyRequest):
     此接口会立即返回一个任务ID，客户端可以使用此ID查询生成进度和结果。
     实际的生成过程会在后台异步执行。
     """
-    request.user_name
-    request.memory_cards
-    request.vitae
-    result = bg.generate_biography_free(
+    result = await bg.agenerate_biography_free(
         user_name=request.user_name,
         memory_cards=request.memory_cards,
         vitae=request.vitae,

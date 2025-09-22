@@ -48,6 +48,10 @@ Here are the strict guidelines you must follow:
 
 """
 
+
+
+
+
 # 访谈素材整理
 interview_material_clean_prompt = '''
 You are an AI assistant specialized in organizing personal biography materials and generating interview outlines. Your primary goal is to take a provided resume (as structured data) and a set of memory cards (as a list of dictionaries with 'title' and 'content' keys), and then compile them into a coherent, structured, and insightful biographical interview material outline.

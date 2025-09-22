@@ -518,8 +518,8 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.116.1" },
     { name = "llama-index", specifier = ">=0.12.30" },
     { name = "llama-index-vector-stores-qdrant", specifier = "==0.6.1" },
-    { name = "llmada", specifier = ">=1.0.6" },
-    { name = "prompt-writing-assistant", path = "../prompt_writing_assistant/dist/prompt_writing_assistant-0.1.7-py3-none-any.whl" },
+    { name = "llmada", path = "../llmada/dist/llmada-1.0.7-py3-none-any.whl" },
+    { name = "prompt-writing-assistant", path = "../prompt_writing_assistant/dist/prompt_writing_assistant-0.1.8-py3-none-any.whl" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-tornasync", specifier = ">=0.6.0.post2" },
@@ -1300,23 +1300,46 @@ wheels = [
 
 [[package]]
 name = "llmada"
-version = "1.0.6"
-source = { registry = "https://pypi.org/simple" }
+version = "1.0.7"
+source = { path = "../llmada/dist/llmada-1.0.7-py3-none-any.whl" }
 dependencies = [
+    { name = "anyio" },
     { name = "cryptography" },
     { name = "fastapi" },
     { name = "google-genai" },
     { name = "httpx", extra = ["http2"] },
     { name = "llama-index" },
     { name = "openai" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-tornasync" },
     { name = "python-dotenv" },
     { name = "sse-starlette" },
     { name = "toml" },
+    { name = "uvicorn" },
     { name = "volcengine-python-sdk", extra = ["ark"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9d/b0/3b3d39428ebe3075b9e2115621bf883aaef72b6af16f0774afc2c250f4bd/llmada-1.0.6.tar.gz", hash = "sha256:fd8bfe1c2751d40edc0f22a2bbbc6f9b6e30d523d4a568e6fcc39cf7f719aeaa", size = 13527 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/cb/38d20e56e89553a15e357e3dc751f286af4a346aaa10d19c85614a77e8ac/llmada-1.0.6-py3-none-any.whl", hash = "sha256:1b929e64a7a69a51b2330288db31b1789f7c37bfae5bea7304b634076b3a13a7", size = 9265 },
+    { filename = "llmada-1.0.7-py3-none-any.whl", hash = "sha256:4497e46fa7e566c491d621cec0ea4136ae1d402bb4bfb840e749b5736ce58d49" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "anyio", specifier = ">=4.9.0" },
+    { name = "cryptography", specifier = ">=45.0.4" },
+    { name = "fastapi", specifier = ">=0.115.12" },
+    { name = "google-genai", specifier = ">=1.13.0" },
+    { name = "httpx", extras = ["http2"], specifier = ">=0.28.1" },
+    { name = "llama-index", specifier = "==0.12.30" },
+    { name = "openai", specifier = ">=1.70.0" },
+    { name = "pytest", specifier = ">=8.4.2" },
+    { name = "pytest-asyncio", specifier = ">=1.2.0" },
+    { name = "pytest-tornasync", specifier = ">=0.6.0.post2" },
+    { name = "python-dotenv", specifier = ">=1.1.0" },
+    { name = "sse-starlette", specifier = ">=2.3.3" },
+    { name = "toml", specifier = "==0.10.2" },
+    { name = "uvicorn", specifier = ">=0.35.0" },
+    { name = "volcengine-python-sdk", extras = ["ark"], specifier = ">=1.1.3" },
 ]
 
 [[package]]
@@ -1941,8 +1964,8 @@ wheels = [
 
 [[package]]
 name = "prompt-writing-assistant"
-version = "0.1.7"
-source = { path = "../prompt_writing_assistant/dist/prompt_writing_assistant-0.1.7-py3-none-any.whl" }
+version = "0.1.8"
+source = { path = "../prompt_writing_assistant/dist/prompt_writing_assistant-0.1.8-py3-none-any.whl" }
 dependencies = [
     { name = "anyio" },
     { name = "db-help" },
@@ -1956,7 +1979,7 @@ dependencies = [
     { name = "uvicorn" },
 ]
 wheels = [
-    { filename = "prompt_writing_assistant-0.1.7-py3-none-any.whl", hash = "sha256:c40c656a100ea8d6a1b936af373ae042d0ed924c5c62db8cf73f053ca06889d2" },
+    { filename = "prompt_writing_assistant-0.1.8-py3-none-any.whl", hash = "sha256:65b645ad52464ed3788e31d523d6df6d3f18bfe158c8bbd475948e12137635dd" },
 ]
 
 [package.metadata]
