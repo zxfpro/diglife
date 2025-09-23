@@ -11,6 +11,8 @@ import asyncio
 from fastapi import FastAPI, HTTPException, Header, status
 from fastapi.middleware.cors import CORSMiddleware
 from diglife.core import DigitalAvatar
+from diglife.core import auser_dverview
+from diglife.core import auser_relationship_extraction
 
 logger = Log.logger
 
@@ -44,23 +46,98 @@ app.add_middleware(
 # try_cache 这边也负责
 
 
-ep = EmbeddingPool()
-MCmanager = MemoryCardManager()
-bg = BiographyGenerate()
-da = DigitalAvatar()
+class UserDverviewRequest(BaseModel):
+    old_dverview: str
+    memory_cards: list[str]
+
+class UserDverviewResponse(BaseModel):
+    message: str
+    summary: str
 
 
-task_store: Dict[str, Dict[str, Any]] = {}
-recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
-recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
-recommended_biographies_cache_max_leng = 2
-recommended_cache_max_leng = 2
+class UserRelationshipExtractionRequest(BaseModel):
+    chat_history: str
+
+class UserRelationshipExtractionResponse(BaseModel):
+    message: str
+    output_relation: dict
+
+class BriefResponse(BaseModel):
+    message: str
+    title: str
+    content: str
+
+class digital_avatar_personalityResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    text: str = Field(..., description="优化好的记忆卡片")
 
 
-@app.get("/")
-async def root():
-    """ server run """
-    return {"message": "LLM Service is running."}
+class DeleteRequest(BaseModel):
+    id: str
+
+class DeleteResponse(BaseModel):
+    status: str = "success" # 假设返回一个状态表示删除成功
+
+class UpdateItem(BaseModel):
+    text: str = Field(..., min_length=1, max_length=2000, description="要更新的文本内容。")
+    id: str = Field(..., min_length=1, max_length=100, description="与文本关联的唯一ID。")
+    type: int = Field(..., description="上传的类型")
+
+class QueryItem(BaseModel):
+    user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
+
+
+class BiographyRequest(BaseModel):
+    """
+    请求传记生成的数据模型。
+    """
+
+    user_name: str = Field(None, description="用户名字")
+    vitae: str = Field(None, description="用户简历")
+    memory_cards: list[str] = Field(..., description="记忆卡片列表")
+    # 可以在这里添加更多用于生成传记的输入字段
+
+
+class BiographyResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    task_id: str = Field(..., description="任务的唯一标识符。")
+    status: str = Field(...,description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').",)
+    biography_brief: Optional[str] = Field(None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。")
+    biography_text: dict | None = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
+    biography_name: list[str] | None = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
+    biography_place: list[str] | None = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
+    error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
+    progress: float = Field(0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。")
+
+class MemoryCardGenerageResult(BaseModel):
+    message: str
+    chapters: list[dict]
+
+# 记忆合并
+class MemoryCardsRequest(BaseModel):
+    memory_cards: list[str] = Field(..., description="记忆卡片列表")
+
+class MemoryCardGenerateRequest(BaseModel):
+    text: str = Field(..., description="聊天内容或者文本内容")
+
+class MemoryCardResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    memory_card: str = Field(..., description="优化好的记忆卡片")
+
+class MemoryCardsResult(BaseModel):
+    """
+    传记生成结果的数据模型。
+    """
+    message: str = Field(..., description="优化好的记忆卡片")
+    memory_cards: list[str] = Field(..., description="优化好的记忆卡片")
 
 class LifeTopicScoreRequest(BaseModel):
     S_list: List[int] = Field(..., description="List of scores, each between 1 and 10.")
@@ -99,6 +176,25 @@ class ScoreRequest(BaseModel):
                     "Each element in 'S_list' must be a valid integer string."
                 )
         return self
+
+
+ep = EmbeddingPool()
+MCmanager = MemoryCardManager()
+bg = BiographyGenerate()
+da = DigitalAvatar()
+
+
+task_store: Dict[str, Dict[str, Any]] = {}
+recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
+recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
+recommended_biographies_cache_max_leng = 2
+recommended_cache_max_leng = 2
+
+
+@app.get("/")
+async def root():
+    """ server run """
+    return {"message": "LLM Service is running."}
 
 @app.post("/life_topic_score")
 async def life_topic_score_server(request: LifeTopicScoreRequest):
@@ -152,28 +248,6 @@ async def life_aggregate_scheduling_score_server(request: ScoreRequest):
         )
 
 
-# 记忆合并
-class MemoryCardsRequest(BaseModel):
-    memory_cards: list[str] = Field(..., description="记忆卡片列表")
-
-class MemoryCardGenerateRequest(BaseModel):
-    text: str = Field(..., description="聊天内容或者文本内容")
-
-class MemoryCardResult(BaseModel):
-    """
-    传记生成结果的数据模型。
-    """
-    message: str = Field(..., description="优化好的记忆卡片")
-    memory_card: str = Field(..., description="优化好的记忆卡片")
-
-class MemoryCardsResult(BaseModel):
-    """
-    传记生成结果的数据模型。
-    """
-    message: str = Field(..., description="优化好的记忆卡片")
-    memory_cards: list[str] = Field(..., description="优化好的记忆卡片")
-
-
 @app.post("/memory_card/score")
 async def score_from_memory_card_server(request: MemoryCardsRequest):
     """
@@ -215,11 +289,6 @@ async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
     result = await MCmanager.amemory_card_polish(memory_cards=request.memory_cards)
     return MemoryCardsResult(message="memory card polish successfully",
                              memory_cards=result)
-
-
-class MemoryCardGenerageResult(BaseModel):
-    message: str
-    chapters: list[dict]
 
 @app.post("/memory_card/generate_by_text", response_model=MemoryCardGenerageResult)
 async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
@@ -285,31 +354,6 @@ async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dic
 
 
 # 模拟任务存储和状态
-
-
-class BiographyRequest(BaseModel):
-    """
-    请求传记生成的数据模型。
-    """
-
-    user_name: str = Field(None, description="用户名字")
-    vitae: str = Field(None, description="用户简历")
-    memory_cards: list[str] = Field(..., description="记忆卡片列表")
-    # 可以在这里添加更多用于生成传记的输入字段
-
-
-class BiographyResult(BaseModel):
-    """
-    传记生成结果的数据模型。
-    """
-    task_id: str = Field(..., description="任务的唯一标识符。")
-    status: str = Field(...,description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').",)
-    biography_brief: Optional[str] = Field(None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。")
-    biography_text: dict | None = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
-    biography_name: list[str] | None = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
-    biography_place: list[str] | None = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
-    error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
-    progress: float = Field(0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。")
 
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
     """
@@ -465,14 +509,6 @@ async def generate_biography(request: BiographyRequest):
 
 # 推荐算法
 
-class UpdateItem(BaseModel):
-    text: str = Field(..., min_length=1, max_length=2000, description="要更新的文本内容。")
-    id: str = Field(..., min_length=1, max_length=100, description="与文本关联的唯一ID。")
-    type: int = Field(..., description="上传的类型")
-
-class QueryItem(BaseModel):
-    user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
-
 @app.post(
     "/recommended/update",  # 推荐使用POST请求进行数据更新
     summary="更新或添加文本嵌入",
@@ -518,12 +554,6 @@ def recommended_update(item: UpdateItem):
             detail=f"Failed to update embedding for ID '{item.id}': {e}",
         )
 
-
-class DeleteRequest(BaseModel):
-    id: str
-
-class DeleteResponse(BaseModel):
-    status: str = "success" # 假设返回一个状态表示删除成功
 
 @app.post("/recommended/delete",
           response_model=DeleteResponse,
@@ -710,18 +740,6 @@ async def recommended_figure_person(query_item: QueryItem):
         )
 
 
-from diglife.core import auser_dverview
-
-from diglife.core import auser_relationship_extraction
-
-class UserDverviewRequest(BaseModel):
-    old_dverview: str
-    memory_cards: list[str]
-
-class UserDverviewResponse(BaseModel):
-    message: str
-    summary: str
-
 
 @app.post("/user_dverview",response_model=UserDverviewResponse)
 async def user_dverview_server(request:UserDverviewRequest):
@@ -740,48 +758,29 @@ async def user_dverview_server(request:UserDverviewRequest):
     )
 
 
-class UserRelationshipExtractionRequest(BaseModel):
-    chat_history: str
-    order_relationship: dict
-
-class UserRelationshipExtractionResponse(BaseModel):
-    message: str
-    output_relation: dict
-
-@app.post("/user_relationship_extraction",response_model=UserRelationshipExtractionResponse)
+@app.post("/user_relationship_extraction")
 async def user_relationship_extraction_server(request:UserRelationshipExtractionRequest):
     """
     用户关系提取
     """
     logger.info('running user_relationship_extraction_server')
     
-    result = await auser_relationship_extraction(
-        chat_history=request.chat_history, order_relationship=request.order_relationship
-    ) 
- 
+    result = await auser_relationship_extraction(chat_history=request.chat_history) 
     return UserRelationshipExtractionResponse(
         message="LLM Service is running.", 
         output_relation=result
     )
 
-
-class BriefResponse(BaseModel):
-    message: str
-    title: str
-    content: str
-
-class digital_avatar_personalityResult(BaseModel):
-    """
-    传记生成结果的数据模型。
-    """
-    message: str = Field(..., description="优化好的记忆卡片")
-    text: str = Field(..., description="优化好的记忆卡片")
-
+    # return {
+    #     "message": "successful",
+    #     "output_relation": result
+    # }
 
 @app.post("/digital_avatar/brief",
           response_model=BriefResponse,
           description = "数字分身介绍")
 async def brief_server(request:MemoryCardsRequest):
+    "数字分身介绍"
     logger.info('running brief_server')
     result = await da.abrief(
         memory_cards=request.memory_cards

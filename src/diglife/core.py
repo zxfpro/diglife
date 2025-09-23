@@ -96,8 +96,8 @@ biography_free_prompt = """
 <content>
 ```  
 """
+from prompt_writing_assistant.prompt_helper import intellect,IntellectType,aintellect,get_prompts_from_sql
 
-from prompt_writing_assistant.core import intellect,IntellectType,aintellect, get_prompts_from_sql
 
 # TODO 重调机制应该通过改进llmada 来实现
 
@@ -245,7 +245,7 @@ class MemoryCardManager():
  score:分数(0-10)}
 ```
 """
-        number_ = len(chat_history_str)//weight
+        number_ = len(chat_history_str)//weight + 1
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
         try:
             result = await asyncio.to_thread(bx.product, base_prompt) 
@@ -292,7 +292,7 @@ class MemoryCardManager():
  score:分数(0-10)}
 ```
 """
-        number_ = len(chat_history_str)//weight
+        number_ = len(chat_history_str)//weight + 1
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
         try:
             result = await asyncio.to_thread(bx.product, base_prompt) 
@@ -301,6 +301,7 @@ class MemoryCardManager():
             result_dict = json.loads(result_json_str)
             
             chapters = result_dict['chapters']
+            print(chapters,'chapters')
             for i in chapters:
                 time_result = await asyncio.to_thread(bx.product, time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content')) 
                 time_dict = json.loads(extract_json(time_result))
@@ -449,70 +450,50 @@ class DigitalAvatar():
         """
         数字分身介绍
         """
-        feature = await bx.aproduct('''帮我提取他的MBTI性格特征 按照以下方式输出
-                                    ```json
-                                    {"title":"我的数字分身标题","content":"我的数字分身简介"}
-                                    ```
-                                    '''+ "\n".join(memory_cards))
-        result = json.loads(extract_json(feature))
+        prompt, _  = get_prompts_from_sql(prompt_id="0098",table_name = "llm_prompt")
+        feature = await bx.aproduct(prompt + "\n".join(memory_cards))
 
-        return result
+        return json.loads(extract_json(feature))
     
     async def personality_extraction(self,memory_cards:list[str])->str:
-        feature = await bx.aproduct('帮我提取他的MBTI性格特征'+ "\n".join(memory_cards))
-        return feature
+        """
+        数字分身性格提取
+        """
+        prompt, _  = get_prompts_from_sql(prompt_id="0099",table_name = "llm_prompt")
+        result = await bx.aproduct(prompt + "\n".join(memory_cards))
+        return extract_article(result)
     
     
     async def desensitization(self,memory_cards:list[str])->list[str]:
-        prompt, _  = get_prompts_from_sql("1000002")
+        """
+        数字分身脱敏
+        """
+        prompt, _  = get_prompts_from_sql(prompt_id="0100",table_name = "llm_prompt")
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
                  bx.aproduct(prompt + "\n" + memory_card)
             )
         results = await asyncio.gather(*tasks, return_exceptions=False)
-        return results
+        return [extract_article(i) for i in results]
 
 
 async def auser_dverview(old_dverview: str, memory_cards: list[str])->str:
-    "生成用户概述"
-    result = await bx.aproduct('帮我根据之前的用户的用户概述和新的记忆卡片,生成新的用户概述'+ old_dverview +"\n".join(memory_cards))
+    "用户概述"
+    prompt, _  = get_prompts_from_sql(prompt_id="0096",table_name = "llm_prompt")
+
+    result = await bx.aproduct(prompt + old_dverview + "\n".join(memory_cards))
+
     return result
 
 
-async def auser_relationship_extraction(chat_history: str,order_relationship: dict)->dict:
+async def auser_relationship_extraction(chat_history: str)->dict:
     """
     用户关系提取
     """
-    order_relationship = {
-            "关系1": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-            "关系2": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-        }
-    result = await bx.aproduct('帮我根据之前的用户的用户概述和新的记忆卡片,生成新的用户概述'+ old_dverview +"\n".join(memory_cards))
+    prompt, _  = get_prompts_from_sql(prompt_id="0097",table_name = "llm_prompt")
+    
+    result = await bx.aproduct( prompt +  "聊天历史"+ chat_history)
 
-
-    return {
-            "关系1": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-            "关系2": {
-                "姓名": "姓名",
-                "关系": "关系",
-                "职业": "职业",
-                "出生日期": "出生日期",
-            },
-        }
+    return json.loads(extract_json(result))
 
