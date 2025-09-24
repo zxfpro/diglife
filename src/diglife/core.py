@@ -285,7 +285,8 @@ class BiographyGenerate():
     async def agenerate_biography_free(self,user_name, vitae, memory_cards:list):
         # 简要版说法
         prompt, _  = get_prompts_from_sql(prompt_id="0095",table_name = "llm_prompt")
-        result = await bx.aproduct(prompt + "\n" + f"{user_name},{vitae},{"\n".join(memory_cards)}")
+        memory_cards_str = "\n".join(memory_cards)
+        result = await bx.aproduct(prompt + "\n" + f"{user_name},{vitae},{memory_cards_str}")
         result = extract_article(result)
         return result
 
