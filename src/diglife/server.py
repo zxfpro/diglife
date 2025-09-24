@@ -108,7 +108,7 @@ class BiographyResult(BaseModel):
     task_id: str = Field(..., description="任务的唯一标识符。")
     status: str = Field(...,description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').",)
     biography_brief: Optional[str] = Field(None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。")
-    biography_text: dict | None = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
+    biography_json: dict | None = Field(None, description="生成的传记文本，仅在状态为 'COMPLETED' 时存在。")
     biography_name: list[str] | None = Field(None, description="生成的传记文本中的人名，仅在状态为 'COMPLETED' 时存在。")
     biography_place: list[str] | None = Field(None, description="生成的传记文本中的地名，仅在状态为 'COMPLETED' 时存在。")
     error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
@@ -292,16 +292,16 @@ async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
 
 @app.post("/memory_card/generate_by_text", response_model=MemoryCardGenerageResult)
 async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
-    """上传文件生成记忆卡片"""
+    """上传文件生成记忆卡片
+    # 0091 上传文件生成记忆卡片-memory_card_system_prompt
+    # 0092 聊天历史生成记忆卡片-time_prompt
+    """
     logger.info("running generate_by_text")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     chapters = await MCmanager.agenerate_memory_card_by_text(
         chat_history_str=request.text, weight=1000
     )
-    # chapters = result['chapters']
-    # for i in chapters:
-    #     i.update({"time":"1995年07月--日"})
-    
+
     return MemoryCardGenerageResult(
         message="memory card generate by text successfully",
         chapters = chapters
@@ -311,41 +311,15 @@ async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest
 
 @app.post("/memory_card/generate",response_model=MemoryCardGenerageResult)
 async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
-    """记忆卡片生成优化
-    
-        # {
-    #   "事件1": {
-    #     "事件时间": "1995年07月--日",
-    #     "事件名称": "全家海边度假",
-    #     "事件内容": "和家人一起去海边玩。"
-    #   },
-    #   "事件2": {
-    #     "事件时间": "11到20岁",
-    #     "事件名称": "学习开车",
-    #     "事件内容": "开始学习驾驶技术。"
-    #   },
-    #   "事件3": {
-    #     "事件时间": "2020年--月--日",
-    #     "事件名称": "儿子出生",
-    #     "事件内容": "孩子来到这个世界。"
-    #   },
-    #   "事件4": {
-    #     "事件时间": "21到30岁",
-    #     "事件名称": "第一次出国",
-    #     "事件内容": "第一次离开国家去旅行。"
-    #   }
-    # }
-    # 
-    # 
+    """聊天历史生成记忆卡片
+    # 0093 上传文件生成记忆卡片-memory_card_system_prompt
+    # 0094 聊天历史生成记忆卡片-time_prompt
     """
     logger.info("running memory_card generate")
     # 假设 agenerate_memory_card 是一个异步函数，并且已经定义在其他地方
     chapters = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
-    # chapters = result['chapters']
-    # for i in chapters:
-    #     i.update({"time":"1995年07月--日"})
 
     return MemoryCardGenerageResult(
         message="memory card generate successfully",
@@ -354,7 +328,7 @@ async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dic
 
 
 # 模拟任务存储和状态
-
+# TODO 异步化这个接口
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
     """
     模拟一个耗时的传记生成过程。
@@ -407,23 +381,23 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
                 )
         results = await asyncio.gather(*tasks, return_exceptions=False)
 
-        # content = ""
-
         for part, chapters in outline.items():
             biography_json[part] = []
-            # content += f'# {part}'
-            # content += "\n"
             for chapter in chapters:
                 chapter_number = chapter.get("chapter_number")
                 for x in results:
                     if x.get("chapter_number") == chapter_number:
-                        # content += x.get("article")
-                        # content += "\n"
                         biography_json[part].append(x.get("article"))
                         biography_name += x.get("chapter_name")
                         biography_place += x.get("chapter_place")
 
-        task_store[task_id]["biography_text"] = biography_json
+        assert isinstance(biography_json,dict)
+        assert isinstance(biography_name,list)
+        assert isinstance(biography_place,list)
+
+        biography_name = list(set(biography_name))
+        biography_place = list(set(biography_place))
+        task_store[task_id]["biography_json"] = biography_json
         task_store[task_id]["biography_name"] = biography_name
         task_store[task_id]["biography_place"] = biography_place
         task_store[task_id]["status"] = "COMPLETED"
@@ -450,7 +424,7 @@ async def generate_biography(request: BiographyRequest):
         "task_id": task_id,
         "status": "PENDING",
         "biography_brief": None,
-        "biography_text": None,
+        "biography_json": None,
         "biography_name": None,
         "biography_place": None,
         "error_message": None,
@@ -472,7 +446,7 @@ async def get_biography_result(task_id: str):
     根据任务ID查询传记生成任务的状态和结果。
     """
     task_info = task_store.get(task_id)
-    logger.info(task_info)
+    logger.info(task_id)
     if not task_info:
         raise HTTPException(
             status_code=404, detail=f"Task with ID '{task_id}' not found."
@@ -482,7 +456,7 @@ async def get_biography_result(task_id: str):
         task_id=task_info["task_id"],
         status=task_info["status"],
         biography_brief=task_info.get("biography_brief",""),
-        biography_text=task_info.get("biography_text",{}),
+        biography_json=task_info.get("biography_json",{}),
         biography_name=task_info.get("biography_name",[]),
         biography_place=task_info.get("biography_place",[]),
         error_message=task_info.get("error_message"),
@@ -532,6 +506,7 @@ def recommended_update(item: UpdateItem):
     数字分身id
     2
     """
+    # TODO 需要一个反馈状态
     try:
         if item.type in [0,1,2]:  # 上传的是卡片
             ep.update(text=item.text, id=item.id,type = item.type)
@@ -562,7 +537,7 @@ async def delete_server(request:DeleteRequest):
 
     logger.info('running delete_server')
     
-    # TODO 
+    # TODO 需要一个反馈状态
     result = ep.delete(
         id=request.id
     ) # 包裹的内核函数
@@ -615,6 +590,7 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
 }
     """
     try:
+        # TODO 需要一个通过id 获取对应内容的接口
         #TODO 调用id 获得对应的用户简介 query_item.user_id
         user_brief = "我是一个大男孩"
         result = ep.search_bac(query=user_brief)
@@ -700,6 +676,7 @@ async def recommended_figure_person(query_item: QueryItem):
     """
 
     try:
+        # TODO 需要一个通过id 获取对应内容的接口
         #TODO 调用id 获得对应的用户简介 query_item.user_id
         user_brief = "我是一个大男孩"
         result = ep.search_figure_person(query=user_brief) # 100+

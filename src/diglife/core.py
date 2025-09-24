@@ -1,105 +1,18 @@
 # 
+from diglife.utils import extract_json, extract_article
 
-import time
+from prompt_writing_assistant.prompt_helper import get_prompts_from_sql
+from llmada.core import BianXieAdapter
 import asyncio
 import json
-from diglife.utils import extract_json, extract_article
-from diglife.prompt import prompt_get_infos, prompt_base
-from diglife.prompt import outline_prompt
-from diglife.prompt import interview_material_clean_prompt, interview_material_add_prompt
-from diglife.prompt import memory_card_system_prompt
-from llmada.core import BianXieAdapter
-from diglife.utils import super_print
 
-from llmada.core import BianXieAdapter
-import json
-from diglife.utils import extract_json
+
+from dotenv import load_dotenv, find_dotenv
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path,override=True)
+
 bx = BianXieAdapter()
 
-
-score_memory_card_prompt = """
-我会给到你一段文本描写, 我希望你可以对它进行打分  
-  
-具体的评分规则如下  
-  
-9-10 分    内容标准: 真实动人  
-7-9  分     内容标准: 细节丰富  
-5-7 分    内容标准: 内容完整  
-3-5  分     内容标准: 略显模糊  
-0-3 分    内容标准: 内容稀薄
-
-按照以下格式输出
-```json
-{"score":分数,
-"reason":理由}
-```
-
-好的，请您给出文本描写，我会按照您的评分规则进行打分。
-"""
-
-memory_card_polish_prompt = """
-**System Prompt for Generating a Short Personal Autobiography from Interview Transcripts**
-
-You are an expert AI assistant tasked with crafting concise, first-person autobiographical narratives based on interview transcripts. Your primary goal is to distill the user's experiences and perspectives into a coherent and engaging short story, maintaining an authentic and personal tone.
-
-**Core Principles and Guidelines:**
-
-1.  **First-Person Narrative (Direct "I"):** The autobiography must be written entirely from the first-person perspective, starting directly with "我" (I) without introductory phrases like "我叫XX。" (My name is XX.) or similar framing.
-2.  **Focus on User's Experiences & Emotions:** Prioritize extracting the user's personal experiences, feelings, reflections, and significant life events as revealed in the interview.
-3.  **Conciseness & Storytelling:** Weave the extracted information into a fluid, storytelling format. Avoid simply listing facts; aim for a narrative flow that connects events and emotions.
-4.  **Length Adaptation:** The length of the autobiography should be proportionate to the amount of detail and depth provided in the interview segments. More detailed conversations allow for richer narratives, while brief exchanges will result in shorter pieces.
-5.  **Strategic Use of User Quotes (Minimised):**
-    *   **Purpose:** Only use direct quotes from the user when they are particularly evocative, insightful, or represent a "classic" statement that truly encapsulates a key idea or emotion.
-    *   **Quantity:** Aim for a minimal number of quotes (e.g., 1-2 per significant theme or section) to provide "点睛" (spot-on) emphasis without making the narrative feel like a transcript.
-    *   **Integration:** Seamlessly integrate quotes into the narrative using appropriate punctuation (e.g., full-width quotation marks “ ”).
-6.  **Analyze User's Intent & Focus:**
-    *   **Identify Engagement:** Pay close attention to topics the user elaborates on, shows enthusiasm for, or offers open-ended answers. These are the areas to focus on and expand.
-    *   **Identify Disinterest/Avoidance:** Crucially, if the user gives a closed-ended answer (e.g., "没有完全没有想过") or clearly indicates a reluctance to discuss a topic, **DO NOT include or elaborate on that topic** in the autobiography. This respects the user's boundaries and maintains narrative focus on their preferred areas.
-7.  **Maintain Original Tone/Style (if applicable):** If the original user's text has a particular literary flair, emotional depth, or descriptive quality (as in the "童年惊魂" example), strive to retain and amplify that style in the generated autobiography.
-8.  **Avoid AI-centric Language:** Do not use phrases like "As an AI, I have learned..." or "The AI asked..." – the output should be purely the user's story.
-9.  **Error Handling/Clarification (Internal Note - not for output):** If the input is too ambiguous or insufficient to form a coherent story, request more context or examples, but for this prompt, assume sufficient input is provided.
-
-**Input Format:**
-You will be provided with interview segments, typically in a Q&A format (e.g., `ai: [AI question] human: [User response]`).
-
-**Output Format:**
-A single, cohesive, first-person narrative reflecting the user's experiences.
-"""
-
-memory_card_merge_prompt = """
-我会给你多个文本,帮我融合成一个文本
-"""
-####
-extract_person_name_prompt = """
-我这里有一段个人传记的小章节, 由于我想校验传记中的人名是否正确, 所以我希望你帮我总结出这个篇章里面的所有人名,  
-输出格式:  
-```json  
-[‘人名‘,…]  
-```  
-"""
-
-extract_place_name_prompt = """
-我这里有一段个人传记的小章节, 由于我想校验传记中的地名是否正确, 所以我希望你帮我总结出这个篇章里面的所有地名,  
-输出格式:  
-```json  
-[‘地名‘,…]  
-```  
-"""
-
-
-biography_free_prompt = """
-帮我利用下面这些信息,生成一篇个人传记:
-
-
-输出格式:  
-```article
-<content>
-```  
-"""
-from prompt_writing_assistant.prompt_helper import intellect,IntellectType,aintellect,get_prompts_from_sql
-
-
-# TODO 重调机制应该通过改进llmada 来实现
 
 class MemoryCardManager():
     def __init__(self):
@@ -131,19 +44,10 @@ class MemoryCardManager():
 
         return total_score
     
-    def score_from_memory_card(self,memory_cards:list[str])->list[int]:
-        @intellect(IntellectType.inference,prompt_id="1000001",demand = None)
-        def memory_card_score_(memory_card):
-            result_dict = json.loads(extract_json(memory_card))
-            return result_dict
-        results = []
-        for memory_card in memory_cards:
-            result_dict = memory_card_score_(memory_card)
-            results.append(result_dict)
-
-        return results
-
     async def ascore_from_memory_card(self,memory_cards:list[str])->list[int]:
+        # 记忆卡片打分 
+        score_memory_card_prompt, _  = get_prompts_from_sql(prompt_id="0088",table_name = "llm_prompt")
+        
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
@@ -152,52 +56,18 @@ class MemoryCardManager():
         results = await asyncio.gather(*tasks, return_exceptions=False)
         return [json.loads(extract_json(result)) for result in results]
 
-    def score_from_memory_card_old(self,memory_cards:list[str])->list[int]:
-        results = []
-        for memory_card in memory_cards:
-            result = self.bx.product(score_memory_card_prompt + "\n" + memory_card)
-            results.append(json.loads(extract_json(result)))
-
-        return results
-
-    def memory_card_merge(self,memory_cards:list[str]):
-        # 记忆卡片合并
-        demand = memory_card_merge_prompt
-        @intellect(IntellectType.train,prompt_id="1000003",demand = demand)
-        def memory_card_merge(memory_cards):
-            return memory_cards
-
-        result =memory_card_merge(json.dumps(memory_cards))
-        
-        return result
-    
     async def amemory_card_merge(self,memory_cards:list[str]):
         # 记忆卡片合并
+
+        memory_card_merge_prompt, _  = get_prompts_from_sql(prompt_id="0089",table_name = "llm_prompt")
         result = await bx.aproduct(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
         return result
 
 
-    def memory_card_merge_old(self,memory_cards:list[str]):
-        # 记忆卡片合并
-        result = bx.product(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
-        return result
-
-    def memory_card_polish(self,memory_cards:list[str])->list[str]:
-        # 记忆卡片润色
-        demand = memory_card_polish_prompt
-        @intellect(IntellectType.train,prompt_id="1000002",demand = demand)
-        def memory_card_polish(memory_card):
-            return memory_card
-        results = []
-        for memory_card in memory_cards:
-            result = memory_card_polish(memory_card)
-            results.append(result)
-        return results
-
-
     async def amemory_card_polish(self,memory_cards:list[str])->list[str]:
         # 记忆卡片润色
-
+        memory_card_polish_prompt, _  = get_prompts_from_sql(prompt_id="0090",table_name = "llm_prompt")
+        
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
@@ -206,56 +76,23 @@ class MemoryCardManager():
         results = await asyncio.gather(*tasks, return_exceptions=False)
         return results
 
+    async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
+        # 0091 上传文件生成记忆卡片-memory_card_system_prompt
+        # 0092 聊天历史生成记忆卡片-time_prompt
 
-    def memory_card_polish_old(self,memory_cards:list[str])->list[str]:
-        # 记忆卡片润色
-        results = []
-        for memory_card in memory_cards:
-            result = bx.product(memory_card_polish_prompt + "\n" + memory_card)
-            results.append(result)
-        # return json.loads(extract_json(result))
-        return results
-
-
-    async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
-        time_prompt = """
-帮我计算这个小篇章发生的时间,并为这段内容打分 我这里可以提供给你它的原始文本
-你需要推断它发生的时间,并严格按照时间规则输出
-
-时间规则:
-- **时间格式 (二选一):**
-    1.  **具体日期:** `YYYY年MM月DD日` (未知月/日用 `--` 代替，如 `1995年07月--日`)
-    2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
-    3. 优先**具体日期**
-
-评分规则:  
-9-10 分    内容标准: 真实动人  
-7-9  分     内容标准: 细节丰富  
-5-7 分    内容标准: 内容完整  
-3-5  分     内容标准: 略显模糊  
-0-3 分    内容标准: 内容稀薄
-
-例如:
-```json
-{time: "1995年07月--日", #此类优先
- score:分数(0-10)}
-{time: "11到20岁",
- score:分数(0-10)}
-{time: "2020年--月--日",
- score:分数(0-10)}
-```
-"""
+        memory_card_system_prompt, _  = get_prompts_from_sql(prompt_id="0091",table_name = "llm_prompt")
+        time_prompt, _  = get_prompts_from_sql(prompt_id="0092",table_name = "llm_prompt")
+    
         number_ = len(chat_history_str)//weight + 1
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
-        try:
-            result = await asyncio.to_thread(bx.product, base_prompt) 
-            result_json_str = extract_json(result)
 
-            result_dict = json.loads(result_json_str)
-            
+        try:
+            result = await bx.aproduct(base_prompt)
+            result_dict = json.loads(extract_json(result))
+
             chapters = result_dict['chapters']
             for i in chapters:
-                time_result = await asyncio.to_thread(bx.product, time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content')) 
+                time_result = await bx.aproduct(time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content'))
                 time_dict = json.loads(extract_json(time_result))
                 i.update(time_dict)
 
@@ -263,47 +100,24 @@ class MemoryCardManager():
         except Exception as e:
             print(f"Error processing  {chat_history_str[:30]}: {e}")
             return ""
+        
+    async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
+        # 0093 上传文件生成记忆卡片-memory_card_system_prompt
+        # 0094 聊天历史生成记忆卡片-time_prompt
 
-    async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
-        time_prompt = """
-帮我计算这个小篇章发生的时间,并为这段内容打分 我这里可以提供给你它的原始文本
-你需要推断它发生的时间,并严格按照时间规则输出
 
-时间规则:
-- **时间格式 (二选一):**
-    1.  **具体日期:** `YYYY年MM月DD日` (未知月/日用 `--` 代替，如 `1995年07月--日`)
-    2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
-    3. 优先**具体日期**
-
-评分规则:  
-9-10 分    内容标准: 真实动人  
-7-9  分     内容标准: 细节丰富  
-5-7 分    内容标准: 内容完整  
-3-5  分     内容标准: 略显模糊  
-0-3 分    内容标准: 内容稀薄
-
-例如:
-```json
-{time: "1995年07月--日", #此类优先
- score:分数(0-10)}
-{time: "11到20岁",
- score:分数(0-10)}
-{time: "2020年--月--日",
- score:分数(0-10)}
-```
-"""
+        memory_card_system_prompt, _  = get_prompts_from_sql(prompt_id="0093",table_name = "llm_prompt")
+        time_prompt, _  = get_prompts_from_sql(prompt_id="0094",table_name = "llm_prompt")
+    
         number_ = len(chat_history_str)//weight + 1
         base_prompt = memory_card_system_prompt.format(number = number_) + chat_history_str
         try:
-            result = await asyncio.to_thread(bx.product, base_prompt) 
-            result_json_str = extract_json(result)
+            result = await bx.aproduct(base_prompt)
+            result_dict = json.loads(extract_json(result))
 
-            result_dict = json.loads(result_json_str)
-            
             chapters = result_dict['chapters']
-            print(chapters,'chapters')
             for i in chapters:
-                time_result = await asyncio.to_thread(bx.product, time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content')) 
+                time_result = await bx.aproduct(time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content'))
                 time_dict = json.loads(extract_json(time_result))
                 i.update(time_dict)
 
@@ -314,6 +128,9 @@ class MemoryCardManager():
 
 ### 
 
+
+
+
 class BiographyGenerate():
     def __init__(self):
         model_name = "gemini-2.5-flash-preview-05-20-nothinking"
@@ -323,46 +140,56 @@ class BiographyGenerate():
         self.bx = bx
 
 
-    def extract_person_name(self,bio_chunk:str):
-        result = bx.product(extract_person_name_prompt + "\n" + bio_chunk)
+    async def extract_person_name(self,bio_chunk:str):
+        """0087 提取人名"""
+        extract_person_name_prompt, _  = get_prompts_from_sql(prompt_id="0087",table_name = "llm_prompt")
+        result = await self.bx.aproduct(extract_person_name_prompt + "\n" + bio_chunk)
         return json.loads(extract_json(result))
 
 
-    def extract_person_place(self,bio_chunk:str):
-        result = bx.product(extract_place_name_prompt + "\n" + bio_chunk)
-        return result
+    async def extract_person_place(self,bio_chunk:str):
+        """0086 提取地名"""
+        extract_place_name_prompt, _  = get_prompts_from_sql(prompt_id="0086",table_name = "llm_prompt")
+        result = await self.bx.aproduct(extract_place_name_prompt + "\n" + bio_chunk)
+        return json.loads(extract_json(result))
 
+    '''
+    # def material_generate(self,vitae:str,memory_cards:list[str])->str: # 简历, 
+    #     """
+    #     素材整理
+    #     vitae : 简历
+    #     memory_cards : 记忆卡片们
+    #     """
+    #     def split_into_chunks(my_list, chunk_size = 5):
+    #         """
+    #         使用列表推导式将列表分割成大小为 chunk_size 的块。
+    #         """
+    #         return [my_list[i:i + chunk_size] for i in range(0, len(my_list), chunk_size)]
 
-    def material_generate(self,vitae:str,memory_cards:list[str])->str: # 简历, 
-        """
-        素材整理
-        vitae : 简历
-        memory_cards : 记忆卡片们
-        """
-        def split_into_chunks(my_list, chunk_size = 5):
-            """
-            使用列表推导式将列表分割成大小为 chunk_size 的块。
-            """
-            return [my_list[i:i + chunk_size] for i in range(0, len(my_list), chunk_size)]
+    #     # --- 示例 ---
+    #     chunks = split_into_chunks(memory_cards, chunk_size = 5)
 
-        # --- 示例 ---
-        chunks = split_into_chunks(memory_cards, chunk_size = 5)
-
-        material = ""
-        for i,chunk in enumerate(chunks):
-            chunk = json.dumps(chunk,ensure_ascii = False)
-            if i == 0:
-                material = self.bx.product(interview_material_clean_prompt + vitae + chunk)
-            else:
-                material = self.bx.product(interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
-        return material
-
+    #     material = ""
+    #     for i,chunk in enumerate(chunks):
+    #         chunk = json.dumps(chunk,ensure_ascii = False)
+    #         if i == 0:
+    #             material = self.bx.product(interview_material_clean_prompt + vitae + chunk)
+    #         else:
+    #             material = self.bx.product(interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
+    #     return material
+    '''
+ 
     async def amaterial_generate(self,vitae:str,memory_cards:list[str])->str:
         """
         素材整理
         vitae : 简历
         memory_cards : 记忆卡片们
+        0085 素材整理
+        0082 素材增量生成
         """
+        interview_material_clean_prompt, _  = get_prompts_from_sql(prompt_id="0085",table_name = "llm_prompt")
+        interview_material_add_prompt, _  = get_prompts_from_sql(prompt_id="0082",table_name = "llm_prompt")
+        
         def split_into_chunks(my_list, chunk_size = 5):
             """
             使用列表推导式将列表分割成大小为 chunk_size 的块。
@@ -376,13 +203,18 @@ class BiographyGenerate():
         for i,chunk in enumerate(chunks):
             chunk = json.dumps(chunk,ensure_ascii = False)
             if i == 0:
-                material = await asyncio.to_thread(self.bx.product, 
-                                                   interview_material_clean_prompt + vitae + chunk)
+                base_prompt = interview_material_clean_prompt + vitae + chunk
+                # material = await asyncio.to_thread(self.bx.product, 
+                #                                    interview_material_clean_prompt + vitae + chunk)
             else:
-                material = await asyncio.to_thread(self.bx.product, 
-                                                   interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
+                base_prompt = interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk
+                # material = await asyncio.to_thread(self.bx.product, 
+                #                                    interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
+            material = await self.bx.aproduct(base_prompt)
+            
         return material
 
+    '''
     def outline_generate(self,material:str)->str:
         """
         大纲生成
@@ -390,22 +222,27 @@ class BiographyGenerate():
         outline_origin = self.bx.product(outline_prompt + material)
         outline = extract_json(outline_origin)
         return json.loads(outline)
+    '''
     
     async def aoutline_generate(self,material:str)->str:
         """
-        大纲生成
+        0084 大纲生成
         """
-        outline_origin = await asyncio.to_thread(self.bx.product, 
-                                                   outline_prompt + material)
+
+        outline_prompt, _  = get_prompts_from_sql(prompt_id="0084",table_name = "llm_prompt")
+        outline_origin = await self.bx.aproduct(outline_prompt + material)
         outline = extract_json(outline_origin)
         return json.loads(outline)
 
     async def agener_biography_brief(self,outline:dict)->str:
+        """
+        0083 传记简介
+        """
+        biography_brief_prompt, _  = get_prompts_from_sql(prompt_id="0083",table_name = "llm_prompt")
         outline = json.dumps(outline)
-        brief = ""
-        brief = await asyncio.to_thread(self.bx.product, 
-                                        f'帮我根据大纲写一个传记的简介: {outline}')
+        brief = await self.bx.aproduct(biography_brief_prompt + outline)
         return brief
+
 
     async def awrite_chapter(self,chapter,
                              master = "",
@@ -414,19 +251,28 @@ class BiographyGenerate():
                              suggest_number_words = 3000):
         created_material =""
         try:
+            # 0080 prompt_get_infos
+            # 0081 prompt_base
+
+            prompt_get_infos, _  = get_prompts_from_sql(prompt_id="0080",table_name = "llm_prompt")
+            prompt_base, _  = get_prompts_from_sql(prompt_id="0081",table_name = "llm_prompt")
+        
 
             material_prompt = prompt_get_infos.format(material= material,frame = json.dumps(outline), requirements = json.dumps(chapter))
-            material = await asyncio.to_thread(self.bx.product, material_prompt) 
+            material = await self.bx.aproduct(material_prompt)
             words = prompt_base.format(master = master, chapter = f'{chapter.get("chapter_number")} {chapter.get("title")}', 
                                        topic = chapter.get("topic"),
                                         number_words = suggest_number_words,
                                         material = material ,reference = "",
                                         port_chapter_summery = '' )
-            article = await asyncio.to_thread(self.bx.product, words) # Python 3.9+
+            article = await self.bx.aproduct(words)
 
-            chapter_name = await asyncio.to_thread(self.extract_person_name, article) 
-            chapter_place = await asyncio.to_thread(self.extract_person_place, article)
-            
+            chapter_name = await self.extract_person_name(article)
+            chapter_place = await self.extract_person_place(article)
+
+            assert isinstance(chapter_name,list)
+            assert isinstance(chapter_place,list)
+
             return {"chapter_number":chapter.get("chapter_number"),"article": extract_article(article),
                     "material":material,"created_material":created_material,
                     "chapter_name":chapter_name,
@@ -436,9 +282,10 @@ class BiographyGenerate():
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
             return None
 
-    async def agenerate_biography_free(self,user_name, vitae, memory_cards):
+    async def agenerate_biography_free(self,user_name, vitae, memory_cards:list):
         # 简要版说法
-        result = await bx.aproduct(biography_free_prompt + "\n" + f"{user_name},{vitae},{memory_cards}")
+        prompt, _  = get_prompts_from_sql(prompt_id="0095",table_name = "llm_prompt")
+        result = await bx.aproduct(prompt + "\n" + f"{user_name},{vitae},{"\n".join(memory_cards)}")
         result = extract_article(result)
         return result
 
