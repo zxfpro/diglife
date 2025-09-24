@@ -147,7 +147,7 @@ class LifeTopicScoreRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_s_list(self):
-        if not all(1 <= x <= 10 for x in self.S_list):
+        if not all(0 <= x <= 10 for x in self.S_list):
             raise ValueError(
                 "All elements in 'S_list' must be integers between 1 and 10 (inclusive)."
             )
@@ -167,7 +167,7 @@ class ScoreRequest(BaseModel):
         for s_val in self.S_list:
             try:
                 int_s_val = float(s_val)
-                if not (1 <= int_s_val <= 100):
+                if not (0 <= int_s_val <= 100):
                     raise ValueError(
                         "Each element in 'S_list' must be an integer between 1 and 10."
                     )
