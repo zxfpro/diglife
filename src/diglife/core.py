@@ -39,7 +39,7 @@ def memoryCards2str(memory_cards:MemoryCards):
     memoryCards_str = ""
     memoryCards_time_str = ""
     for memory_card in memory_cards:
-        memory_card_str = memory_card['title'] + "\n" + memory_card['content']
+        memory_card_str = memory_card['title'] + "\n" + memory_card['content'] + "\n"
         memoryCards_str += memory_card_str
 
         memoryCards_time_str += "\n"
@@ -238,10 +238,12 @@ class BiographyGenerate():
         for i,chunk in enumerate(chunks):
             chunk = json.dumps(chunk,ensure_ascii = False)
             if i == 0:
+                super_print(vitae + chunk,"0085 素材整理")
                 base_prompt = interview_material_clean_prompt + vitae + chunk
                 # material = await asyncio.to_thread(self.bx.product, 
                 #                                    interview_material_clean_prompt + vitae + chunk)
             else:
+                super_print("#素材:\n" + material + "#记忆卡片:\n" + chunk,"0082 素材增量生成")
                 base_prompt = interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk
                 # material = await asyncio.to_thread(self.bx.product, 
                 #                                    interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
@@ -265,6 +267,7 @@ class BiographyGenerate():
         """
 
         outline_prompt, _  = get_prompts_from_sql(prompt_id="0084",table_name = "llm_prompt")
+        super_print(material,"0084 大纲生成")
         outline_origin = await self.bx.aproduct(outline_prompt + material)
         outline = extract_json(outline_origin)
         return json.loads(outline)
@@ -275,6 +278,7 @@ class BiographyGenerate():
         """
         biography_brief_prompt, _  = get_prompts_from_sql(prompt_id="0083",table_name = "llm_prompt")
         outline = json.dumps(outline)
+        super_print(outline,"0083 传记简介")
         brief = await self.bx.aproduct(biography_brief_prompt + outline)
         return brief
 
@@ -332,28 +336,32 @@ class DigitalAvatar():
     def __init__(self):
         pass
 
-    async def abrief(self,memory_cards:list[dict])->str:
+    async def abrief(self,memory_cards:list[dict])->dict:
         """
         数字分身介绍
         """
         # TOOD 增加字数限制, tag标签 两个
         memoryCards_str, _ = memoryCards2str(memory_cards)
         prompt, _  = get_prompts_from_sql(prompt_id="0098",table_name = "llm_prompt")
-        result = await bx.aproduct(prompt + memoryCards_str)
+
+        super_print(memoryCards_str,'liaotls')
+        result = await bx.aproduct(prompt + "聊天历史"+ memoryCards_str)
         super_print(result,'result')
+
         return json.loads(extract_json(result))
     
-    async def personality_extraction(self,memory_cards:MemoryCards)->str:
+    async def personality_extraction(self,memory_cards:list[dict])->str:
         """
         数字分身性格提取
         """
 
-        memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
+        memoryCards_str, _ = memoryCards2str(memory_cards)
         prompt, _  = get_prompts_from_sql(prompt_id="0099",table_name = "llm_prompt")
 
-        result = await bx.aproduct(prompt + memoryCards_str)
+        result = await bx.aproduct(prompt + "聊天历史"+ memoryCards_str)
         super_print(result,'result')
         return extract_article(result)
+    
     
     
     async def desensitization(self,memory_cards:list[str])->list[str]:
@@ -364,10 +372,16 @@ class DigitalAvatar():
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
-                 bx.aproduct(prompt + "\n" + memory_card)
+                 bx.aproduct(prompt + "\n" + memory_card.get("content"))
             )
         results = await asyncio.gather(*tasks, return_exceptions=False)
-        return [extract_article(i) for i in results]
+
+
+        for i in range(len(memory_cards)):
+            memory_cards[i]['content'] = extract_article(results[i])
+        return memory_cards
+    
+
 
 async def auser_dverview(old_dverview: str, memory_cards: list[dict])->str:
     "用户概述"

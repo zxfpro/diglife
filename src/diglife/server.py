@@ -63,7 +63,6 @@ class UserRelationshipExtractionResponse(BaseModel):
     output_relation: dict
 
 class BriefResponse(BaseModel):
-    message: str
     title: str
     content: str
     tags: list[str]
@@ -157,7 +156,6 @@ class ScoreRequest(BaseModel):
                     "Each element in 'S_list' must be a valid integer string."
                 )
         return self
-
 
 
 
@@ -352,27 +350,22 @@ async def memory_card_generate_server(request: ChatHistoryOrText) -> dict:
     )
     return MemoryCardsGenerate(memory_cards=chapters)
 
-# TODO 要考虑图片的流转
-# 模拟任务存储和状态
-# TODO 异步化这个接口
+
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
     """
     模拟一个耗时的传记生成过程。
     在真实场景中，这里会调用LLM或其他复杂的生成逻辑。
     """
-
+    memory_cards = request_data.model_dump()["memory_cards"]
     try:
         task_store[task_id]["status"] = "PROCESSING"
         task_store[task_id]["progress"] = 0.1
         logger.info(f"Task {task_id}: Starting generation ")
 
-        # 模拟LLM调用和处理时间
-
-        # 在后台启动异步任务
-
         # 素材整理
         material = await bg.amaterial_generate(
-            vitae=request_data.vitae, memory_cards=request_data.memory_cards
+            vitae=request_data.vitae, 
+            memory_cards=memory_cards
         )
         task_store[task_id]["progress"] = 0.2
         task_store[task_id]["material"] = material
@@ -778,34 +771,30 @@ async def brief_server(request:MemoryCards):
         memory_cards=memory_cards
     ) 
     return BriefResponse(
-        message="successful",
         title=result.get("title"), 
         content=result.get("content"),
-        tags = result.get("tags"),
+        tags = result.get("tags")[:2],
     )
 
-@app.post("/digital_avatar/personality_extraction",response_model=digital_avatar_personalityResult)
-async def digital_avatar_personality_extraction(request:MemoryCardsRequest):
+@app.post("/digital_avatar/personality_extraction")
+async def digital_avatar_personality_extraction(request:MemoryCards):
     """数字分身性格提取 """
 
     logger.info('running digital_avatar_desensitization')
-    result = await da.personality_extraction(memory_cards=request.memory_cards)
-    return digital_avatar_personalityResult(
-        message="successful",
-        text=result
-    )
+    memory_cards = request.model_dump()["memory_cards"]
+    result = await da.personality_extraction(memory_cards=memory_cards)
+    return {'text':result}
 
-@app.post("/digital_avatar/desensitization",response_model=MemoryCardsResult)
-async def digital_avatar_desensitization(request:MemoryCardsRequest):
+@app.post("/digital_avatar/desensitization")
+async def digital_avatar_desensitization(request:MemoryCards):
     """
     数字分身脱敏
     """
     logger.info('running digital_avatar_desensitization')
-    result = await da.desensitization(memory_cards=request.memory_cards)
-    return MemoryCardsResult(
-        message="successful",
-        memory_cards=result
-    )
+    memory_cards = request.model_dump()["memory_cards"]
+    result = await da.desensitization(memory_cards=memory_cards)
+    memory_cards = {"memory_cards":result}
+    return MemoryCards(**memory_cards)
 
 
 
