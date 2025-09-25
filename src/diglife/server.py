@@ -114,23 +114,13 @@ class BiographyResult(BaseModel):
     error_message: Optional[str] = Field(None, description="错误信息，仅在状态为 'FAILED' 时存在。")
     progress: float = Field(0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。")
 
-class MemoryCardGenerageResult(BaseModel):
-    message: str
-    chapters: list[dict]
+
 
 # 记忆合并
 class MemoryCardsRequest(BaseModel):
     memory_cards: list[str] = Field(..., description="记忆卡片列表")
 
-class MemoryCardGenerateRequest(BaseModel):
-    text: str = Field(..., description="聊天内容或者文本内容")
 
-class MemoryCardResult(BaseModel):
-    """
-    传记生成结果的数据模型。
-    """
-    message: str = Field(..., description="优化好的记忆卡片")
-    memory_card: str = Field(..., description="优化好的记忆卡片")
 
 class MemoryCardsResult(BaseModel):
     """
@@ -176,6 +166,41 @@ class ScoreRequest(BaseModel):
                     "Each element in 'S_list' must be a valid integer string."
                 )
         return self
+
+
+
+
+# TODO重新构建记忆卡片
+class MemoryCard(BaseModel):
+    title: str
+    content: str
+    time: str
+
+class MemoryCardGenerate(BaseModel):
+    title: str
+    content: str
+    time: str
+    score: int
+    tag: str
+
+class MemoryCards(BaseModel):
+    memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
+
+class MemoryCardsGenerate(BaseModel):
+    memory_cards: list[MemoryCardGenerate] = Field(..., description="记忆卡片列表")
+
+class UserDverviewRequests(BaseModel):
+    old_dverview: str
+    memory_cards: list[MemoryCard]
+
+
+# "memory_cards": ["我出生在东北辽宁葫芦岛下面的一个小村庄。小时候，那里的生活比较简单，人们日出而作，日落而息，生活节奏非常有规律，也非常美好。当时我们都是山里的野孩子，没有什么特别的兴趣爱好，就在山里各种疯跑。我小时候特别喜欢晚上看星星，那时的夜晚星星非常多，真的是那种突然就能看到漫天繁星的感觉。",
+# "title": "初中时代的青涩与冲动",
+#             "content": "我的初中生活是快乐的，尽管学校环境有些混乱，但我和朋友们在一起时总是很开心。与我玩得好的朋友大多学习成绩不太突出，而我那时也不是那种一心扑在学习上的人，我会和他们一起出去玩，一起疯。我们常常去县城的街上溜达，到处逛，打打闹闹。我印象最深刻的是初三那年，我们学校刚和另一所学校合并。当时正值青春期，学生们都比较躁动。有一次，在吃午饭的时候，我们班上一个和我关系很好的朋友，和另一个学校的人在打饭时发生了争执，随后演变成了一场两个班级之间的混战。我也加入了其中，我的头被不知道从哪里飞来的餐盘打中，当时鼓起了一个很大的包。我没有去看医生，只是鼓了一个包，当时比较皮，没那么脆弱，过两天就好了。这场混战导致我的那个朋友被他父母领回了沈阳，因为他家在沈阳，之前是把他放在老家上学。前段时间他结婚，邀请我去当伴郎，但我因为工作忙没有去成。现在回想起来，当时大家都还小，又是青春期，比较冲动。初中那段经历让我在之后很长一段时间里都比较意气用事，直到上大学的时候，我才慢慢意识到这个问题，并逐渐改了过来。现在，我面对问题时会更理智地去判断。",
+
+
+class ChatHistoryOrText(BaseModel):
+    text: str = Field(..., description="聊天内容或者文本内容")
 
 
 ep = EmbeddingPool()
@@ -263,36 +288,40 @@ async def score_from_memory_card_server(request: MemoryCardsRequest):
 
 
 @app.post("/memory_card/merge",
-          response_model=MemoryCardResult)
-async def memory_card_merge_server(request: MemoryCardsRequest) -> dict:
-    """
-    记忆卡片质量评分
-    接收一个记忆卡片内容字符串，并返回其质量评分。
-    """
-
+          response_model=MemoryCard,
+          summary="记忆卡片合并")
+async def memory_card_merge_server(request: MemoryCards) -> dict:
     logger.info("running memory_card_merge")
     result = await MCmanager.amemory_card_merge(memory_cards=request.memory_cards)
-
-    return MemoryCardResult(message = "memory card merge successfully",
-                            memory_card = result )
+    # TODO 替换
+    result = {
+        "title": "合并后的记忆卡片",
+        "content": "合并后的记忆卡片内容",
+        "time": "1995年--月--日",
+    }
+    return MemoryCard(title = result.get("title"),
+                      content=result.get("content"),
+                      time= result.get('time') 
+                      )
 
 
 @app.post("/memory_card/polish",
           response_model=MemoryCardsResult,
           summary="记忆卡片发布AI润色")
-async def memory_card_polish_server(request: MemoryCardsRequest) -> dict:
+async def memory_card_polish_server(request: MemoryCards) -> dict:
     """
     记忆卡片发布AI润色接口。
     接收记忆卡片内容，并返回AI润色后的结果。
     """
     logger.info("running memory_card_polish")
-    result = await MCmanager.amemory_card_polish(memory_cards=request.memory_cards)
-    return MemoryCardsResult(message="memory card polish successfully",
-                             memory_cards=result)
+    memory_cards = await MCmanager.amemory_card_polish(memory_cards=request.memory_cards)
 
-@app.post("/memory_card/generate_by_text", response_model=MemoryCardGenerageResult)
-async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest) -> dict:
-    """上传文件生成记忆卡片
+    return memory_cards
+
+@app.post("/memory_card/generate_by_text", response_model=MemoryCardsGenerate,
+          summary="上传文件生成记忆卡片")
+async def memory_card_generate_by_text_server(request: ChatHistoryOrText) -> dict:
+    """
     # 0091 上传文件生成记忆卡片-memory_card_system_prompt
     # 0092 聊天历史生成记忆卡片-time_prompt
     """
@@ -302,16 +331,13 @@ async def memory_card_generate_by_text_server(request: MemoryCardGenerateRequest
         chat_history_str=request.text, weight=1000
     )
 
-    return MemoryCardGenerageResult(
-        message="memory card generate by text successfully",
-        chapters = chapters
-    )
+    return MemoryCardsGenerate(memory_cards=chapters)
 
 
-
-@app.post("/memory_card/generate",response_model=MemoryCardGenerageResult)
-async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dict:
-    """聊天历史生成记忆卡片
+@app.post("/memory_card/generate",response_model=MemoryCardsGenerate,
+          summary="聊天历史生成记忆卡片")
+async def memory_card_generate_server(request: ChatHistoryOrText) -> dict:
+    """
     # 0093 上传文件生成记忆卡片-memory_card_system_prompt
     # 0094 聊天历史生成记忆卡片-time_prompt
     """
@@ -320,13 +346,9 @@ async def memory_card_generate_server(request: MemoryCardGenerateRequest) -> dic
     chapters = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
+    return MemoryCardsGenerate(memory_cards=chapters)
 
-    return MemoryCardGenerageResult(
-        message="memory card generate successfully",
-        chapters = chapters
-    )
-
-
+# TODO 要考虑图片的流转
 # 模拟任务存储和状态
 # TODO 异步化这个接口
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
@@ -719,7 +741,7 @@ async def recommended_figure_person(query_item: QueryItem):
 
 
 @app.post("/user_dverview",response_model=UserDverviewResponse)
-async def user_dverview_server(request:UserDverviewRequest):
+async def user_dverview_server(request:UserDverviewRequests):
     """
     用户概述
     """
@@ -756,7 +778,7 @@ async def user_relationship_extraction_server(request:UserRelationshipExtraction
 @app.post("/digital_avatar/brief",
           response_model=BriefResponse,
           description = "数字分身介绍")
-async def brief_server(request:MemoryCardsRequest):
+async def brief_server(request:MemoryCards):
     "数字分身介绍"
     logger.info('running brief_server')
     result = await da.abrief(

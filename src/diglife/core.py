@@ -5,13 +5,45 @@ from prompt_writing_assistant.prompt_helper import get_prompts_from_sql
 from llmada.core import BianXieAdapter
 import asyncio
 import json
-
+from pydantic import BaseModel, Field, model_validator
 
 from dotenv import load_dotenv, find_dotenv
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path,override=True)
 
 bx = BianXieAdapter()
+
+
+
+class MemoryCard(BaseModel):
+    title: str
+    content: str
+    time: str
+
+class MemoryCards(BaseModel):
+    memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
+
+
+
+from pydantic import BaseModel, Field, model_validator
+
+class MemoryCard(BaseModel):
+    title: str
+    content: str
+    time: str
+
+
+def work(ss:MemoryCard):
+
+aa = {
+# "title": 12,
+"content": "244",
+"time2": "244",
+}
+
+
+work(ss = aa)
+
 
 
 class MemoryCardManager():
@@ -56,24 +88,56 @@ class MemoryCardManager():
         results = await asyncio.gather(*tasks, return_exceptions=False)
         return [json.loads(extract_json(result)) for result in results]
 
-    async def amemory_card_merge(self,memory_cards:list[str]):
-        # 记忆卡片合并
+    def memoryCards2str(self,memory_cards:MemoryCards):
+        memoryCards_str = ""
+        memoryCards_time_str = ""
+        for memory_card in memory_cards:
+            memory_card_str = memory_card['title'] + "\n" + memory_card['content']
+            memoryCards_str += memory_card_str
 
+            memoryCards_time_str += "\n"
+            memoryCards_time_str += memory_card['time']
+        return memoryCards_str, memoryCards_time_str
+
+
+    async def amemory_card_merge(self,memory_cards:MemoryCards):
+        # 记忆卡片合并
+        print(memory_cards)
+        print(type(memory_cards))
         memory_card_merge_prompt, _  = get_prompts_from_sql(prompt_id="0089",table_name = "llm_prompt")
-        result = await bx.aproduct(memory_card_merge_prompt + "\n" + json.dumps(memory_cards))
+
+        memoryCards_str, memoryCards_time_str = self.memoryCards2str(memory_cards)
+
+        print("=========")
+        print("\n" + memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str)
+        print("=========")
+
+        result = await bx.aproduct(memory_card_merge_prompt + "\n" + memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str)
         return result
 
 
-    async def amemory_card_polish(self,memory_cards:list[str])->list[str]:
+    async def amemory_card_polish(self,memory_cards:MemoryCards)->dict:
         # 记忆卡片润色
+        # TODO 要将时间融入到内容中润色
         memory_card_polish_prompt, _  = get_prompts_from_sql(prompt_id="0090",table_name = "llm_prompt")
         
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
-                 self.bx.aproduct(memory_card_polish_prompt + "\n" + memory_card)
+                 self.bx.aproduct(memory_card_polish_prompt + "\n记忆卡片标题" + memory_card['title'] + "\n记忆卡片内容" + memory_card['content'] + "\n记忆卡片发生时间" + memory_card['time'])
             )
         results = await asyncio.gather(*tasks, return_exceptions=False)
+
+        result = {
+            "title":'123',
+            "content":'123',
+            "time":'123'
+
+        }
+        results = MemoryCards(MemoryCard(title = result.get("title"),
+                      content=result.get("content"),
+                      time= result.get('time') 
+                      ))
         return results
 
     async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
@@ -294,21 +358,23 @@ class DigitalAvatar():
     def __init__(self):
         pass
 
-    async def abrief(self,memory_cards:list[str])->str:
+    async def abrief(self,memory_cards:MemoryCards)->str:
         """
         数字分身介绍
         """
+        memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
         prompt, _  = get_prompts_from_sql(prompt_id="0098",table_name = "llm_prompt")
-        feature = await bx.aproduct(prompt + "\n".join(memory_cards))
+        feature = await bx.aproduct(prompt + memoryCards_str)
 
         return json.loads(extract_json(feature))
     
-    async def personality_extraction(self,memory_cards:list[str])->str:
+    async def personality_extraction(self,memory_cards:MemoryCards)->str:
         """
         数字分身性格提取
         """
+        memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
         prompt, _  = get_prompts_from_sql(prompt_id="0099",table_name = "llm_prompt")
-        result = await bx.aproduct(prompt + "\n".join(memory_cards))
+        result = await bx.aproduct(prompt + memoryCards_str)
         return extract_article(result)
     
     
@@ -325,12 +391,24 @@ class DigitalAvatar():
         results = await asyncio.gather(*tasks, return_exceptions=False)
         return [extract_article(i) for i in results]
 
+def memoryCards2str(memory_cards:MemoryCards):
+    memoryCards_str = ""
+    memoryCards_time_str = ""
+    for memory_card in memory_cards:
+        memory_card_str = memory_card['title'] + "\n" + memory_card['content']
+        memoryCards_str += memory_card_str
 
-async def auser_dverview(old_dverview: str, memory_cards: list[str])->str:
+        memoryCards_time_str += "\n"
+        memoryCards_time_str += memory_card['time']
+    return memoryCards_str, memoryCards_time_str
+
+async def auser_dverview(old_dverview: str, memory_cards: MemoryCards)->str:
     "用户概述"
+    memoryCards_str,_  = memoryCards2str(memory_cards)
+
     prompt, _  = get_prompts_from_sql(prompt_id="0096",table_name = "llm_prompt")
 
-    result = await bx.aproduct(prompt + old_dverview + "\n".join(memory_cards))
+    result = await bx.aproduct(prompt + old_dverview + memoryCards_str)
 
     return result
 
