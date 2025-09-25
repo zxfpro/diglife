@@ -1,12 +1,11 @@
 # 
-from diglife.utils import extract_json, extract_article
+from diglife.utils import extract_json, extract_article,super_print, super_log
 
 from prompt_writing_assistant.prompt_helper import get_prompts_from_sql
 from llmada.core import BianXieAdapter
 import asyncio
 import json
 from pydantic import BaseModel, Field, model_validator
-from prompt_writing_assistant.utils import super_print
 
 from dotenv import load_dotenv, find_dotenv
 dotenv_path = find_dotenv()
@@ -113,7 +112,7 @@ class MemoryCardManager():
 
     async def agenerate_memory_card_by_text(self,chat_history_str:str, weight:int = 1000):
         # 0091 上传文件生成记忆卡片-memory_card_system_prompt
-        # 0092 聊天历史生成记忆卡片-time_prompt
+        # 0092 上传文件生成记忆卡片-time_prompt
 
         memory_card_system_prompt, _  = get_prompts_from_sql(prompt_id="0091",table_name = "llm_prompt")
         time_prompt, _  = get_prompts_from_sql(prompt_id="0092",table_name = "llm_prompt")
@@ -127,6 +126,7 @@ class MemoryCardManager():
 
             chapters = result_dict['chapters']
             for i in chapters:
+                super_print(f"# chat_history: {chat_history_str} # chapter:" + i.get('content'))
                 time_result = await bx.aproduct(time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content'))
                 time_dict = json.loads(extract_json(time_result))
                 i.update(time_dict)
@@ -137,7 +137,7 @@ class MemoryCardManager():
             return ""
         
     async def agenerate_memory_card(self,chat_history_str:str, weight:int = 1000):
-        # 0093 上传文件生成记忆卡片-memory_card_system_prompt
+        # 0093 聊天历史生成记忆卡片-memory_card_system_prompt
         # 0094 聊天历史生成记忆卡片-time_prompt
 
 
@@ -154,7 +154,9 @@ class MemoryCardManager():
             for i in chapters:
                 time_result = await bx.aproduct(time_prompt + f"# chat_history: {chat_history_str} # chapter:" + i.get('content'))
                 time_dict = json.loads(extract_json(time_result))
+                print(time_dict,'time_dict')
                 i.update(time_dict)
+                i.update({'topic':0})
 
             return chapters
         except Exception as e:
@@ -232,22 +234,25 @@ class BiographyGenerate():
             return [my_list[i:i + chunk_size] for i in range(0, len(my_list), chunk_size)]
 
         # --- 示例 ---
-        chunks = split_into_chunks(memory_cards, chunk_size = 5)
+        chunks = split_into_chunks(memory_cards, chunk_size = 2)
 
         material = ""
         for i,chunk in enumerate(chunks):
             chunk = json.dumps(chunk,ensure_ascii = False)
             if i == 0:
-                super_print(vitae + chunk,"0085 素材整理")
+                # super_print(vitae + chunk,"0085 素材整理")
                 base_prompt = interview_material_clean_prompt + vitae + chunk
                 # material = await asyncio.to_thread(self.bx.product, 
                 #                                    interview_material_clean_prompt + vitae + chunk)
             else:
-                super_print("#素材:\n" + material + "#记忆卡片:\n" + chunk,"0082 素材增量生成")
+                super_print("#素材:\n" + material + "\n#记忆卡片:\n" + chunk,"0082 素材增量生成")
                 base_prompt = interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk
                 # material = await asyncio.to_thread(self.bx.product, 
                 #                                    interview_material_add_prompt + "#素材:\n" + material + "#记忆卡片:\n" + chunk)
-            material = await self.bx.aproduct(base_prompt)
+            try:
+                material = await self.bx.aproduct(base_prompt)
+            except Exception as e:
+                raise TypeError("maters素材整理的时候出问题了")
             
         return material
 
@@ -268,7 +273,10 @@ class BiographyGenerate():
 
         outline_prompt, _  = get_prompts_from_sql(prompt_id="0084",table_name = "llm_prompt")
         super_print(material,"0084 大纲生成")
-        outline_origin = await self.bx.aproduct(outline_prompt + material)
+        try:
+            outline_origin = await self.bx.aproduct(outline_prompt + material)
+        except Exception as e:
+            raise TypeError('生成大纲的时候出问题')
         outline = extract_json(outline_origin)
         return json.loads(outline)
 
@@ -277,7 +285,7 @@ class BiographyGenerate():
         0083 传记简介
         """
         biography_brief_prompt, _  = get_prompts_from_sql(prompt_id="0083",table_name = "llm_prompt")
-        outline = json.dumps(outline)
+        outline = json.dumps(outline,ensure_ascii=False)
         super_print(outline,"0083 传记简介")
         brief = await self.bx.aproduct(biography_brief_prompt + outline)
         return brief
@@ -292,22 +300,30 @@ class BiographyGenerate():
         try:
             # 0080 prompt_get_infos
             # 0081 prompt_base
-
+            await asyncio.sleep(0.1)
             prompt_get_infos, _  = get_prompts_from_sql(prompt_id="0080",table_name = "llm_prompt")
             prompt_base, _  = get_prompts_from_sql(prompt_id="0081",table_name = "llm_prompt")
         
 
             material_prompt = prompt_get_infos.format(material= material,frame = json.dumps(outline), requirements = json.dumps(chapter))
-            material = await self.bx.aproduct(material_prompt)
+            try:
+                material = await self.bx.aproduct(material_prompt)
+            except Exception as e:
+                raise TypeError("素材整理的时候出问题了")
             words = prompt_base.format(master = master, chapter = f'{chapter.get("chapter_number")} {chapter.get("title")}', 
                                        topic = chapter.get("topic"),
                                         number_words = suggest_number_words,
                                         material = material ,reference = "",
                                         port_chapter_summery = '' )
-            article = await self.bx.aproduct(words)
-
-            chapter_name = await self.extract_person_name(article)
-            chapter_place = await self.extract_person_place(article)
+            try:
+                article = await self.bx.aproduct(words)
+            except Exception as e:
+                raise TypeError("写传记的时候出问题了")
+            try:
+                chapter_name = await self.extract_person_name(article)
+                chapter_place = await self.extract_person_place(article)
+            except Exception as e:
+                raise TypeError(f"提取东西的时候出问题了 {e}")
 
             assert isinstance(chapter_name,list)
             assert isinstance(chapter_place,list)
@@ -319,7 +335,11 @@ class BiographyGenerate():
         
         except Exception as e:
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
-            return None
+            return {"chapter_number":chapter.get("chapter_number"),"article": "",
+                    "material":"material",
+                    "created_material":"created_material",
+                    "chapter_name":"chapter_name",
+                    "chapter_place":"chapter_place"}
 
     async def agenerate_biography_free(self,user_name:str, vitae:str, memory_cards:list[dict]):
         # 简要版说法
@@ -327,10 +347,13 @@ class BiographyGenerate():
         prompt, _  = get_prompts_from_sql(prompt_id="0095",table_name = "llm_prompt")
 
         memoryCards_str, _ = memoryCards2str(memory_cards)
-
+        print("\n" + f"{user_name},{vitae},{memoryCards_str}")
         result = await bx.aproduct(prompt + "\n" + f"{user_name},{vitae},{memoryCards_str}")
-        result = extract_article(result)
+        result = json.loads(extract_json(result))
         return result
+
+
+
 
 class DigitalAvatar():
     def __init__(self):
@@ -342,11 +365,12 @@ class DigitalAvatar():
         """
         # TOOD 增加字数限制, tag标签 两个
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        prompt, _  = get_prompts_from_sql(prompt_id="0098",table_name = "llm_prompt")
 
-        super_print(memoryCards_str,'liaotls')
-        result = await bx.aproduct(prompt + "聊天历史"+ memoryCards_str)
-        super_print(result,'result')
+        prompt, _  = get_prompts_from_sql(prompt_id="0098",table_name = "llm_prompt")
+        input_data = "聊天历史:\n"+ memoryCards_str
+        super_log(input_data,'input_data')
+        result = await bx.aproduct(prompt + input_data)
+        super_log(result,'output_data')
 
         return json.loads(extract_json(result))
     
@@ -354,12 +378,13 @@ class DigitalAvatar():
         """
         数字分身性格提取
         """
-
         memoryCards_str, _ = memoryCards2str(memory_cards)
+        
         prompt, _  = get_prompts_from_sql(prompt_id="0099",table_name = "llm_prompt")
-
-        result = await bx.aproduct(prompt + "聊天历史"+ memoryCards_str)
-        super_print(result,'result')
+        input_data = "聊天历史:\n"+ memoryCards_str
+        super_log(input_data,'input_data')
+        result = await bx.aproduct(prompt + input_data)
+        super_log(result,'output_data')
         return extract_article(result)
     
     
@@ -388,8 +413,10 @@ async def auser_dverview(old_dverview: str, memory_cards: list[dict])->str:
     memoryCards_str,_  = memoryCards2str(memory_cards)
 
     prompt, _  = get_prompts_from_sql(prompt_id="0096",table_name = "llm_prompt")
-
-    result = await bx.aproduct(prompt + old_dverview + memoryCards_str)
+    input_data = old_dverview + memoryCards_str
+    super_log(input_data,'input_data')
+    result = await bx.aproduct(prompt + input_data)
+    super_log(result,'output_data')
 
     return result
 
@@ -399,8 +426,10 @@ async def auser_relationship_extraction(chat_history: str)->dict:
     用户关系提取
     """
     prompt, _  = get_prompts_from_sql(prompt_id="0097",table_name = "llm_prompt")
-    
-    result = await bx.aproduct(prompt +  "聊天历史"+ chat_history)
+    input_data = "聊天历史"+ chat_history
+    super_log(input_data,'input_data')
+    result = await bx.aproduct(prompt + input_data)
+    super_log(result,'output_data')
 
     return json.loads(extract_json(result))
 

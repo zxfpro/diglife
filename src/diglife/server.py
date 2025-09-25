@@ -171,6 +171,7 @@ class MemoryCardGenerate(BaseModel):
     time: str
     score: int
     tag: str
+    topic: int
 
 
 class BiographyRequest(BaseModel):
@@ -348,6 +349,7 @@ async def memory_card_generate_server(request: ChatHistoryOrText) -> dict:
     chapters = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=1000
     )
+    print(chapters,"chapters")
     return MemoryCardsGenerate(memory_cards=chapters)
 
 
@@ -399,6 +401,9 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
                     )
                 )
         results = await asyncio.gather(*tasks, return_exceptions=False)
+
+        print(results,'resultsresultsresultsresults')
+        print(outline,'outlineoutlineoutlineoutline')
 
         for part, chapters in outline.items():
             biography_json[part] = []
@@ -499,7 +504,9 @@ async def generate_biography(request: BiographyRequest):
         vitae=request.vitae,
     )
 
-    return {"biography": result}
+    return {
+        "title": result.get("title"),
+        "content": result.get("content")}
 
 # 推荐算法
 
