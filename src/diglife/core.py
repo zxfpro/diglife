@@ -6,6 +6,7 @@ from llmada.core import BianXieAdapter
 import asyncio
 import json
 from pydantic import BaseModel, Field, model_validator
+from prompt_writing_assistant.utils import super_print
 
 from dotenv import load_dotenv, find_dotenv
 dotenv_path = find_dotenv()
@@ -31,19 +32,6 @@ class MemoryCard(BaseModel):
     title: str
     content: str
     time: str
-
-
-def work(ss:MemoryCard):
-
-aa = {
-# "title": 12,
-"content": "244",
-"time2": "244",
-}
-
-
-work(ss = aa)
-
 
 
 class MemoryCardManager():
@@ -100,20 +88,17 @@ class MemoryCardManager():
         return memoryCards_str, memoryCards_time_str
 
 
-    async def amemory_card_merge(self,memory_cards:MemoryCards):
+    async def amemory_card_merge(self,memory_cards:list[str]):
         # 记忆卡片合并
-        print(memory_cards)
+        print(memory_cards,"memory_cards")
         print(type(memory_cards))
         memory_card_merge_prompt, _  = get_prompts_from_sql(prompt_id="0089",table_name = "llm_prompt")
 
         memoryCards_str, memoryCards_time_str = self.memoryCards2str(memory_cards)
-
-        print("=========")
-        print("\n" + memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str)
-        print("=========")
-
+        super_print(memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,'inpus_func')
         result = await bx.aproduct(memory_card_merge_prompt + "\n" + memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str)
-        return result
+        super_print(result,'result')
+        return json.loads(extract_json(result))
 
 
     async def amemory_card_polish(self,memory_cards:MemoryCards)->dict:
@@ -132,8 +117,8 @@ class MemoryCardManager():
             "title":'123',
             "content":'123',
             "time":'123'
-
         }
+        
         results = MemoryCards(MemoryCard(title = result.get("title"),
                       content=result.get("content"),
                       time= result.get('time') 

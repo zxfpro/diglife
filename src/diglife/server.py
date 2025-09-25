@@ -292,13 +292,10 @@ async def score_from_memory_card_server(request: MemoryCardsRequest):
           summary="记忆卡片合并")
 async def memory_card_merge_server(request: MemoryCards) -> dict:
     logger.info("running memory_card_merge")
-    result = await MCmanager.amemory_card_merge(memory_cards=request.memory_cards)
-    # TODO 替换
-    result = {
-        "title": "合并后的记忆卡片",
-        "content": "合并后的记忆卡片内容",
-        "time": "1995年--月--日",
-    }
+    memory_cards = request.model_dump()['memory_cards']
+    
+    result = await MCmanager.amemory_card_merge(memory_cards=memory_cards)
+    
     return MemoryCard(title = result.get("title"),
                       content=result.get("content"),
                       time= result.get('time') 
