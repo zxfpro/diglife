@@ -66,6 +66,7 @@ class BriefResponse(BaseModel):
     message: str
     title: str
     content: str
+    tags: list[str]
 
 class digital_avatar_personalityResult(BaseModel):
     """
@@ -89,16 +90,6 @@ class UpdateItem(BaseModel):
 class QueryItem(BaseModel):
     user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
 
-
-class BiographyRequest(BaseModel):
-    """
-    请求传记生成的数据模型。
-    """
-
-    user_name: str = Field(None, description="用户名字")
-    vitae: str = Field(None, description="用户简历")
-    memory_cards: list[str] = Field(..., description="记忆卡片列表")
-    # 可以在这里添加更多用于生成传记的输入字段
 
 
 class BiographyResult(BaseModel):
@@ -182,6 +173,18 @@ class MemoryCardGenerate(BaseModel):
     time: str
     score: int
     tag: str
+
+
+class BiographyRequest(BaseModel):
+    """
+    请求传记生成的数据模型。
+    """
+
+    user_name: str = Field(None, description="用户名字")
+    vitae: str = Field(None, description="用户简历")
+    memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
+    # 可以在这里添加更多用于生成传记的输入字段
+
 
 class MemoryCards(BaseModel):
     memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
@@ -295,7 +298,7 @@ async def memory_card_merge_server(request: MemoryCards) -> dict:
     memory_cards = request.model_dump()['memory_cards']
     
     result = await MCmanager.amemory_card_merge(memory_cards=memory_cards)
-    
+
     return MemoryCard(title = result.get("title"),
                       content=result.get("content"),
                       time= result.get('time') 
@@ -303,17 +306,21 @@ async def memory_card_merge_server(request: MemoryCards) -> dict:
 
 
 @app.post("/memory_card/polish",
-          response_model=MemoryCardsResult,
+          response_model=MemoryCard,
           summary="记忆卡片发布AI润色")
-async def memory_card_polish_server(request: MemoryCards) -> dict:
+async def memory_card_polish_server(request: MemoryCard) -> dict:
     """
     记忆卡片发布AI润色接口。
     接收记忆卡片内容，并返回AI润色后的结果。
     """
     logger.info("running memory_card_polish")
-    memory_cards = await MCmanager.amemory_card_polish(memory_cards=request.memory_cards)
+    memory_card = request.model_dump()
+    result = await MCmanager.amemory_card_polish(memory_card=memory_card)
 
-    return memory_cards
+    return MemoryCard(title = result.get("title"),
+                      content=result.get("content"),
+                      time= ""
+                      )
 
 @app.post("/memory_card/generate_by_text", response_model=MemoryCardsGenerate,
           summary="上传文件生成记忆卡片")
@@ -492,13 +499,14 @@ async def generate_biography(request: BiographyRequest):
     此接口会立即返回一个任务ID，客户端可以使用此ID查询生成进度和结果。
     实际的生成过程会在后台异步执行。
     """
+    memory_cards = request.model_dump()['memory_cards']
     result = await bg.agenerate_biography_free(
         user_name=request.user_name,
-        memory_cards=request.memory_cards,
+        memory_cards=memory_cards,
         vitae=request.vitae,
     )
 
-    return {"message": "generate_biography_free successfully", "result": result}
+    return {"biography": result}
 
 # 推荐算法
 
@@ -737,53 +745,43 @@ async def recommended_figure_person(query_item: QueryItem):
 
 
 
-@app.post("/user_dverview",response_model=UserDverviewResponse)
+@app.post("/user_dverview")
 async def user_dverview_server(request:UserDverviewRequests):
     """
     用户概述
     """
     logger.info('running user_dverview_server')
-    
+    memory_cards = request.model_dump()["memory_cards"]
     result = await auser_dverview(
-        old_dverview=request.old_dverview, memory_cards=request.memory_cards
+        old_dverview=request.old_dverview, 
+        memory_cards=memory_cards
     ) # 包裹的内核函数
     
-    return UserDverviewResponse(
-        message="successful",
-        summary=result
-    )
+    return {"dverview":result}
 
-
-@app.post("/user_relationship_extraction")
+@app.post("/user_relationship_extraction",
+          description = "用户关系提取")
 async def user_relationship_extraction_server(request:UserRelationshipExtractionRequest):
-    """
-    用户关系提取
-    """
     logger.info('running user_relationship_extraction_server')
     
     result = await auser_relationship_extraction(chat_history=request.chat_history) 
-    return UserRelationshipExtractionResponse(
-        message="LLM Service is running.", 
-        output_relation=result
-    )
+    return {"relation":result}
 
-    # return {
-    #     "message": "successful",
-    #     "output_relation": result
-    # }
 
 @app.post("/digital_avatar/brief",
           response_model=BriefResponse,
           description = "数字分身介绍")
 async def brief_server(request:MemoryCards):
-    "数字分身介绍"
     logger.info('running brief_server')
+    memory_cards = request.model_dump()["memory_cards"]
     result = await da.abrief(
-        memory_cards=request.memory_cards
+        memory_cards=memory_cards
     ) 
     return BriefResponse(
         message="successful",
-        title=result.get("title"), content=result.get("content")
+        title=result.get("title"), 
+        content=result.get("content"),
+        tags = result.get("tags"),
     )
 
 @app.post("/digital_avatar/personality_extraction",response_model=digital_avatar_personalityResult)
