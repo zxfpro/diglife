@@ -118,6 +118,8 @@ class BiographyResult(BaseModel):
         ...,
         description="任务的当前状态 (e.g., 'PENDING', 'PROCESSING', 'COMPLETED', 'FAILED').",
     )
+    biography_title: Optional[str] = Field(None, description="传记标题")
+
     biography_brief: Optional[str] = Field(
         None, description="生成的传记简介，仅在状态为 'COMPLETED' 时存在。"
     )
@@ -215,7 +217,6 @@ class BiographyRequest(BaseModel):
     vitae: str = Field(None, description="用户简历")
     memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
     # 可以在这里添加更多用于生成传记的输入字段
-
 
 class MemoryCards(BaseModel):
     memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
@@ -423,6 +424,9 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         outline = await bg.aoutline_generate(material)
 
         task_store[task_id]["progress"] = 0.3
+        # TODO 1 传记生成完成以后做一个回调函数
+        # TODO 2 生成传记标题
+        task_store[task_id]["biography_title"] = "个人传记"
         task_store[task_id]["outline"] = outline
 
         # 生成传记简介
@@ -493,6 +497,7 @@ async def generate_biography(request: BiographyRequest):
     task_store[task_id] = {
         "task_id": task_id,
         "status": "PENDING",
+        "biography_title": None,
         "biography_brief": None,
         "biography_json": None,
         "biography_name": None,
@@ -526,6 +531,7 @@ async def get_biography_result(task_id: str):
     return BiographyResult(
         task_id=task_info["task_id"],
         status=task_info["status"],
+        biography_title=task_info.get("biography_title", ""),
         biography_brief=task_info.get("biography_brief", ""),
         biography_json=task_info.get("biography_json", {}),
         biography_name=task_info.get("biography_name", []),
