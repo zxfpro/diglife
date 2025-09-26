@@ -1,4 +1,3 @@
-
 from typing import Any, List
 from llama_index.core.bridge.pydantic import PrivateAttr
 from llama_index.core.embeddings import BaseEmbedding
@@ -20,16 +19,17 @@ class VolcanoEmbedding(BaseEmbedding):
         self._ark_client = Ark(api_key=api_key)
         self._model = model_name
         self._encoding_format = "float"
+
     @classmethod
     def class_name(cls) -> str:
         return "ark"
-    
+
     def _get_query_embedding(self, query: str) -> List[float]:
         """
         获取查询字符串的 embedding。
         通常查询和文档使用相同的 embedding 模型。
         """
-        
+
         resp = self._ark_client.embeddings.create(
             model=self._model,
             input=[query],
