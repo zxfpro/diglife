@@ -30239,3 +30239,392 @@ human:我们在虎秀峡徒步之后， 在丽江休整了一天，然后就。 
 2025-09-26 17:09:40,583 - DEBUG - httpcore.connection - _trace:87 - close.complete
 2025-09-26 17:09:40,583 - DEBUG - root - client:212 - Request took: 6.8235 seconds
 2025-09-26 17:10:22,510 - INFO - root - server:525 - b17d3a30-bf75-40b7-a997-1e46790e915e
+2025-09-28 10:52:16,067 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:52:16,128 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:16,130 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x1248a16a0>
+2025-09-28 10:52:16,130 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,131 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:16,131 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,131 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:16,131 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,141 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:52:15 GMT')])
+2025-09-28 10:52:16,142 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:52:16,142 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,142 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:16,142 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:16,142 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:16,142 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:16,142 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:16,142 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:16,143 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x124891590>
+2025-09-28 10:52:16,143 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,143 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:16,143 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,143 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:16,143 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,158 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:15 GMT')])
+2025-09-28 10:52:16,158 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:52:16,158 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,158 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:16,158 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:16,158 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:16,158 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:16,159 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:16,159 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:16,163 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x124892c10>
+2025-09-28 10:52:16,163 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,164 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:16,164 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,164 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:16,164 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:16,171 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:15 GMT')])
+2025-09-28 10:52:16,171 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:52:16,171 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:16,171 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:16,171 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:16,171 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:16,171 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:16,171 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:16,298 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:52:16,299 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x1244c8980> similarity_cutoff=0.98
+2025-09-28 10:52:17,837 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:52:17,898 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:17,900 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x1255a9a90>
+2025-09-28 10:52:17,900 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,900 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:17,900 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,900 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:17,900 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,907 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:17,908 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:52:17,908 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,908 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:17,908 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:17,908 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:17,908 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:17,909 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:17,909 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:17,911 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x12559d6d0>
+2025-09-28 10:52:17,911 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,912 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:17,912 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,912 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:17,912 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,917 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:17,918 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:52:17,918 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,918 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:17,918 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:17,918 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:17,918 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:17,918 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:17,919 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:17,921 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x12559ed50>
+2025-09-28 10:52:17,921 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,921 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:17,921 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,921 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:17,921 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:17,930 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:17,931 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:52:17,931 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:17,931 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:17,931 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:17,931 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:17,931 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:17,931 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:18,048 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:52:18,049 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x1251bcd70> similarity_cutoff=0.98
+2025-09-28 10:52:18,065 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-28 10:52:18,105 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:52:18,126 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:18,127 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x125d349d0>
+2025-09-28 10:52:18,127 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,127 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:18,127 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,127 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:18,127 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,131 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:18,131 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:52:18,131 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,131 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:18,131 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:18,131 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:18,131 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:18,131 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:18,132 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:18,132 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x125d356e0>
+2025-09-28 10:52:18,132 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,132 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:18,132 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,132 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:18,132 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,135 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:18,135 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:52:18,135 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,135 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:18,135 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:18,135 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:18,135 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:18,135 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:18,136 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:52:18,137 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x125e4f410>
+2025-09-28 10:52:18,137 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,137 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:52:18,137 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,137 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:52:18,137 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:52:18,140 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:52:17 GMT')])
+2025-09-28 10:52:18,141 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:52:18,141 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:52:18,141 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:52:18,141 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:52:18,141 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:52:18,141 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:52:18,141 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:52:18,149 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:52:18,149 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x125e7a8b0> similarity_cutoff=0.98
+2025-09-28 10:57:26,375 - INFO - root - server:804 - running user_overview_server
+2025-09-28 10:57:52,599 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:57:52,659 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,660 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x119da9a90>
+2025-09-28 10:57:52,661 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,661 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,661 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,661 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,661 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,670 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,670 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,670 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,670 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,670 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,670 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,670 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,670 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,671 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,672 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x119da16d0>
+2025-09-28 10:57:52,672 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,672 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,672 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,672 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,672 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,678 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,679 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,679 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,679 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,679 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,679 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,679 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,679 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,680 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,681 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x119da2d50>
+2025-09-28 10:57:52,681 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,681 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,681 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,681 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,681 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,687 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,687 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,687 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,687 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,687 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,687 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,687 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,688 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,809 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:57:52,809 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x1198c0d70> similarity_cutoff=0.98
+2025-09-28 10:57:52,828 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-28 10:57:52,859 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:57:52,884 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,888 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11a530c30>
+2025-09-28 10:57:52,888 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,888 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,888 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,888 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,888 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,898 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,898 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,898 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,899 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,899 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,899 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,899 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,900 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,900 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,903 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11a531940>
+2025-09-28 10:57:52,903 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,903 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,903 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,903 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,903 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,918 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,918 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,918 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,918 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,918 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,918 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,918 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,918 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,918 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:57:52,919 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11a657410>
+2025-09-28 10:57:52,920 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,920 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:57:52,920 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,920 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:57:52,920 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:57:52,922 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:57:52 GMT')])
+2025-09-28 10:57:52,922 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:57:52,922 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:57:52,922 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:57:52,922 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:57:52,922 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:57:52,922 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:57:52,922 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:57:52,931 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:57:52,931 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x11a666b10> similarity_cutoff=0.98
+2025-09-28 10:58:00,439 - INFO - root - server:804 - running user_overview_server
+2025-09-28 10:58:25,518 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:58:25,568 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,570 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11bd49a90>
+2025-09-28 10:58:25,570 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,570 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,570 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,570 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,570 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,591 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,591 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,591 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,591 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,591 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,591 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,591 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,592 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,592 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,593 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11bd41810>
+2025-09-28 10:58:25,593 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,593 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,593 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,593 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,593 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,599 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,600 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,600 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,600 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,600 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,600 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,600 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,600 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,601 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,602 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11bd42e90>
+2025-09-28 10:58:25,602 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,602 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,602 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,602 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,602 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,604 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,604 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,604 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,604 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,604 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,604 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,604 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,604 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,715 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:58:25,715 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x11aebcd70> similarity_cutoff=0.98
+2025-09-28 10:58:25,733 - DEBUG - asyncio - selector_events:64 - Using selector: KqueueSelector
+2025-09-28 10:58:25,752 - INFO - root - embedding_pool:59 - reload
+2025-09-28 10:58:25,773 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,774 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11c428c30>
+2025-09-28 10:58:25,774 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,774 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,774 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,774 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,774 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,781 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,781 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,781 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,781 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,781 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,782 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,782 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,782 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,782 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,783 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11c429940>
+2025-09-28 10:58:25,783 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,783 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,783 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,783 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,783 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,791 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-type', b'application/json'), (b'content-encoding', b'gzip'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,791 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,791 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,791 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,791 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,791 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,791 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,792 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,792 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='localhost' port=6333 local_address=None timeout=5.0 socket_options=None
+2025-09-28 10:58:25,792 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x11c54f1d0>
+2025-09-28 10:58:25,792 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,793 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-09-28 10:58:25,793 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,793 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-09-28 10:58:25,793 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'GET']>
+2025-09-28 10:58:25,799 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'transfer-encoding', b'chunked'), (b'content-encoding', b'gzip'), (b'content-type', b'application/json'), (b'vary', b'accept-encoding, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'), (b'date', b'Sun, 28 Sep 2025 02:58:25 GMT')])
+2025-09-28 10:58:25,799 - INFO - httpx - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-09-28 10:58:25,799 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'GET']>
+2025-09-28 10:58:25,799 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-09-28 10:58:25,799 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-09-28 10:58:25,799 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-09-28 10:58:25,799 - DEBUG - httpcore.connection - _trace:47 - close.started
+2025-09-28 10:58:25,799 - DEBUG - httpcore.connection - _trace:47 - close.complete
+2025-09-28 10:58:25,808 - DEBUG - root - embedding_pool:116 - == reload start ==
+2025-09-28 10:58:25,808 - DEBUG - root - embedding_pool:117 - callback_manager=<llama_index.core.callbacks.base.CallbackManager object at 0x11c562b10> similarity_cutoff=0.98
+2025-09-28 10:58:30,578 - INFO - root - server:804 - running user_overview_server
+2025-09-28 10:58:30,885 - INFO - root - utils:71 - ================================input_data================================
+2025-09-28 10:58:30,885 - INFO - root - utils:72 - 
+2025-09-28 10:58:30,885 - INFO - root - utils:73 - 
+2025-09-28 10:58:30,885 - INFO - root - utils:74 - ================================================================================
+2025-09-28 10:58:30,885 - INFO - root - utils:75 - <class 'str'>
+2025-09-28 10:58:30,885 - INFO - root - utils:76 - ================================================================================
+2025-09-28 10:58:30,885 - INFO - root - utils:77 - 
+操作方案:
+增加
+旧概述文本:
+旧的用户概述
+记忆卡片:
+出生东北
+我出生在东北辽宁葫芦岛下面的一个小村庄。小时候，那里的生活比较简单，人们日出而作，日落而息，生活节奏非常有规律，也非常美好。当时我们都是山里的野孩子，没有什么特别的兴趣爱好，就在山里各种疯跑。我小时候特别喜欢晚上看星星，那时的夜晚星星非常多，真的是那种突然就能看到漫天繁星的感觉。
+高中的时候
+在我高中的时候，我对天文物理和理论物理就非常感兴趣。我当时高中是在我们县城里读的，资源没有那么丰富，我们所有的精力都放在学科的学习上。
+
+2025-09-28 10:58:30,885 - INFO - root - utils:78 - ================================================================================
+2025-09-28 10:58:30,885 - INFO - root - utils:79 - 
+2025-09-28 10:58:30,885 - INFO - root - client:201 - Async request running
+2025-09-28 10:58:30,914 - DEBUG - httpcore.connection - _trace:87 - connect_tcp.started host='api.bianxie.ai' port=443 local_address=None timeout=60.0 socket_options=None
+2025-09-28 10:58:30,917 - DEBUG - httpcore.connection - _trace:87 - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x11c4952b0>
+2025-09-28 10:58:30,917 - DEBUG - httpcore.connection - _trace:87 - start_tls.started ssl_context=<ssl.SSLContext object at 0x11e8795b0> server_hostname='api.bianxie.ai' timeout=60.0
+2025-09-28 10:58:36,405 - DEBUG - httpcore.connection - _trace:87 - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x11c466210>
+2025-09-28 10:58:36,406 - DEBUG - httpcore.http11 - _trace:87 - send_request_headers.started request=<Request [b'POST']>
+2025-09-28 10:58:36,406 - DEBUG - httpcore.http11 - _trace:87 - send_request_headers.complete
+2025-09-28 10:58:36,406 - DEBUG - httpcore.http11 - _trace:87 - send_request_body.started request=<Request [b'POST']>
+2025-09-28 10:58:36,407 - DEBUG - httpcore.http11 - _trace:87 - send_request_body.complete
+2025-09-28 10:58:36,407 - DEBUG - httpcore.http11 - _trace:87 - receive_response_headers.started request=<Request [b'POST']>
+2025-09-28 10:58:37,834 - DEBUG - httpcore.http11 - _trace:87 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Server', b'nginx'), (b'Date', b'Sun, 28 Sep 2025 02:58:38 GMT'), (b'Content-Type', b'application/json; charset=UTF-8'), (b'Content-Length', b'897'), (b'Connection', b'keep-alive'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Server-Timing', b'gfet4t7; dur=839'), (b'Vary', b'Origin'), (b'X-Content-Type-Options', b'nosniff'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Oneapi-Request-Id', b'20250928105837874866284GxHAgMGt'), (b'X-Rixapi-Request-Id', b'202509281058378718683981aKgs63d'), (b'X-Xss-Protection', b'0'), (b'Cache-Control', b'no-cache'), (b'Cache-Control', b'no-cache')])
+2025-09-28 10:58:37,835 - INFO - httpx - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-28 10:58:37,835 - DEBUG - httpcore.http11 - _trace:87 - receive_response_body.started request=<Request [b'POST']>
+2025-09-28 10:58:37,835 - DEBUG - httpcore.http11 - _trace:87 - receive_response_body.complete
+2025-09-28 10:58:37,835 - DEBUG - httpcore.http11 - _trace:87 - response_closed.started
+2025-09-28 10:58:37,835 - DEBUG - httpcore.http11 - _trace:87 - response_closed.complete
+2025-09-28 10:58:37,835 - DEBUG - httpcore.connection - _trace:87 - close.started
+2025-09-28 10:58:37,835 - DEBUG - httpcore.connection - _trace:87 - close.complete
+2025-09-28 10:58:37,835 - DEBUG - root - client:212 - Request took: 6.9499 seconds
+2025-09-28 10:58:37,836 - INFO - root - utils:71 - ================================output_data================================
+2025-09-28 10:58:37,836 - INFO - root - utils:72 - 
+2025-09-28 10:58:37,836 - INFO - root - utils:73 - 
+2025-09-28 10:58:37,836 - INFO - root - utils:74 - ================================================================================
+2025-09-28 10:58:37,836 - INFO - root - utils:75 - <class 'str'>
+2025-09-28 10:58:37,836 - INFO - root - utils:76 - ================================================================================
+2025-09-28 10:58:37,836 - INFO - root - utils:77 - 这位用户来自辽宁葫芦岛的一个小村庄，童年生活在自然中，对星空充满好奇。他高中时对天文物理和理论物理产生浓厚兴趣。他热爱户外活动，曾徒步虎跳峡并欣赏到日照金山美景。职业生涯从产品经理起步，目前是一位AI产品经理。他性格沉稳，曾替客户背锅却能保持冷静，对工作选择无影响，展现出强大的心理素质。他童年有过被蛇惊吓的经历，至今心有余悸。
+2025-09-28 10:58:37,836 - INFO - root - utils:78 - ================================================================================
+2025-09-28 10:58:37,836 - INFO - root - utils:79 - 

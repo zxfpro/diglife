@@ -52,12 +52,12 @@ app.add_middleware(
 # --- End CORS Configuration ---
 
 
-# class UserDverviewRequest(BaseModel):
-#     old_dverview: str
+# class UseroverviewRequest(BaseModel):
+#     old_overview: str
 #     memory_cards: list[str]
 
 
-# class UserDverviewResponse(BaseModel):
+# class UseroverviewResponse(BaseModel):
 #     message: str
 #     summary: str
 
@@ -226,8 +226,9 @@ class MemoryCardsGenerate(BaseModel):
     memory_cards: list[MemoryCardGenerate] = Field(..., description="记忆卡片列表")
 
 
-class UserDverviewRequests(BaseModel):
-    old_dverview: str
+class UseroverviewRequests(BaseModel):
+    action: str
+    old_overview: str
     memory_cards: list[MemoryCard]
 
 
@@ -795,18 +796,20 @@ async def recommended_figure_person(query_item: QueryItem):
         )
 
 
-@app.post("/user_dverview")
-async def user_dverview_server(request: UserDverviewRequests):
+@app.post("/user_overview")
+async def user_overview_server(request: UseroverviewRequests):
     """
     用户概述
     """
-    logger.info("running user_dverview_server")
+    logger.info("running user_overview_server")
     memory_cards = request.model_dump()["memory_cards"]
-    result = await da.auser_dverview(
-        old_dverview=request.old_dverview, memory_cards=memory_cards
+    result = await da.auser_overview(
+        action = request.action,
+        old_overview=request.old_overview, 
+        memory_cards=memory_cards
     )  # 包裹的内核函数
 
-    return {"dverview": result}
+    return {"overview": result}
 
 
 @app.post("/user_relationship_extraction", description="用户关系提取")

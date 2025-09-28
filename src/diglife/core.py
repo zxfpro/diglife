@@ -441,13 +441,13 @@ class DigitalAvatar:
         return memory_cards
 
 
-    async def auser_dverview(self,old_dverview: str, memory_cards: list[dict]) -> str:
+    async def auser_overview(self,action: str,old_overview: str, memory_cards: list[dict]) -> str:
         """
         用户概述
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
         prompt, _ = get_prompts_from_sql(prompt_id="0096", table_name="llm_prompt")
-        input_data = old_dverview + memoryCards_str
+        input_data = "\n操作方案:\n" + action + "\n旧概述文本:\n" + old_overview +"\n记忆卡片:\n" +  memoryCards_str
         super_log(input_data, "input_data")
         result = await self.bx.aproduct(prompt + input_data)
         super_log(result, "output_data")
