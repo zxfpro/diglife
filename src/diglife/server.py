@@ -232,6 +232,12 @@ class UseroverviewRequests(BaseModel):
     memory_cards: list[MemoryCard]
 
 
+class AvatarXGRequests(BaseModel):
+    action: str
+    old_character: str
+    memory_cards: list[MemoryCard]
+
+
 # "memory_cards": ["我出生在东北辽宁葫芦岛下面的一个小村庄。小时候，那里的生活比较简单，人们日出而作，日落而息，生活节奏非常有规律，也非常美好。当时我们都是山里的野孩子，没有什么特别的兴趣爱好，就在山里各种疯跑。我小时候特别喜欢晚上看星星，那时的夜晚星星非常多，真的是那种突然就能看到漫天繁星的感觉。",
 # "title": "初中时代的青涩与冲动",
 #             "content": "我的初中生活是快乐的，尽管学校环境有些混乱，但我和朋友们在一起时总是很开心。与我玩得好的朋友大多学习成绩不太突出，而我那时也不是那种一心扑在学习上的人，我会和他们一起出去玩，一起疯。我们常常去县城的街上溜达，到处逛，打打闹闹。我印象最深刻的是初三那年，我们学校刚和另一所学校合并。当时正值青春期，学生们都比较躁动。有一次，在吃午饭的时候，我们班上一个和我关系很好的朋友，和另一个学校的人在打饭时发生了争执，随后演变成了一场两个班级之间的混战。我也加入了其中，我的头被不知道从哪里飞来的餐盘打中，当时鼓起了一个很大的包。我没有去看医生，只是鼓了一个包，当时比较皮，没那么脆弱，过两天就好了。这场混战导致我的那个朋友被他父母领回了沈阳，因为他家在沈阳，之前是把他放在老家上学。前段时间他结婚，邀请我去当伴郎，但我因为工作忙没有去成。现在回想起来，当时大家都还小，又是青春期，比较冲动。初中那段经历让我在之后很长一段时间里都比较意气用事，直到上大学的时候，我才慢慢意识到这个问题，并逐渐改了过来。现在，我面对问题时会更理智地去判断。",
@@ -862,12 +868,12 @@ async def brief_server(request: MemoryCards):
 
 
 @app.post("/digital_avatar/personality_extraction")
-async def digital_avatar_personality_extraction(request: MemoryCards):
+async def digital_avatar_personality_extraction(request: AvatarXGRequests):
     """数字分身性格提取"""
 
     logger.info("running digital_avatar_desensitization")
     memory_cards = request.model_dump()["memory_cards"]
-    result = await da.personality_extraction(memory_cards=memory_cards)
+    result = await da.personality_extraction(memory_cards=memory_cards,action = request.action,old_character = request.old_character)
     return {"text": result}
 
 

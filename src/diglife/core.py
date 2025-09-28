@@ -413,14 +413,14 @@ class DigitalAvatar:
 
         return json.loads(extract_json(result))
 
-    async def personality_extraction(self, memory_cards: list[dict]) -> str:
+    async def personality_extraction(self, memory_cards: list[dict],action:str,old_character:str) -> str:
         """
         数字分身性格提取
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
 
         prompt, _ = get_prompts_from_sql(prompt_id="0099", table_name="llm_prompt")
-        input_data = "聊天历史:\n" + memoryCards_str
+        input_data = "\n操作方案:\n" + action + "\n旧人物性格:\n" + old_character +"\n记忆卡片:\n" +  memoryCards_str
         super_log(input_data, "input_data")
         result = await self.bx.aproduct(prompt + input_data)
         super_log(result, "output_data")
