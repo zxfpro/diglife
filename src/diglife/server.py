@@ -63,7 +63,7 @@ app.add_middleware(
 
 
 class UserRelationshipExtractionRequest(BaseModel):
-    chat_history: str
+    text: str
 
 
 # class UserRelationshipExtractionResponse(BaseModel):
@@ -818,7 +818,7 @@ async def user_relationship_extraction_server(
 ):
     logger.info("running user_relationship_extraction_server")
 
-    result = await da.auser_relationship_extraction(chat_history=request.chat_history)
+    result = await da.auser_relationship_extraction(text=request.text)
     return {"relation": result}
 
 

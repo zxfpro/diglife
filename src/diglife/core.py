@@ -455,12 +455,12 @@ class DigitalAvatar:
         return result
 
 
-    async def auser_relationship_extraction(self,chat_history: str) -> dict:
+    async def auser_relationship_extraction(self,text: str) -> dict:
         """
         用户关系提取
         """
         prompt, _ = get_prompts_from_sql(prompt_id="0097", table_name="llm_prompt")
-        input_data = "聊天历史" + chat_history
+        input_data = "聊天历史" + text
         super_log(input_data, "input_data")
         result = await self.bx.aproduct(prompt + input_data)
         super_log(result, "output_data")
