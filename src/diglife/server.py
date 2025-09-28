@@ -245,8 +245,7 @@ llm_model_name = config.get("llm_model_name", "gemini-2.5-flash-preview-05-20-no
 llm_api_key = config.get("llm_api_key", None)
 recommended_biographies_cache_max_leng = config.get("recommended_biographies_cache_max_leng", 2)
 recommended_cache_max_leng = config.get("recommended_cache_max_leng", 2)
-get_avatar_desc_url = config.get("get_avatar_desc_url", "http://182.92.107.224:7000/api/inner/getAvatarDesc?userProfileId={user_profile_id}")
-get_memory_desc_url = config.get("get_memory_desc_url", "http://182.92.107.224:7000/api/inner/getMemoryCards?userProfileId={user_profile_id}")
+user_server_base_url = "http://182.92.107.224:7000"
 
 
 
@@ -477,11 +476,20 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["status"] = "COMPLETED"
         task_store[task_id]["progress"] = 1.0
 
+
+        biography_callback_url_success = user_server_base_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=1'
+        await aget_(url = biography_callback_url_success)
+
+
     except Exception as e:
         task_store[task_id]["status"] = "FAILED"
         task_store[task_id]["error_message"] = str(e)
         task_store[task_id]["progress"] = 1.0
         logger.info(f"Task {task_id}: Generation failed with error: {e}")
+
+        biography_callback_url_failed = user_server_base_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=0'
+        await aget_(url = biography_callback_url_failed)
+
 
 
 @app.post(
@@ -627,8 +635,25 @@ async def delete_server(request: DeleteRequest):
 
 
 
-async def aget_content_by_id(user_profile_id: str,url = ""):
-    url = url.format(user_profile_id = user_profile_id)
+# async def aget_content_by_id(url = ""):
+#     # url = url.format(user_profile_id = user_profile_id)
+#     async with httpx.AsyncClient() as client:
+#         try:
+#             response = await client.get(url)
+#             response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
+            
+#             print(f"Status Code: {response.status_code}")
+#             print(f"Response Body: {response.json()}") # 假设返回的是 JSON
+#             return response.json()
+#         except httpx.HTTPStatusError as e:
+#             print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+#         except httpx.RequestError as e:
+#             print(f"An error occurred while requesting {e.request.url!r}: {e}")
+#         except Exception as e:
+#             print(f"An unexpected error occurred: {e}")
+#     return None
+
+async def aget_(url = ""):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(url)
@@ -644,8 +669,6 @@ async def aget_content_by_id(user_profile_id: str,url = ""):
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
     return None
-
-
 
 @app.post(
     "/recommended/search_biographies_and_cards",
@@ -695,7 +718,8 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
 
 
         user_profile_id_to_fetch = query_item.user_id
-        memory_info = await aget_content_by_id(user_profile_id_to_fetch,url = get_memory_desc_url)
+        # memory_info = await aget_content_by_id(user_profile_id_to_fetch,url = user_server_base_url + "/api/inner/getMemoryCards?userProfileId={user_profile_id}")
+        memory_info = await aget_(url = user_server_base_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
         # memory_info = await get_memorycards_by_id(user_profile_id_to_fetch)
         user_brief = '\n'.join([i.get('content') for i in memory_info['data']["memoryCards"][:4]])
 
@@ -754,7 +778,8 @@ async def recommended_figure_person(query_item: QueryItem):
 
         user_profile_id_to_fetch = query_item.user_id
         # avatar_info = await aget_avatar_desc_by_id(user_profile_id_to_fetch)
-        avatar_info = await aget_content_by_id(user_profile_id_to_fetch,url = get_avatar_desc_url)
+        # avatar_info = await aget_content_by_id(user_profile_id_to_fetch,url = user_server_base_url + "/api/inner/getAvatarDesc?userProfileId={user_profile_id}")
+        avatar_info = await aget_(url = user_server_base_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
         user_brief = avatar_info["data"].get("avatarDesc")
 
 
