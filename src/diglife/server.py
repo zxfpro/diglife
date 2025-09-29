@@ -786,8 +786,11 @@ async def recommended_figure_person(query_item: QueryItem):
         # avatar_info = await aget_avatar_desc_by_id(user_profile_id_to_fetch)
         # avatar_info = await aget_content_by_id(user_profile_id_to_fetch,url = user_server_base_url + "/api/inner/getAvatarDesc?userProfileId={user_profile_id}")
         avatar_info = await aget_(url = user_server_base_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
-        user_brief = avatar_info["data"].get("avatarDesc")
-
+        print(avatar_info,'avatar_info')
+        if avatar_info["code"] == 200:
+            user_brief = avatar_info["data"].get("avatarDesc")
+        else:
+            user_brief = "这是一个简单的人"
 
         result = ep.search_figure_person(query=user_brief)  # 100+
 
