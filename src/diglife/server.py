@@ -12,13 +12,27 @@ import asyncio
 import httpx
 
 
+from dotenv import load_dotenv, find_dotenv
+
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path, override=True)
+
+import os
+
+
+
+
 import importlib
 import yaml
+
 
 def load_config():
     """load config"""
     with importlib.resources.open_text("diglife", "config.yaml") as f:
         return yaml.safe_load(f)
+    
+
+
 
 
 logger = Log.logger
@@ -247,10 +261,13 @@ class ChatHistoryOrText(BaseModel):
     text: str = Field(..., description="聊天内容或者文本内容")
 
 # config.get("similarity_cutoff", 0.5)
-llm_model_name = config.get("llm_model_name", "gemini-2.5-flash-preview-05-20-nothinking")
-llm_api_key = config.get("llm_api_key", None)
-recommended_biographies_cache_max_leng = config.get("recommended_biographies_cache_max_leng", 2)
-recommended_cache_max_leng = config.get("recommended_cache_max_leng", 2)
+
+llm_model_name =os.getenv("llm_model_name") #config.get("llm_model_name", "gemini-2.5-flash-preview-05-20-nothinking")
+llm_api_key = os.getenv("llm_api_key") #config.get("llm_api_key", None)
+recommended_biographies_cache_max_leng = os.getenv("recommended_biographies_cache_max_leng",2) #config.get("recommended_biographies_cache_max_leng", 2)
+recommended_biographies_cache_max_leng = int(recommended_biographies_cache_max_leng)
+recommended_cache_max_leng = os.getenv("recommended_cache_max_leng",2) #config.get("recommended_cache_max_leng", 2)
+recommended_cache_max_leng = int(recommended_cache_max_leng)
 user_server_base_url = "http://182.92.107.224:7000"
 
 
@@ -269,10 +286,35 @@ recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
 recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
 
 
+
+
 @app.get("/")
 async def root():
     """server run"""
-    return {"message": "LLM Service is running."}
+    envs = {
+        "MySQL_DB_HOST":os.getenv("MySQL_DB_HOST"),
+        "MySQL_DB_USER":os.getenv("MySQL_DB_USER"),
+        "MySQL_DB_PASSWORD":os.getenv("MySQL_DB_PASSWORD"),
+        "MySQL_DB_NAME":os.getenv("MySQL_DB_NAME"),
+        "MySQL_DB_Table_Name":os.getenv("MySQL_DB_Table_Name"),
+        "host":os.getenv("host"),
+        "port":os.getenv("port"),
+        "similarity_top_k":os.getenv("similarity_top_k"),
+        "similarity_cutoff":os.getenv("similarity_cutoff"),
+        "collection_name":os.getenv("collection_name"),
+        "api_key":os.getenv("api_key"),
+        "model_name":os.getenv("model_name"),
+        "llm_model_name":os.getenv("llm_model_name"),
+        "llm_api_key":os.getenv("llm_api_key"),
+        "recommended_biographies_cache_max_leng":os.getenv("recommended_biographies_cache_max_leng"),
+        "recommended_cache_max_leng":os.getenv("recommended_cache_max_leng"),
+        "get_avatar_desc_url":os.getenv("get_avatar_desc_url"),
+        "get_memory_desc_url":os.getenv("get_memory_desc_url"),
+
+    }
+
+    return {"message": "LLM Service is running.",
+            "envs":envs}
 
 
 @app.post("/life_topic_score")

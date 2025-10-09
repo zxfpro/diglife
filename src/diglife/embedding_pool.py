@@ -25,6 +25,14 @@ def load_config():
         return yaml.safe_load(f)
 
 
+from dotenv import load_dotenv, find_dotenv
+
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path, override=True)
+
+import os
+
+
 class EmbeddingPool:
     def __init__(self):
         self.reload()
@@ -35,11 +43,10 @@ class EmbeddingPool:
         distance_metric = models.Distance.COSINE  # 使用余弦相似度
 
         # 2. 定义 Collection 参数
-        config = load_config()
 
         client = qdrant_client.QdrantClient(
-            host=config.get("host", "localhost"),
-            port=config.get("port", 6333),
+            host=os.getenv("host", "localhost"), #config.get("host", "localhost"),
+            port=os.getenv("port", 6333) #config.get("port", 6333),
         )
 
         # 3. 创建 Collection (推荐使用 recreate_collection)
@@ -60,18 +67,18 @@ class EmbeddingPool:
         # 默认仓库要被创建的
         config = load_config()
         self.postprocess = SimilarityPostprocessor(
-            similarity_cutoff=config.get("similarity_cutoff", 0.5)
+            similarity_cutoff=float(os.getenv("similarity_cutoff", 0.5))
         )
         client = qdrant_client.QdrantClient(
-            host=config.get("host", "localhost"),
-            port=config.get("port", 6333),
+            host=os.getenv("host", "localhost"), #config.get("host", "localhost"),
+            port=os.getenv("port", 6333) #config.get("port", 6333),
         )
         vector_store = QdrantVectorStore(
-            client=client, collection_name=config.get("collection_name", "diglife")
+            client=client, collection_name=os.getenv("collection_name", "diglife")
         )
         self.embed_model = VolcanoEmbedding(
-            model_name=config.get("model_name", "doubao-embedding-text-240715"),
-            api_key=config.get("api_key", ""),
+            model_name=os.getenv("model_name", "doubao-embedding-text-240715"),
+            api_key=os.getenv("api_key", ""),
         )
         self.index = VectorStoreIndex.from_vector_store(
             vector_store, embed_model=self.embed_model
@@ -101,7 +108,7 @@ class EmbeddingPool:
         )
 
         self.retriver_bac = self.index.as_retriever(
-            filters=filters_bac, similarity_top_k=config.get("similarity_top_k", 10)
+            filters=filters_bac, similarity_top_k=int(os.getenv("similarity_top_k", 10))
         )
 
         filters_figure_person = MetadataFilters(
@@ -110,7 +117,7 @@ class EmbeddingPool:
 
         self.retriver_figure_person = self.index.as_retriever(
             filters=filters_figure_person,
-            similarity_top_k=config.get("similarity_top_k", 10),
+            similarity_top_k=int(os.getenv("similarity_top_k", 10)),
         )
 
         logger.debug("== reload start ==")
