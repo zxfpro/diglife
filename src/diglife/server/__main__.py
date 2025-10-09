@@ -1,10 +1,8 @@
 # server
-from typing import Dict, Any, Optional, List
-from fastapi import FastAPI, HTTPException, Header, status
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from diglife.core import MemoryCardManager, BiographyGenerate
+from diglife.core import MemoryCardManager
 from diglife.core import DigitalAvatar
-from diglife.embedding_pool import EmbeddingPool
 from diglife.log import Log
 import os
 
@@ -46,25 +44,10 @@ app.add_middleware(
 
 llm_model_name =os.getenv("llm_model_name")
 llm_api_key = os.getenv("llm_api_key")
-recommended_biographies_cache_max_leng = os.getenv("recommended_biographies_cache_max_leng",2) 
-recommended_biographies_cache_max_leng = int(recommended_biographies_cache_max_leng)
-recommended_cache_max_leng = os.getenv("recommended_cache_max_leng",2) 
-user_server_base_url = "http://182.92.107.224:7000"
 
 
-
-ep = EmbeddingPool()
-MCmanager = MemoryCardManager(model_name = llm_model_name,
-                              api_key = llm_api_key)
-bg = BiographyGenerate(model_name = llm_model_name,
-                              api_key = llm_api_key)
 da = DigitalAvatar(model_name = llm_model_name,
                               api_key = llm_api_key)
-
-
-task_store: Dict[str, Dict[str, Any]] = {}
-recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
-recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
 
 
 app.include_router(avatar_router, prefix="/digital_avatar")
