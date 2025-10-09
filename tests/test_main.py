@@ -67,7 +67,7 @@ from fastapi.testclient import TestClient
 # `yield` 关键字用于在测试 setup/teardown 期间执行一些操作
 # 这里，我们用它来在每个测试前重置模拟数据库
 import pytest
-from diglife.server import app
+from diglife.server.__main__ import app
 
 @pytest.fixture(name="client") # 为fixture起一个别名，方便测试函数调用
 def client_fixture():
