@@ -28,6 +28,7 @@ def load_config():
 from dotenv import load_dotenv, find_dotenv
 
 dotenv_path = find_dotenv()
+print(dotenv_path,'dotenv_path')
 load_dotenv(dotenv_path, override=True)
 
 import os
