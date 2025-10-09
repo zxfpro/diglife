@@ -13,6 +13,8 @@ from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
 from dotenv import load_dotenv, find_dotenv
 
+from .models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
+
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path, override=True)
 
@@ -53,7 +55,7 @@ da = DigitalAvatar(model_name = llm_model_name,
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
-app.include_router(biography_router, prefix="/")
+app.include_router(biography_router)
 
 
 @app.get("/")
@@ -214,11 +216,14 @@ if __name__ == "__main__":
         env = "dev"
 
     port = args.port
+
     if env == "dev":
         port += 100
         Log.reset_level("debug", env=env)
         reload = True
-        app_import_string = f"{__package__}.server:app"  # <--- 关键修改：传递导入字符串
+        app_import_string = (
+            f"{__package__}.__main__:app"  # <--- 关键修改：传递导入字符串
+        )
     elif env == "prod":
         Log.reset_level(
             "info", env=env

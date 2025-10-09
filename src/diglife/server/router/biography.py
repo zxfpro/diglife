@@ -22,7 +22,7 @@ user_server_base_url = "http://182.92.107.224:7000"
 
 
 
-
+import httpx
 
 ep = EmbeddingPool()
 
@@ -36,6 +36,24 @@ bg = BiographyGenerate(model_name = llm_model_name,
 
 
 task_store: Dict[str, Dict[str, Any]] = {}
+
+
+async def aget_(url = ""):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(url)
+            response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
+            
+            print(f"Status Code: {response.status_code}")
+            print(f"Response Body: {response.json()}") # 假设返回的是 JSON
+            return response.json()
+        except httpx.HTTPStatusError as e:
+            print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+        except httpx.RequestError as e:
+            print(f"An error occurred while requesting {e.request.url!r}: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+    return None
 
 
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
