@@ -124,7 +124,7 @@ async def life_aggregate_scheduling_score_server(request: ScoreRequest):
     """
     logger.info("running life_aggregate_scheduling_score")
     try:
-        result = MemoryCardManager.get_score(
+        result = MemoryCardManager.get_score_overall(
             request.S_list,
             total_score=request.total_score,
             epsilon=request.epsilon,

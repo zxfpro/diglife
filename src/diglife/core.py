@@ -5,6 +5,7 @@ from llmada.core import BianXieAdapter
 import asyncio
 import json
 from pydantic import BaseModel, Field, model_validator
+import math
 
 from dotenv import load_dotenv, find_dotenv
 
@@ -19,6 +20,10 @@ class MemoryCard(BaseModel):
     title: str
     content: str
     time: str
+
+class MemoryCardScore(BaseModel):
+    score: int
+    reason: str
 
 class MemoryCards(BaseModel):
     memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
@@ -43,16 +48,26 @@ class MemoryCardManager:
                                  )
 
     @staticmethod
-    def get_score(
+    def get_score_overall(
         S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.8
     ) -> float:
+        """
+        计算 y = sqrt(1/600 * x) 的值。
+        计算人生总进度
+        """
+        x = sum(S)
+        return math.sqrt((1/600) * x)  * 100
+
+    @staticmethod
+    def get_score(
+        S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.1
+    ) -> float:
+        # 人生主题分值计算
         # 一个根据 列表分数 计算总分数的方法 如[1,4,5,7,1,5] 其中元素是 1-10 的整数
 
         # 一个非常小的正数，确保0分也有微弱贡献，100分也不是完美1
         # 调整系数，0 < K <= 1。K越大，总分增长越快。
 
-        # 数字人生总进度
-        # 人生主题分值计算
 
         for score in S:
             # 1. 标准化每个分数到 (0, 1) 区间
@@ -81,7 +96,15 @@ class MemoryCardManager:
                 self.bx.aproduct(score_memory_card_prompt + "\n" + memory_card)
             )
         results = await asyncio.gather(*tasks, return_exceptions=False)
-        return [json.loads(extract_json(result)) for result in results]
+
+        result_1 = [json.loads(extract_json(result)) for result in results]
+        try:
+            for score in result_1:
+                MemoryCardScore(**score)
+        except:
+            # log
+            pass
+        return result_1
 
     async def amemory_card_merge(self, memory_cards: list[str]):
         # 记忆卡片合并
@@ -90,9 +113,6 @@ class MemoryCardManager:
         )
 
         memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
-        super_print(
-            memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str, "inpus_func"
-        )
         result = await self.bx.aproduct(
             memory_card_merge_prompt
             + "\n"
@@ -100,8 +120,15 @@ class MemoryCardManager:
             + "\n 各记忆卡片的时间"
             + memoryCards_time_str
         )
-        super_print(result, "result")
-        return json.loads(extract_json(result))
+        result_1 = json.loads(extract_json(result))
+
+        try:
+            MemoryCard(**result_1)
+        except:
+            # log
+            pass
+
+        return result_1
 
     async def amemory_card_polish(self, memory_card: dict) -> dict:
         # 记忆卡片润色
@@ -384,7 +411,7 @@ class BiographyGenerate:
         self, user_name: str, vitae: str, memory_cards: list[dict]
     ):
         # 简要版说法
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0095", table_name=table_name")
+        prompt, _ = inters.get_prompts_from_sql(prompt_id="0095", table_name=table_name)
         memoryCards_str, _ = memoryCards2str(memory_cards)
         print("\n" + f"{user_name},{vitae},{memoryCards_str}")
         result = await self.bx.aproduct(
