@@ -56,7 +56,7 @@ def load_inpackage_file(package_name: str, file_name: str, file_type="yaml"):
 
 
 
-def super_log(s, target: str = "target",log_ = logger.debug):
+def super_log(s, target: str = "target",log_ = logger.info):
     COLOR_RED = "\033[91m"
     COLOR_GREEN = "\033[92m"
     COLOR_YELLOW = "\033[93m"

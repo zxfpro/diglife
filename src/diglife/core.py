@@ -10,6 +10,9 @@ import json
 inters = Intel()
 table_name="prompts_table"
 
+from diglife.log import Log
+logger = Log.logger
+
 
 def memoryCards2str(memory_cards: MemoryCards):
     memoryCards_str = ""
@@ -470,15 +473,23 @@ class DigitalAvatar:
 
         return json.loads(extract_json(result))
 
-    async def auser_overview(self,action: str,old_overview: str, memory_cards: list[dict]) -> str:
+    async def auser_overview(self,action: str,old_overview: str, memory_cards: list[dict],
+                             version = None,
+                             ) -> str:
         """
         用户概述 0096
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0096", table_name=table_name)
+        # prompt, _ = inters.get_prompts_from_sql(prompt_id="0096", table_name=table_name)
         input_data = "\n操作方案:\n" + action + "\n旧概述文本:\n" + old_overview +"\n记忆卡片:\n" +  memoryCards_str
         super_log(input_data, "input_data")
-        result = await self.bx.aproduct(prompt + input_data)
+        # result = await self.bx.aproduct(prompt + input_data)
+        result = inters.intellect_3(input_data,
+                           type = IntellectType.inference,
+                           prompt_id = "0096",
+                           demand = "用户的概述太多了, 还是要保持在100字左右?",
+                           version = version,
+                           )
         super_log(result, "output_data")
 
         return result

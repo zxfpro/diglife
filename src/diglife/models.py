@@ -18,7 +18,6 @@ class MemoryCard(BaseModel):
     time: str
 
 
-
 class MemoryCardScore(BaseModel):
     score: int
     reason: str

@@ -71,4 +71,6 @@ async def memory_card_generate_server(request: ChatHistoryOrText) -> dict:
     chapters = await MCmanager.agenerate_memory_card(
         chat_history_str=request.text, weight=int(os.getenv("card_weight",1000))
     )
+
+    print(chapters,'chapters')
     return MemoryCardsGenerate(memory_cards=chapters)

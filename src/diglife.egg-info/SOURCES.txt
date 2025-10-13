@@ -17,5 +17,6 @@ src/diglife/server/router/__init__.py
 src/diglife/server/router/biography.py
 src/diglife/server/router/digital_avatar.py
 src/diglife/server/router/memory_card.py
+src/diglife/server/router/optimize.py
 src/diglife/server/router/recommended.py
 tests/test_main.py

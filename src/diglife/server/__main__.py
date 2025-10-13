@@ -8,6 +8,7 @@ from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
+from diglife.server.router.optimize import router as optimize_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
 import os
 logger = Log.logger
@@ -41,6 +42,8 @@ running_log = logger.info
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
+app.include_router(optimize_router, prefix="/optimize")
+
 app.include_router(biography_router)
 
 @app.get("/")
