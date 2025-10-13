@@ -1,37 +1,24 @@
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from typing import Dict, Any
 from diglife.embedding_pool import EmbeddingPool
+from diglife.core import BiographyGenerate
+from diglife.models import BiographyRequest, BiographyResult
 from diglife.log import Log
+import asyncio
+import httpx
+import uuid
 import os
 
-from dotenv import load_dotenv, find_dotenv
-from diglife.core import BiographyGenerate
-from ..models import BiographyRequest, BiographyResult
-import asyncio
-import uuid
-
 logger = Log.logger
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path, override=True)
 
 router = APIRouter(tags=["biography"])
 
-user_server_base_url = "http://182.92.107.224:7000"
-
-
-
-
-import httpx
+user_callback_url = os.getenv("user_callback_url")
 
 ep = EmbeddingPool()
-
-llm_model_name =os.getenv("llm_model_name") 
-llm_api_key = os.getenv("llm_api_key")
-
-
-bg = BiographyGenerate(model_name = llm_model_name,
-                              api_key = llm_api_key)
+bg = BiographyGenerate(model_name = os.getenv("llm_model_name") ,
+                              api_key = os.getenv("llm_api_key"))
 
 
 
@@ -77,8 +64,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         outline = await bg.aoutline_generate(material)
 
         task_store[task_id]["progress"] = 0.3
-        # TODO 1 传记生成完成以后做一个回调函数
-        # TODO 2 生成传记标题
+
         task_store[task_id]["biography_title"] = "个人传记"
         task_store[task_id]["outline"] = outline
 
@@ -130,7 +116,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["progress"] = 1.0
 
 
-        biography_callback_url_success = user_server_base_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=1'
+        biography_callback_url_success = user_callback_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=1'
         await aget_(url = biography_callback_url_success)
 
 
@@ -138,9 +124,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["status"] = "FAILED"
         task_store[task_id]["error_message"] = str(e)
         task_store[task_id]["progress"] = 1.0
-        logger.info(f"Task {task_id}: Generation failed with error: {e}")
-
-        biography_callback_url_failed = user_server_base_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=0'
+        biography_callback_url_failed = user_callback_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=0'
         await aget_(url = biography_callback_url_failed)
 
 
@@ -184,7 +168,6 @@ async def get_biography_result(task_id: str):
     根据任务ID查询传记生成任务的状态和结果。
     """
     task_info = task_store.get(task_id)
-    logger.info(task_id)
     if not task_info:
         raise HTTPException(
             status_code=404, detail=f"Task with ID '{task_id}' not found."

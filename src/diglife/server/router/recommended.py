@@ -1,7 +1,7 @@
 # server
 # 推荐算法
 
-from ..models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
+from ...models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
 from diglife.embedding_pool import EmbeddingPool
@@ -9,22 +9,14 @@ from diglife.log import Log
 import os
 import httpx
 
-from dotenv import load_dotenv, find_dotenv
-
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path, override=True)
-
-
 
 router = APIRouter(tags=["recommended"])
 
 logger = Log.logger
 
-recommended_biographies_cache_max_leng = os.getenv("recommended_biographies_cache_max_leng",2) #config.get("recommended_biographies_cache_max_leng", 2)
-recommended_biographies_cache_max_leng = int(recommended_biographies_cache_max_leng)
-recommended_cache_max_leng = os.getenv("recommended_cache_max_leng",2) #config.get("recommended_cache_max_leng", 2)
-recommended_cache_max_leng = int(recommended_cache_max_leng)
-user_server_base_url = "http://182.92.107.224:7000"
+recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
+recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
+user_callback_url = os.getenv("user_callback_url")
 
 ep = EmbeddingPool()
 recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
@@ -91,26 +83,6 @@ async def delete_server(request: DeleteRequest):
     )
 
 
-
-
-# async def aget_content_by_id(url = ""):
-#     # url = url.format(user_profile_id = user_profile_id)
-#     async with httpx.AsyncClient() as client:
-#         try:
-#             response = await client.get(url)
-#             response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
-            
-#             print(f"Status Code: {response.status_code}")
-#             print(f"Response Body: {response.json()}") # 假设返回的是 JSON
-#             return response.json()
-#         except httpx.HTTPStatusError as e:
-#             print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-#         except httpx.RequestError as e:
-#             print(f"An error occurred while requesting {e.request.url!r}: {e}")
-#         except Exception as e:
-#             print(f"An unexpected error occurred: {e}")
-#     return None
-
 async def aget_(url = ""):
     async with httpx.AsyncClient() as client:
         try:
@@ -135,50 +107,10 @@ async def aget_(url = ""):
     response_description="搜索结果列表。",
 )
 async def recommended_biographies_and_cards(query_item: QueryItem):
-    """
-        # result = [
-        #     {
-        #         "id": "1916693308020916225",  # 传记ID
-        #         "type": 1,
-        #         "order": 0,
-        #     },
-        #     {
-        #         "id": "1962459564012359682",  # 卡片ID
-        #         "type": 0,
-        #         "order": 1,
-        #     },
-        #     {
-        #         "id": "1916389315373727745",  # 传记ID
-        #         "type": 1,
-        #         "order": 2,
-        #     },
-        # ]
-
-        {
-        "text":"这是一个传记001",
-        "id":"1916693308020916225",
-        "type":1
-    }
-    {
-        "text":"这是一个传记002",
-        "id":"1916389315373727745",
-        "type":1
-    }
-    {
-        "text":"这是一个卡片001",
-        "id":"1962459564012359682",
-        "type":0
-    }
-    """
     try:
-        # TODO 需要一个通过id 获取对应内容的接口
-        # TODO 调用id 获得对应的用户简介 query_item.user_id
-
 
         user_profile_id_to_fetch = query_item.user_id
-        # memory_info = await aget_content_by_id(user_profile_id_to_fetch,url = user_server_base_url + "/api/inner/getMemoryCards?userProfileId={user_profile_id}")
-        memory_info = await aget_(url = user_server_base_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
-        # memory_info = await get_memorycards_by_id(user_profile_id_to_fetch)
+        memory_info = await aget_(url = user_callback_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
         user_brief = '\n'.join([i.get('content') for i in memory_info['data']["memoryCards"][:4]])
 
 
@@ -229,16 +161,9 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
     description="搜索数字分身的",
 )
 async def recommended_figure_person(query_item: QueryItem):
-    """
-
-    """
     try:
-
         user_profile_id_to_fetch = query_item.user_id
-        # avatar_info = await aget_avatar_desc_by_id(user_profile_id_to_fetch)
-        # avatar_info = await aget_content_by_id(user_profile_id_to_fetch,url = user_server_base_url + "/api/inner/getAvatarDesc?userProfileId={user_profile_id}")
-        avatar_info = await aget_(url = user_server_base_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
-        print(avatar_info,'avatar_info')
+        avatar_info = await aget_(url = user_callback_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
         if avatar_info["code"] == 200:
             user_brief = avatar_info["data"].get("avatarDesc")
         else:

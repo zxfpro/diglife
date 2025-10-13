@@ -1,5 +1,4 @@
-import importlib
-import yaml
+
 import qdrant_client
 from qdrant_client import QdrantClient, models
 from llama_index.core.postprocessor import SimilarityPostprocessor
@@ -8,8 +7,7 @@ from llama_index.core import VectorStoreIndex
 from llama_index.core import Document
 from diglife.embedding_model import VolcanoEmbedding
 from diglife.log import Log
-from llama_index.core import PromptTemplate
-import json
+
 from llama_index.core.vector_stores import (
     MetadataFilter,
     MetadataFilters,
@@ -18,18 +16,6 @@ from llama_index.core.vector_stores import (
 
 logger = Log.logger
 
-
-def load_config():
-    """load config"""
-    with importlib.resources.open_text("diglife", "config.yaml") as f:
-        return yaml.safe_load(f)
-
-
-from dotenv import load_dotenv, find_dotenv
-
-# dotenv_path = find_dotenv()
-dotenv_path = ".env"
-load_dotenv(dotenv_path, override=True)
 
 import os
 
@@ -46,8 +32,8 @@ class EmbeddingPool:
         # 2. 定义 Collection 参数
 
         client = qdrant_client.QdrantClient(
-            host=os.getenv("host", "localhost"), #config.get("host", "localhost"),
-            port=os.getenv("port", 6333) #config.get("port", 6333),
+            host=os.getenv("host", "localhost"),
+            port=os.getenv("port", 6333) 
         )
 
         # 3. 创建 Collection (推荐使用 recreate_collection)
@@ -66,13 +52,12 @@ class EmbeddingPool:
     def reload(self):
         logger.info("reload")
         # 默认仓库要被创建的
-        config = load_config()
         self.postprocess = SimilarityPostprocessor(
             similarity_cutoff=float(os.getenv("similarity_cutoff", 0.5))
         )
         client = qdrant_client.QdrantClient(
-            host=os.getenv("host", "localhost"), #config.get("host", "localhost"),
-            port=os.getenv("port", 6333) #config.get("port", 6333),
+            host=os.getenv("host", "localhost"), 
+            port=os.getenv("port", 6333) 
         )
         vector_store = QdrantVectorStore(
             client=client, collection_name=os.getenv("collection_name", "diglife")

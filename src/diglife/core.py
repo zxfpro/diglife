@@ -1,32 +1,14 @@
 #
-from diglife.utils import extract_json, extract_article, super_print, super_log
+from diglife.utils import extract_json, extract_article, super_log
 from prompt_writing_assistant.prompt_helper import Intel,IntellectType
 from llmada.core import BianXieAdapter
+from diglife.models import MemoryCard, MemoryCardScore, MemoryCards
+import math
 import asyncio
 import json
-from pydantic import BaseModel, Field, model_validator
-import math
-
-from dotenv import load_dotenv, find_dotenv
-
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path, override=True)
 
 inters = Intel()
 table_name="prompts_table"
-
-
-class MemoryCard(BaseModel):
-    title: str
-    content: str
-    time: str
-
-class MemoryCardScore(BaseModel):
-    score: int
-    reason: str
-
-class MemoryCards(BaseModel):
-    memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
 
 
 def memoryCards2str(memory_cards: MemoryCards):
@@ -137,7 +119,7 @@ class MemoryCardManager:
             prompt_id="0090", table_name=table_name
         )
 
-        super_print(
+        super_log(
             "\n记忆卡片标题: "
             + memory_card["title"]
             + "\n记忆卡片内容: "
@@ -155,9 +137,17 @@ class MemoryCardManager:
             + "\n记忆卡片发生时间: "
             + memory_card["time"]
         )
-        super_print(result, "result")
+        super_log(result, "result")
 
-        return json.loads(extract_json(result))
+        result_1 = json.loads(extract_json(result))
+        try:
+            MemoryCard(**result_1)
+        except:
+            # log
+            pass
+
+        return result_1
+
 
     async def agenerate_memory_card_by_text(
         self, chat_history_str: str, weight: int = 1000
@@ -165,9 +155,7 @@ class MemoryCardManager:
         # 0091 上传文件生成记忆卡片-memory_card_system_prompt
         # 0092 上传文件生成记忆卡片-time_prompt
 
-        memory_card_system_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0091", table_name=table_name
-        )
+        memory_card_system_prompt, _ = inters.get_prompts_from_sql(prompt_id="0091", table_name=table_name)
         time_prompt, _ = inters.get_prompts_from_sql(prompt_id="0092", table_name=table_name)
 
         number_ = len(chat_history_str) // weight + 1
@@ -181,7 +169,7 @@ class MemoryCardManager:
 
             chapters = result_dict["chapters"]
             for i in chapters:
-                super_print(
+                super_log(
                     f"# chat_history: {chat_history_str} # chapter:" + i.get("content")
                 )
                 time_result = await self.bx.aproduct(
@@ -201,9 +189,7 @@ class MemoryCardManager:
         # 0093 聊天历史生成记忆卡片-memory_card_system_prompt
         # 0094 聊天历史生成记忆卡片-time_prompt
 
-        memory_card_system_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0093", table_name=table_name
-        )
+        memory_card_system_prompt, _ = inters.get_prompts_from_sql(prompt_id="0093", table_name=table_name)
         time_prompt, _ = inters.get_prompts_from_sql(prompt_id="0094", table_name=table_name)
 
         number_ = len(chat_history_str) // weight + 1
@@ -213,7 +199,7 @@ class MemoryCardManager:
         try:
             result = await self.bx.aproduct(base_prompt)
             result_dict = json.loads(extract_json(result))
-
+            super_log(result_dict,'result_dict')
             chapters = result_dict["chapters"]
             for i in chapters:
                 time_result = await self.bx.aproduct(
@@ -222,7 +208,7 @@ class MemoryCardManager:
                     + i.get("content")
                 )
                 time_dict = json.loads(extract_json(time_result))
-                print(time_dict, "time_dict")
+                super_log(time_dict, "time_dict")
                 i.update(time_dict)
                 i.update({"topic": 0})
 
@@ -290,7 +276,7 @@ class BiographyGenerate:
             if i == 0:
                 base_prompt = interview_material_clean_prompt + vitae + chunk
             else:
-                super_print(
+                super_log(
                     "#素材:\n" + material + "\n#记忆卡片:\n" + chunk,
                     "0082 素材增量生成",
                 )
@@ -316,7 +302,7 @@ class BiographyGenerate:
         outline_prompt, _ = inters.get_prompts_from_sql(
             prompt_id="0084", table_name=table_name
         )
-        super_print(material, "0084 大纲生成")
+        super_log(material, "0084 大纲生成")
         try:
             outline_origin = await self.bx.aproduct(outline_prompt + material)
         except Exception as e:
@@ -332,7 +318,7 @@ class BiographyGenerate:
             prompt_id="0083", table_name=table_name
         )
         outline = json.dumps(outline, ensure_ascii=False)
-        super_print(outline, "0083 传记简介")
+        super_log(outline, "0083 传记简介")
         brief = await self.bx.aproduct(biography_brief_prompt + outline)
         return brief
 
@@ -428,24 +414,24 @@ class DigitalAvatar:
                                  api_key= api_key,
                                  )
 
-    async def abrief(self, memory_cards: list[dict]) -> dict:
+    async def desensitization(self, memory_cards: list[str]) -> list[str]:
         """
-        数字分身介绍
+        数字分身脱敏 0100
         """
-        # TOOD 增加字数限制, tag标签 两个
-        memoryCards_str, _ = memoryCards2str(memory_cards)
+        super_log('ffffff')
+        prompt, _ = inters.get_prompts_from_sql(prompt_id="0100", table_name=table_name)
+        tasks = []
+        for memory_card in memory_cards:
+            tasks.append(self.bx.aproduct(prompt + "\n" + memory_card.get("content")))
+        results = await asyncio.gather(*tasks, return_exceptions=False)
 
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0098", table_name=table_name)
-        input_data = "聊天历史:\n" + memoryCards_str
-        super_log(input_data, "input_data")
-        result = await self.bx.aproduct(prompt + input_data)
-        super_log(result, "output_data")
-
-        return json.loads(extract_json(result))
-
+        for i in range(len(memory_cards)):
+            memory_cards[i]["content"] = extract_article(results[i])
+        return memory_cards
+    
     async def personality_extraction(self, memory_cards: list[dict],action:str,old_character:str) -> str:
         """
-        数字分身性格提取
+        数字分身性格提取 0099
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
 
@@ -456,24 +442,37 @@ class DigitalAvatar:
         super_log(result, "output_data")
         return extract_article(result)
 
-    async def desensitization(self, memory_cards: list[str]) -> list[str]:
+    
+    async def abrief(self, memory_cards: list[dict]) -> dict:
         """
-        数字分身脱敏
+        数字分身介绍 0098
         """
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0100", table_name=table_name)
-        tasks = []
-        for memory_card in memory_cards:
-            tasks.append(self.bx.aproduct(prompt + "\n" + memory_card.get("content")))
-        results = await asyncio.gather(*tasks, return_exceptions=False)
+        # TOOD 增加字数限制, tag标签 两个
+        memoryCards_str, _ = memoryCards2str(memory_cards)
 
-        for i in range(len(memory_cards)):
-            memory_cards[i]["content"] = extract_article(results[i])
-        return memory_cards
+        prompt, _ = inters.get_prompts_from_sql(prompt_id="0098", table_name=table_name)
+        input_data = "聊天历史:\n" + memoryCards_str
+        super_log(input_data, "input_data",) # log_ = logger.debug
+        result = await self.bx.aproduct(prompt + input_data)
+        super_log(result, "output_data")
 
+        return json.loads(extract_json(result))
+
+    async def auser_relationship_extraction(self,text: str) -> dict:
+        """
+        用户关系提取 0097
+        """
+        prompt, _ = inters.get_prompts_from_sql(prompt_id="0097", table_name=table_name)
+        input_data = "聊天历史" + text
+        super_log(input_data, "input_data")
+        result = await self.bx.aproduct(prompt + input_data)
+        super_log(result, "output_data")
+
+        return json.loads(extract_json(result))
 
     async def auser_overview(self,action: str,old_overview: str, memory_cards: list[dict]) -> str:
         """
-        用户概述
+        用户概述 0096
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
         prompt, _ = inters.get_prompts_from_sql(prompt_id="0096", table_name=table_name)
@@ -485,14 +484,3 @@ class DigitalAvatar:
         return result
 
 
-    async def auser_relationship_extraction(self,text: str) -> dict:
-        """
-        用户关系提取
-        """
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0097", table_name=table_name)
-        input_data = "聊天历史" + text
-        super_log(input_data, "input_data")
-        result = await self.bx.aproduct(prompt + input_data)
-        super_log(result, "output_data")
-
-        return json.loads(extract_json(result))

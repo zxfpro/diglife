@@ -54,26 +54,18 @@ def load_inpackage_file(package_name: str, file_name: str, file_type="yaml"):
             return f.read()
 
 
-def super_print(s, target: str = "target"):
-    print()
-    print()
-    print("==" * 21 + target + "==" * 21)
-    print()
-    print("==" * 50)
-    print(type(s))
-    print("==" * 50)
-    print(s)
-    print("==" * 50)
-    print()
 
 
-def super_log(s, target: str = "target"):
-    logger.info("==" * 16 + target + "==" * 16)
-    logger.info("")
-    logger.info("")
-    logger.info("==" * 40)
-    logger.info(type(s))
-    logger.info("==" * 40)
-    logger.info(s)
-    logger.info("==" * 40)
-    logger.info("")
+def super_log(s, target: str = "target",log_ = logger.debug):
+    COLOR_RED = "\033[91m"
+    COLOR_GREEN = "\033[92m"
+    COLOR_YELLOW = "\033[93m"
+    COLOR_BLUE = "\033[94m"
+    COLOR_RESET = "\033[0m" # 重置颜色
+
+    log_("\n"+f"{COLOR_BLUE}=={COLOR_RESET}" * 21 + target + f"{COLOR_BLUE}=={COLOR_RESET}" * 21)
+    log_("\n       "+"--" * 40)
+    log_(type(s))
+    log_("\n       "+f"{COLOR_RED}--{COLOR_RESET}" * 40)
+    log_(s)
+    log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21 + target + "  end!"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21)

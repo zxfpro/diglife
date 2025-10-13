@@ -4,21 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from diglife.core import MemoryCardManager
 from diglife.core import DigitalAvatar
 from diglife.log import Log
-import os
-
-
 from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
-from dotenv import load_dotenv, find_dotenv
-
-from .models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
-
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path, override=True)
-
-
+from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
+import os
 logger = Log.logger
 
 
@@ -43,20 +34,14 @@ app.add_middleware(
 # --- End CORS Configuration ---
 
 
+da = DigitalAvatar(model_name = os.getenv("llm_model_name"),
+                              api_key = os.getenv("llm_api_key"))
 
-llm_model_name =os.getenv("llm_model_name")
-llm_api_key = os.getenv("llm_api_key")
-
-
-da = DigitalAvatar(model_name = llm_model_name,
-                              api_key = llm_api_key)
-
-
+running_log = logger.info
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
 app.include_router(biography_router)
-
 
 @app.get("/")
 async def root():
@@ -78,9 +63,8 @@ async def root():
         "llm_api_key":os.getenv("llm_api_key"),
         "recommended_biographies_cache_max_leng":os.getenv("recommended_biographies_cache_max_leng"),
         "recommended_cache_max_leng":os.getenv("recommended_cache_max_leng"),
-        "get_avatar_desc_url":os.getenv("get_avatar_desc_url"),
-        "get_memory_desc_url":os.getenv("get_memory_desc_url"),
-
+        "user_callback_url":os.getenv("user_callback_url"),
+        "card_weight":os.getenv("card_weight"),
     }
 
     return {"message": "LLM Service is running.",
@@ -89,11 +73,7 @@ async def root():
 
 @app.post("/life_topic_score")
 async def life_topic_score_server(request: LifeTopicScoreRequest):
-    """
-    Calculates the life topic score based on the provided parameters.
-    S_list elements must be integers between 1 and 10.
-    """
-    logger.info("running life_topic_score")
+    running_log("running life_topic_score")
     try:
         result = MemoryCardManager.get_score(
             S=request.S_list,
@@ -115,14 +95,7 @@ async def life_topic_score_server(request: LifeTopicScoreRequest):
 
 @app.post("/life_aggregate_scheduling_score")
 async def life_aggregate_scheduling_score_server(request: ScoreRequest):
-    """
-    Calculates the life aggregate scheduling score based on the provided parameters.
-    S_list: List of scores (as strings, will be converted to integers)
-    K: Coefficient K (default 0.8)
-    total_score: Total score to add (default 0)
-    epsilon: Epsilon value (default 0.001)
-    """
-    logger.info("running life_aggregate_scheduling_score")
+    running_log("running life_aggregate_scheduling_score")
     try:
         result = MemoryCardManager.get_score_overall(
             request.S_list,
@@ -148,7 +121,7 @@ async def user_overview_server(request: UseroverviewRequests):
     """
     用户概述
     """
-    logger.info("running user_overview_server")
+    running_log("running user_overview_server")
     memory_cards = request.model_dump()["memory_cards"]
     result = await da.auser_overview(
         action = request.action,
@@ -163,20 +136,14 @@ async def user_overview_server(request: UseroverviewRequests):
 async def user_relationship_extraction_server(
     request: UserRelationshipExtractionRequest,
 ):
-    logger.info("running user_relationship_extraction_server")
-
+    running_log("running user_relationship_extraction_server")
     result = await da.auser_relationship_extraction(text=request.text)
     return {"relation": result}
 
 
 if __name__ == "__main__":
-    # 这是一个标准的 Python 入口点惯用法
-    # 当脚本直接运行时 (__name__ == "__main__")，这里的代码会被执行
-    # 当通过 python -m YourPackageName 执行 __main__.py 时，__name__ 也是 "__main__"
-    # 27
     import argparse
     import uvicorn
-    from ..log import Log
 
     default = 8007
     
