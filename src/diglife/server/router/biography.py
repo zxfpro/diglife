@@ -4,13 +4,12 @@ from typing import Dict, Any
 from diglife.embedding_pool import EmbeddingPool
 from diglife.core import BiographyGenerate
 from diglife.models import BiographyRequest, BiographyResult
-from diglife.log import Log
+from diglife import logger
 import asyncio
 import httpx
 import uuid
 import os
 
-logger = Log.logger
 
 router = APIRouter(tags=["biography"])
 

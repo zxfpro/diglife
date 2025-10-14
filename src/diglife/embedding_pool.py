@@ -6,16 +6,13 @@ from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.core import VectorStoreIndex
 from llama_index.core import Document
 from diglife.embedding_model import VolcanoEmbedding
-from diglife.log import Log
+from diglife import logger
 
 from llama_index.core.vector_stores import (
     MetadataFilter,
     MetadataFilters,
     FilterOperator,
 )
-
-logger = Log.logger
-
 
 import os
 
@@ -25,7 +22,7 @@ class EmbeddingPool:
         self.reload()
 
     def create_collection(
-        self, collection_name: str = "diglife", vector_dimension: str = 2560
+        self, collection_name: str, vector_dimension: str = 2560
     ):
         distance_metric = models.Distance.COSINE  # 使用余弦相似度
 

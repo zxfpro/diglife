@@ -1,18 +1,17 @@
 # server
 # 推荐算法
 
-from ...models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
+from diglife.models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
 from diglife.embedding_pool import EmbeddingPool
-from diglife.log import Log
+
+from diglife import logger
 import os
 import httpx
 
-
 router = APIRouter(tags=["recommended"])
 
-logger = Log.logger
 
 recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
 recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))

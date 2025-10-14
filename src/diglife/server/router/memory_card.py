@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from diglife.core import MemoryCardManager
 from diglife.embedding_pool import EmbeddingPool
-from diglife.log import Log
+from diglife import logger
 from diglife.models import MemoryCardsRequest, MemoryCard, MemoryCards, MemoryCardsGenerate, ChatHistoryOrText
 import os
-logger = Log.logger
+
 router = APIRouter(tags=["memory_card"])
 
 ep = EmbeddingPool()

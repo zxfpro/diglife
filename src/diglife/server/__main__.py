@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from diglife.core import MemoryCardManager
 from diglife.core import DigitalAvatar
-from diglife.log import Log
+from diglife import logger
 from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
@@ -11,7 +11,7 @@ from diglife.server.router.biography import router as biography_router
 from diglife.server.router.optimize import router as optimize_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
 import os
-logger = Log.logger
+
 
 
 app = FastAPI(
@@ -189,15 +189,11 @@ if __name__ == "__main__":
 
     if env == "dev":
         port += 100
-        Log.reset_level("debug", env=env)
         reload = True
         app_import_string = (
             f"{__package__}.__main__:app"  # <--- 关键修改：传递导入字符串
         )
     elif env == "prod":
-        Log.reset_level(
-            "info", env=env
-        )  # ['debug', 'info', 'warning', 'error', 'critical']
         reload = False
         app_import_string = app
     else:

@@ -4,13 +4,9 @@ from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field, model_validator
 
 
-
-
 # 记忆合并
 class MemoryCardsRequest(BaseModel):
     memory_cards: list[str] = Field(..., description="记忆卡片列表")
-
-
 
 class MemoryCard(BaseModel):
     title: str

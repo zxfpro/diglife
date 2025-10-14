@@ -10,10 +10,7 @@ Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查�
 import re
 import importlib
 import yaml
-from diglife.log import Log
-
-logger = Log.logger
-
+from diglife import logger
 
 def extract_json(text: str) -> str:
     """从文本中提取python代码
@@ -56,7 +53,7 @@ def load_inpackage_file(package_name: str, file_name: str, file_type="yaml"):
 
 
 
-def super_log(s, target: str = "target",log_ = logger.info):
+def super_log(s, target: str = "target",log_ = logger.warning):
     COLOR_RED = "\033[91m"
     COLOR_GREEN = "\033[92m"
     COLOR_YELLOW = "\033[93m"

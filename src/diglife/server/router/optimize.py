@@ -2,8 +2,7 @@
 from fastapi import APIRouter
 from diglife.core import DigitalAvatar
 from diglife.models import *
-from diglife.log import Log
-logger = Log.logger
+from diglife import logger
 
 import os
 running_log = logger.info
