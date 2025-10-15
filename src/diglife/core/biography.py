@@ -7,210 +7,12 @@ import math
 import asyncio
 import json
 
-inters = Intel()
+inters = Intel(model_name = "doubao-1-5-pro-256k-250115")
+inters_2 = Intel(model_name = "gemini-2.5-flash-preview-05-20-nothinking")
 table_name="prompts_table"
 
 from diglife import logger
 from .utils import memoryCards2str
-
-
-class MemoryCardManager:
-    def __init__(self,model_name: str = "gemini-2.5-flash-preview-05-20-nothinking",
-                      api_key: str = None):
-        self.bx = BianXieAdapter(model_name=model_name,
-                                 api_key= api_key,
-                                 )
-
-    @staticmethod
-    def get_score_overall(
-        S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.8
-    ) -> float:
-        """
-        计算 y = sqrt(1/600 * x) 的值。
-        计算人生总进度
-        """
-        x = sum(S)
-        return math.sqrt((1/600) * x)  * 100
-
-    @staticmethod
-    def get_score(
-        S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.1
-    ) -> float:
-        # 人生主题分值计算
-        # 一个根据 列表分数 计算总分数的方法 如[1,4,5,7,1,5] 其中元素是 1-10 的整数
-
-        # 一个非常小的正数，确保0分也有微弱贡献，100分也不是完美1
-        # 调整系数，0 < K <= 1。K越大，总分增长越快。
-
-
-        for score in S:
-            # 1. 标准化每个分数到 (0, 1) 区间
-            normalized_score = (score + epsilon) / (10 + epsilon)
-
-            # 2. 更新总分
-            # 每次增加的是“距离满分的剩余空间”的一个比例
-            total_score = total_score + (100 - total_score) * normalized_score * K
-
-            # 确保不会因为浮点数精度问题略微超过100，虽然理论上不会
-            if total_score >= 100 - 1e-9:  # 留一点点余地，避免浮点数误差导致判断为100
-                total_score = 100 - 1e-9  # 强制设置一个非常接近100但不等于100的值
-                break  # 如果已经非常接近100，可以提前终止
-
-        return total_score
-
-    async def ascore_from_memory_card(self, memory_cards: list[str]) -> list[int]:
-        # 记忆卡片打分
-        score_memory_card_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0088"
-        )
-
-        tasks = []
-        for memory_card in memory_cards:
-            tasks.append(
-                self.bx.aproduct(score_memory_card_prompt + "\n" + memory_card)
-            )
-        results = await asyncio.gather(*tasks, return_exceptions=False)
-
-        result_1 = [json.loads(extract_json(result)) for result in results]
-        try:
-            for score in result_1:
-                MemoryCardScore(**score)
-        except:
-            # log
-            pass
-        return result_1
-
-    async def amemory_card_merge(self, memory_cards: list[str]):
-        # 记忆卡片合并
-        memory_card_merge_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0089"
-        )
-
-        memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
-        result = await self.bx.aproduct(
-            memory_card_merge_prompt
-            + "\n"
-            + memoryCards_str
-            + "\n 各记忆卡片的时间"
-            + memoryCards_time_str
-        )
-        result_1 = json.loads(extract_json(result))
-
-        try:
-            MemoryCard(**result_1)
-        except:
-            # log
-            pass
-
-        return result_1
-
-    async def amemory_card_polish(self, memory_card: dict) -> dict:
-        # 记忆卡片润色
-        # TODO 要将时间融入到内容中润色
-        memory_card_polish_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0090"
-        )
-
-        super_log(
-            "\n记忆卡片标题: "
-            + memory_card["title"]
-            + "\n记忆卡片内容: "
-            + memory_card["content"]
-            + "\n记忆卡片发生时间: "
-            + memory_card["time"],
-            "work",
-        )
-        result = await self.bx.aproduct(
-            memory_card_polish_prompt
-            + "\n记忆卡片标题: "
-            + memory_card["title"]
-            + "\n记忆卡片内容: "
-            + memory_card["content"]
-            + "\n记忆卡片发生时间: "
-            + memory_card["time"]
-        )
-        super_log(result, "result")
-
-        result_1 = json.loads(extract_json(result))
-        try:
-            MemoryCard(**result_1)
-        except:
-            # log
-            pass
-
-        return result_1
-
-
-    async def agenerate_memory_card_by_text(
-        self, chat_history_str: str, weight: int = 1000
-    ):
-        # 0091 上传文件生成记忆卡片-memory_card_system_prompt
-        # 0092 上传文件生成记忆卡片-time_prompt
-
-        memory_card_system_prompt, _ = inters.get_prompts_from_sql(prompt_id="0091")
-        time_prompt, _ = inters.get_prompts_from_sql(prompt_id="0092")
-
-        number_ = len(chat_history_str) // weight + 1
-        base_prompt = (
-            memory_card_system_prompt.format(number=number_) + chat_history_str
-        )
-
-        try:
-            result = await self.bx.aproduct(base_prompt)
-            result_dict = json.loads(extract_json(result))
-
-            chapters = result_dict["chapters"]
-            for i in chapters:
-                super_log(
-                    f"# chat_history: {chat_history_str} # chapter:" + i.get("content")
-                )
-                time_result = await self.bx.aproduct(
-                    time_prompt
-                    + f"# chat_history: {chat_history_str} # chapter:"
-                    + i.get("content")
-                )
-                time_dict = json.loads(extract_json(time_result))
-                i.update(time_dict)
-
-            return chapters
-        except Exception as e:
-            print(f"Error processing  {chat_history_str[:30]}: {e}")
-            return ""
-
-    async def agenerate_memory_card(self, chat_history_str: str, weight: int = 1000):
-        # 0093 聊天历史生成记忆卡片-memory_card_system_prompt
-        # 0094 聊天历史生成记忆卡片-time_prompt
-
-        memory_card_system_prompt, _ = inters.get_prompts_from_sql(prompt_id="0093")
-        time_prompt, _ = inters.get_prompts_from_sql(prompt_id="0094")
-
-        number_ = len(chat_history_str) // weight + 1
-        base_prompt = (
-            memory_card_system_prompt.format(number=number_) + chat_history_str
-        )
-        try:
-            result = await self.bx.aproduct(base_prompt)
-            result_dict = json.loads(extract_json(result))
-            super_log(result_dict,'result_dict')
-            chapters = result_dict["chapters"]
-            for i in chapters:
-                time_result = await self.bx.aproduct(
-                    time_prompt
-                    + f"# chat_history: {chat_history_str} # chapter:"
-                    + i.get("content")
-                )
-                time_dict = json.loads(extract_json(time_result))
-                super_log(time_dict, "time_dict")
-                i.update(time_dict)
-                i.update({"topic": 0})
-
-            return chapters
-        except Exception as e:
-            print(f"Error processing  {chat_history_str[:30]}: {e}")
-            return ""
-
-
-###
 
 
 class BiographyGenerate:
@@ -222,18 +24,35 @@ class BiographyGenerate:
 
     async def extract_person_name(self, bio_chunk: str):
         """0087 提取人名"""
-        extract_person_name_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0087"
-        )
-        result = await self.bx.aproduct(extract_person_name_prompt + "\n" + bio_chunk)
+
+        output_format = """
+输出格式
+```json
+["人名"]
+```
+"""
+        result = await inters.aintellect_remove(input_data=bio_chunk,
+                                         output_format=output_format,
+                                         prompt_id ="0087",
+                                         version = None,
+                                         inference_save_case=False)
+
         return json.loads(extract_json(result))
 
     async def extract_person_place(self, bio_chunk: str):
         """0086 提取地名"""
-        extract_place_name_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0086"
-        )
-        result = await self.bx.aproduct(extract_place_name_prompt + "\n" + bio_chunk)
+        output_format = """
+输出格式
+```json
+["地名"]
+```
+"""
+        result = await inters.aintellect_remove(input_data=bio_chunk,
+                                            output_format=output_format,
+                                            prompt_id ="0086",
+                                            version = None,
+                                            inference_save_case=False)
+
         return json.loads(extract_json(result))
 
     async def amaterial_generate(self, vitae: str, memory_cards: list[str]) -> str:
@@ -244,13 +63,6 @@ class BiographyGenerate:
         0085 素材整理
         0082 素材增量生成
         """
-        interview_material_clean_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0085"
-        )
-        interview_material_add_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0082"
-        )
-
         def split_into_chunks(my_list, chunk_size=5):
             """
             使用列表推导式将列表分割成大小为 chunk_size 的块。
@@ -266,39 +78,78 @@ class BiographyGenerate:
         for i, chunk in enumerate(chunks):
             chunk = json.dumps(chunk, ensure_ascii=False)
             if i == 0:
-                base_prompt = interview_material_clean_prompt + vitae + chunk
+                output_format = ""
+                material = await inters.aintellect_remove(
+                                    input_data=vitae + chunk,
+                                    output_format=output_format,
+                                    prompt_id ="0085",
+                                    version = None,
+                                    inference_save_case=False)
             else:
-                super_log(
-                    "#素材:\n" + material + "\n#记忆卡片:\n" + chunk,
-                    "0082 素材增量生成",
-                )
-                base_prompt = (
-                    interview_material_add_prompt
-                    + "#素材:\n"
-                    + material
-                    + "#记忆卡片:\n"
-                    + chunk
-                )
-            try:
-                material = await self.bx.aproduct(base_prompt)
-            except Exception as e:
-                raise TypeError("maters素材整理的时候出问题了")
-
+                output_format = "" # str
+                material = await inters.aintellect_remove(
+                                    input_data="#素材:\n" + material + "#记忆卡片:\n" + chunk,
+                                    output_format=output_format,
+                                    prompt_id ="0082",
+                                    version = None,
+                                    inference_save_case=False)
+                
         return material
 
     async def aoutline_generate(self, material: str) -> str:
         """
         0084 大纲生成
         """
+        output_format = """
+输出格式
+```json
+{
+    "第一部 童年与自然启蒙": [
+        {
+            "chapter_number": "第一章",
+            "title": "山村童年的自由奔跑",
+            "topic": "第三人称。本章将追溯张三在1980年代末至1990年代初，辽宁葫芦岛小村庄的童年岁月。描绘乡村的淳朴生活、日出而作日落而息的节奏，以及他作为“山里的野孩子”与自然亲密接触的自由时光。这是张三生命中“第一起”的萌芽，奠定了他与自然连接的性格底色和对规律生活的最初认知。"
+        },
+        {
+            "chapter_number": "第二章",
+            "title": "漫天繁星的宇宙初识",
+            "topic": "第一人称。深入探究张三童年时期对夜晚星空的深刻记忆和感受。描述“漫天繁星”如何在他幼小的心灵中种下对宇宙和未知世界的好奇种子，成为他最早的“觉醒点”，预示其未来对知识的无尽求索。这是他“第一起”中重要的情感与思想铺垫。"
+        }
+    ],
+    "第二部 知识与理性的求索": [
+        {
+            "chapter_number": "第三章",
+            "title": "县城高中：物理兴趣的萌芽",
+            "topic": "第三人称。本章叙述张三青少年时期在县城高中的学习经历。尽管学习资源相对有限，他却对天文物理和理论物理产生了浓厚兴趣，这显示出超越应试教育的深层求知欲。这是他“第一起”中知识探索的关键一步，从感性自然体验转向理性科学思考。"
+        },
+        {
+            "chapter_number": "第四章",
+            "title": "从具象到抽象：思维的跃迁",
+            "topic": "第一人称。探讨张三从童年对具象星空的直观感受，到高中时期对抽象天文物理和理论物理的兴趣转变。本章将揭示他思维深度和广度的发展，以及这种从感性到理性的过渡如何塑造了他理解世界的方式。这是他“第一起”中思维方式形成的重要节点。"
+        }
+    ],
+    "第三部 身体力行的探索与挑战": [
+        {
+            "chapter_number": "第五章",
+            "title": "虎跳峡初体验：徒步新篇章",
+            "topic": "第三人称。本章聚焦张三成年后在2005年云南虎跳峡的第一次徒步经历。描述这次徒步对体能和意志的巨大考验，特别是为了赶车在陡峭台阶上“猛爬”的坚持。这次经历开启了他对户外运动的兴趣，标志着他探索世界方式的拓展，从智力层面延伸到身体力行层面，是其人生“第二起”的开端。"
+        },
+        {
+            "chapter_number": "第六章",
+            "title": "挑战极限：意志力的磨砺",
+            "topic": "第一人称。深入剖析张三在虎跳峡徒步过程中，身体极度疲惫却仍坚持不懈的内心挣扎与最终超越。探讨这次挑战如何磨砺了他的意志力，并让他意识到身体力行探索外部世界的乐趣与价值。这为他未来持续挑战自我埋下伏笔，是“第二起”中的重要转折与心境沉淀。"
+        }
+    ]
+}
+```
+"""
 
-        outline_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0084"
-        )
-        super_log(material, "0084 大纲生成")
-        try:
-            outline_origin = await self.bx.aproduct(outline_prompt + material)
-        except Exception as e:
-            raise TypeError("生成大纲的时候出问题")
+        outline_origin = await inters.aintellect_remove(input_data=material,
+                                            output_format=output_format,
+                                            prompt_id ="0084",
+                                            version = None,
+                                            inference_save_case=False)
+
         outline = extract_json(outline_origin)
         return json.loads(outline)
 
@@ -306,12 +157,16 @@ class BiographyGenerate:
         """
         0083 传记简介
         """
-        biography_brief_prompt, _ = inters.get_prompts_from_sql(
-            prompt_id="0083"
-        )
+        output_format = """"""
+
         outline = json.dumps(outline, ensure_ascii=False)
-        super_log(outline, "0083 传记简介")
-        brief = await self.bx.aproduct(biography_brief_prompt + outline)
+
+        brief = await inters.aintellect_remove(input_data=outline,
+                                    output_format=output_format,
+                                    prompt_id ="0083",
+                                    version = None,
+                                    inference_save_case=False)
+
         return brief
 
     async def awrite_chapter(
@@ -326,6 +181,8 @@ class BiographyGenerate:
         try:
             # 0080 prompt_get_infos
             # 0081 prompt_base
+            # TODO 大量的format 怎么办
+            
             await asyncio.sleep(0.1)
             prompt_get_infos, _ = inters.get_prompts_from_sql(
                 prompt_id="0080"
@@ -388,13 +245,23 @@ class BiographyGenerate:
     async def agenerate_biography_free(
         self, user_name: str, vitae: str, memory_cards: list[dict]
     ):
-        # 简要版说法
-        prompt, _ = inters.get_prompts_from_sql(prompt_id="0095")
+        output_format = """
+输出格式
+```json
+{
+    "title": 标题
+    "content": 传记正文
+}
+```
+"""
+        # TODO 这里的格式控制很不稳定, 而且豆包做不了, 只能使用gemini
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        print("\n" + f"{user_name},{vitae},{memoryCards_str}")
-        result = await self.bx.aproduct(
-            prompt + "\n" + f"{user_name},{vitae},{memoryCards_str}"
-        )
+        result = await inters_2.aintellect_remove(input_data=f"{user_name},{vitae},{memoryCards_str}",
+                                    output_format=output_format,
+                                    prompt_id ="0095",
+                                    version = None,
+                                    inference_save_case=False)
+
         result = json.loads(extract_json(result))
         return result
 

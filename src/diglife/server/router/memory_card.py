@@ -7,8 +7,7 @@ import os
 router = APIRouter(tags=["memory_card"])
 
 ep = EmbeddingPool()
-MCmanager = MemoryCardManager(model_name = os.getenv("llm_model_name"),
-                              api_key = os.getenv("llm_api_key"))
+MCmanager = MemoryCardManager()
 
 @router.post("/score")
 async def score_from_memory_card_server(request: MemoryCardsRequest):

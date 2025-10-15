@@ -8,17 +8,13 @@ import asyncio
 import json
 from .utils import memoryCards2str
 inters = Intel(model_name = "doubao-1-5-pro-256k-250115")
-table_name="prompts_table"
 from diglife import logger
 from pydantic import BaseModel, Field, model_validator
 from pydantic import ValidationError
 
 class MemoryCardManager:
-    def __init__(self,model_name: str = "gemini-2.5-flash-preview-05-20-nothinking",
-                      api_key: str = None):
-        self.bx = BianXieAdapter(model_name=model_name,
-                                 api_key= api_key,
-                                 )
+    def __init__(self):
+        pass
 
     @staticmethod
     def get_score_overall(
@@ -60,7 +56,6 @@ class MemoryCardManager:
     async def ascore_from_memory_card(self, memory_cards: list[str]) -> list[int]:
 
         # 记忆卡片打分
-        demand = "124"
         output_format = """
 输出格式
 ```json
@@ -74,13 +69,14 @@ class MemoryCardManager:
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
-                inters.aintellect_2(input = memory_card,type=IntellectType.inference,prompt_id = "0088",demand = demand,version=None,
-                                    output_format=output_format)
+                inters.aintellect_remove(input_data=memory_card,
+                                         output_format=output_format,
+                                         prompt_id ="0088",
+                                         version = None,
+                                        inference_save_case=False)
             )
 
-        inters.aintellect_remove(input_data=,output_format=,prompt_id = ,
-                                 version = None,
-                                 inference_save_case=False)
+
 
         results = await asyncio.gather(*tasks, return_exceptions=False)
         
@@ -103,7 +99,6 @@ class MemoryCardManager:
 
         memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
         # 记忆卡片合并
-        demand = "124"
         output_format = """
 输出格式
 ```json
@@ -114,9 +109,11 @@ class MemoryCardManager:
 }
 ```
 """
-        result = await inters.aintellect_2(input = memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,
-                                type=IntellectType.inference,prompt_id = "0089",demand = demand,version=None,
-                                output_format=output_format)
+        result = await inters.aintellect_remove(input_data=memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,
+                                         output_format=output_format,
+                                         prompt_id ="0089",
+                                         version = None,
+                                         inference_save_case=False)
 
         try:
             result_1 = json.loads(extract_json(result))
@@ -136,7 +133,7 @@ class MemoryCardManager:
         # 记忆卡片润色
         # TODO 要将时间融入到内容中润色
 
-        demand = "124"
+
         output_format = """
 输出格式
 ```json
@@ -146,10 +143,12 @@ class MemoryCardManager:
 }
 ```
 """
-        result = await inters.aintellect_2(input = "\n记忆卡片标题: "+ memory_card["title"]+ "\n记忆卡片内容: " + memory_card["content"] + "\n记忆卡片发生时间: " + memory_card["time"],
-                                type=IntellectType.inference,prompt_id = "0090",demand = demand,version=None,
-                                output_format=output_format)
 
+        result = await inters.aintellect_remove(input_data="\n记忆卡片标题: "+ memory_card["title"]+ "\n记忆卡片内容: " + memory_card["content"] + "\n记忆卡片发生时间: " + memory_card["time"],
+                                         output_format=output_format,
+                                         prompt_id ="0090",
+                                         version = None,
+                                         inference_save_case=False)
         try:
             result_1 = json.loads(extract_json(result))
             result_1.update({"time": ""})
@@ -172,27 +171,29 @@ class MemoryCardManager:
     ):
         # 0091 上传文件生成记忆卡片-memory_card_system_prompt
         # 0092 上传文件生成记忆卡片-time_prompt
-        demand = ""
         output_format = """
-输出格式
-```json
-{
-    "title": "标题内容",
-    "chapters": [
-        {
-            "title": "记忆卡片标题",
-            "content": "记忆卡片的内容"
-        },
-        ...
-    ]
-}
-```
+输出格式如下: 
+
+    ```json
+    {
+        "title": "标题内容",
+        "chapters": [
+            {
+                "title": "记忆卡片标题",
+                "content": "记忆卡片的内容"
+            },
+            ...
+        ]
+    }
+    ```
 """
         number_ = len(chat_history_str) // weight + 1
-        result = await inters.aintellect_2(input = f"It is suggested to output {number_} events" + chat_history_str,
-                                type=IntellectType.inference,prompt_id = "0091",demand = demand,version=None,
-                                output_format=output_format)
 
+        result = await inters.aintellect_remove(input_data=f"It is suggested to output {number_} events" + chat_history_str,
+                                         output_format=output_format,
+                                         prompt_id ="0091",
+                                         version = None,
+                                         inference_save_case=False)
 
         try:
             result_dict = json.loads(extract_json(result))
@@ -213,8 +214,7 @@ class MemoryCardManager:
             logger.error(f"错误详情 (errors()): {e.errors()}")
             logger.error(f"错误详情 (json()): {e.json(indent=2)}")
             raise ValidationError(log_)
-            
-            
+        
         chapters = result_dict["chapters"]
         output_format_2 = """
 输出格式
@@ -228,22 +228,25 @@ class MemoryCardManager:
 }
 ```
 """
-
-        
-
-        demand_2 = "24555"
-
+        tasks = []
         chapters = chapters
-        for i in chapters:
+        for chapter in chapters:
+            tasks.append(
+                inters.aintellect_remove(input_data=f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
+                                    output_format=output_format_2,
+                                    prompt_id ="0092",
+                                    version = None,
+                                    inference_save_case=False)
+            )
 
-            time_result = await inters.aintellect_2(input = f"# chat_history: {chat_history_str} # chapter:" + i.get("content"),
-                                type=IntellectType.inference,prompt_id = "0092",demand = demand_2,version=None,
-                                output_format=output_format_2
-                                )
 
-            time_dict = json.loads(extract_json(time_result))
-            i.update(time_dict)
 
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+
+        time_dicts = [json.loads(extract_json(result)) for result in results]
+
+        for i,chapter in enumerate(chapters):
+            chapter.update(time_dicts[i])
         return chapters
 
 
@@ -253,27 +256,29 @@ class MemoryCardManager:
         demand = ""
         output_format = """
 输出格式
-```json
-{
-    "title": "标题内容",
-    "chapters": [
-        {
-            "title": "记忆卡片标题",
-            "content": "记忆卡片的内容"
-        },
-        ...
-    ]
-}
-```
+
+    ```json
+    {
+        "title": "标题内容",
+        "chapters": [
+            {
+                "title": "记忆卡片标题",
+                "content": "记忆卡片的内容"
+            },
+            ...
+        ]
+    }
+    ```
 """
         number_ = len(chat_history_str) // weight + 1
 
 
-        result = await inters.aintellect_2(input = f"It is suggested to output {number_} events" + chat_history_str,
-                                type=IntellectType.inference,prompt_id = "0093",demand = demand,version=None,
-                                output_format=output_format)
-
-
+        result = await inters.aintellect_remove(input_data=f"It is suggested to output {number_} events" + chat_history_str,
+                                         output_format=output_format,
+                                         prompt_id ="0093",
+                                         version = None,
+                                         inference_save_case=False)
+        
         try:
             result_dict = json.loads(extract_json(result))
 
@@ -295,7 +300,7 @@ class MemoryCardManager:
             raise ValidationError(log_)
             
 
-            
+        chapters = result_dict["chapters"]
         output_format_2 = """
 输出格式
 ```json
@@ -309,50 +314,27 @@ class MemoryCardManager:
 ```
 """
 
-
-        chapters = result_dict["chapters"]
-        demand_2 = """
-我补充以下信息
-评分规则:  
-9-10 分    内容标准: 真实动人  
-7-9  分     内容标准: 细节丰富  
-5-7 分    内容标准: 内容完整  
-3-5  分     内容标准: 略显模糊  
-0-3 分    内容标准: 内容稀薄
-
-需要为记忆卡片做一个标签(tag) 四个字以内
-
-时间规则:
-- **时间格式 (二选一):**
-    1.  **具体日期:** `YYYY年MM月DD日` (未知月/日用 `--` 代替，如 `1995年07月--日`)
-    2.  **年龄段:** `N到M岁` (必须为十年跨度，如 `11到20岁`, `21到30岁`)
-    3. 优先**具体日期**
-
-例如:
-```json
-{time: "1995年07月--日", #此类优先
- score:分数(0-10),
- tag: "四字以内"}
-{time: "11到20岁",
- score:分数(0-10),
- tag: "四字以内"}
-{time: "2020年--月--日",
- score:分数(0-10),
- tag: "四字以内"}
-```
-"""
-
+        tasks = []
         chapters = chapters
+        for chapter in chapters:
+            tasks.append(
+                inters.aintellect_remove(input_data=f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
+                                    output_format=output_format_2,
+                                    prompt_id ="0094",
+                                    version = None,
+                                    inference_save_case=False)
+            )
 
-        for i in chapters:
-            time_result = await inters.aintellect_2(input = f"# chat_history: {chat_history_str} # chapter:" + i.get("content"),
-                                type=IntellectType.inference,prompt_id = "0094",demand = demand_2,version=None,
-                                output_format=output_format_2
-                                )
-            time_dict = json.loads(extract_json(time_result))
-            i.update(time_dict)
-            i.update({"topic": 0})
+
+
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+
+        time_dicts = [json.loads(extract_json(result)) for result in results]
+
+        for i,chapter in enumerate(chapters):
+            chapter.update(time_dicts[i])
+            chapter.update({"topic": 0})
         return chapters
-    
+
 
 

@@ -35,8 +35,7 @@ app.add_middleware(
 # --- End CORS Configuration ---
 
 
-da = DigitalAvatar(model_name = os.getenv("llm_model_name"),
-                              api_key = os.getenv("llm_api_key"))
+da = DigitalAvatar()
 
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
@@ -149,8 +148,10 @@ async def push_order(demand:str, prompt_id: str, key: str,action_type = "train")
                             action_type = action_type
                         )
     print(result,'result')
-    return {"message":"success"}
+    return {"message":"success",
+            "result":result}
 
+# 可以考虑直接summary 作为单独功能拆出来
 
 
 if __name__ == "__main__":

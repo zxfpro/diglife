@@ -6,8 +6,7 @@ from diglife.models import BriefResponse, MemoryCards, AvatarXGRequests
 import os
 
 
-da = DigitalAvatar(model_name = os.getenv("llm_model_name"),
-                              api_key = os.getenv("llm_api_key"))
+da = DigitalAvatar()
 
 router = APIRouter(tags=["digital_avatar"])
 
