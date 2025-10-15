@@ -456,7 +456,7 @@ wheels = [
 
 [[package]]
 name = "diglife"
-version = "0.2.6"
+version = "0.2.7"
 source = { virtual = "." }
 dependencies = [
     { name = "anyio" },
@@ -482,7 +482,7 @@ requires-dist = [
     { name = "llama-index-vector-stores-qdrant", specifier = ">=0.6.1" },
     { name = "llmada", specifier = ">=1.1.1" },
     { name = "loguru", specifier = ">=0.7.3" },
-    { name = "prompt-writing-assistant", specifier = "==0.2.7" },
+    { name = "prompt-writing-assistant", specifier = "==0.3.1" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-tornasync", specifier = ">=0.6.0.post2" },
@@ -1729,7 +1729,7 @@ wheels = [
 
 [[package]]
 name = "prompt-writing-assistant"
-version = "0.2.7"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1745,9 +1745,9 @@ dependencies = [
     { name = "toml" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/89/19/d4efc6291277e1863941ad50fda165d1b4cdb9d6d479f99a377ef20e7137/prompt_writing_assistant-0.2.7.tar.gz", hash = "sha256:4535af90994201fe19cb0bfeaf5402664b6842871e9d0edf9f9e3d087f277887", size = 34826 }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/2e/1835ff693654c0a33d1b98c03d643a674aeecac082a7df3fcf435893d196/prompt_writing_assistant-0.3.1.tar.gz", hash = "sha256:60976efb9ca057ac261331c813f3350b99706cce8fee2744c39f09f5a3432646", size = 32947 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/c4/c54b5d53257acb51d210308fdfe216910a2f70df114eb5092f6566db5ad1/prompt_writing_assistant-0.2.7-py3-none-any.whl", hash = "sha256:0266d569ab41126addfe37a6fa05b91861bb1bc623493b97f61d4ff2209be385", size = 35942 },
+    { url = "https://files.pythonhosted.org/packages/37/bf/c5bb19aeb3af318cef79ff897500667cedd28b28f7e760932cbcace1da80/prompt_writing_assistant-0.3.1-py3-none-any.whl", hash = "sha256:47eddb60bd574237b8315d73f4dfc7abd6adbe9727f4e20afa391f83b77ea42d", size = 34247 },
 ]
 
 [[package]]

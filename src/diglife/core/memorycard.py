@@ -33,7 +33,7 @@ class MemoryCardManager:
 
     @staticmethod
     def get_score(
-        S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.1
+        S: list[int], total_score: int = 0, epsilon: float = 0.001, K: float = 0.01
     ) -> float:
         # 人生主题分值计算
         # 一个根据 列表分数 计算总分数的方法 如[1,4,5,7,1,5] 其中元素是 1-10 的整数
@@ -77,8 +77,13 @@ class MemoryCardManager:
                 inters.aintellect_2(input = memory_card,type=IntellectType.inference,prompt_id = "0088",demand = demand,version=None,
                                     output_format=output_format)
             )
-        results = await asyncio.gather(*tasks, return_exceptions=False)
 
+        inters.aintellect_remove(input_data=,output_format=,prompt_id = ,
+                                 version = None,
+                                 inference_save_case=False)
+
+        results = await asyncio.gather(*tasks, return_exceptions=False)
+        
         result_1 = [json.loads(extract_json(result)) for result in results]
         try:
             for score in result_1:
