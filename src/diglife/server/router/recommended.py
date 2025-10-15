@@ -21,6 +21,25 @@ ep = EmbeddingPool()
 recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
 recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
 
+
+async def aget_(url = ""):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(url)
+            response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
+            
+            print(f"Status Code: {response.status_code}")
+            print(f"Response Body: {response.json()}") # 假设返回的是 JSON
+            return response.json()
+        except httpx.HTTPStatusError as e:
+            print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+        except httpx.RequestError as e:
+            print(f"An error occurred while requesting {e.request.url!r}: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+    return None
+
+
 @router.post(
     "/update",  # 推荐使用POST请求进行数据更新
     summary="更新或添加文本嵌入",
@@ -44,7 +63,6 @@ def recommended_update(item: UpdateItem):
     数字分身id
     2
     """
-    # TODO 需要一个反馈状态
     try:
         if item.type in [0, 1, 2]:  # 上传的是卡片
             ep.update(text=item.text, id=item.id, type=item.type)
@@ -70,34 +88,11 @@ def recommended_update(item: UpdateItem):
 
 @router.post("/delete", response_model=DeleteResponse, description="delete")
 async def delete_server(request: DeleteRequest):
-
-    logger.info("running delete_server")
-
-    # TODO 需要一个反馈状态
     result = ep.delete(id=request.id)  # 包裹的内核函数
-
     ########
     return DeleteResponse(
         status="success",
     )
-
-
-async def aget_(url = ""):
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(url)
-            response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
-            
-            print(f"Status Code: {response.status_code}")
-            print(f"Response Body: {response.json()}") # 假设返回的是 JSON
-            return response.json()
-        except httpx.HTTPStatusError as e:
-            print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-        except httpx.RequestError as e:
-            print(f"An error occurred while requesting {e.request.url!r}: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-    return None
 
 @router.post(
     "/search_biographies_and_cards",
@@ -111,7 +106,6 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
         user_profile_id_to_fetch = query_item.user_id
         memory_info = await aget_(url = user_callback_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
         user_brief = '\n'.join([i.get('content') for i in memory_info['data']["memoryCards"][:4]])
-
 
         result = ep.search_bac(query=user_brief)
 

@@ -5,6 +5,7 @@ load_dotenv(".env", override=True)
 
 from .log import Log
 import logging
-logger = Log(level=logging.INFO,
-             console_level = logging.WARNING, 
+logger = Log(console_level = logging.WARNING, 
              log_file_name="app.log").logger
+
+log_level = logger.critical

@@ -8,7 +8,6 @@ from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
-from diglife.server.router.optimize import router as optimize_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
 import os
 
@@ -38,11 +37,9 @@ app.add_middleware(
 da = DigitalAvatar(model_name = os.getenv("llm_model_name"),
                               api_key = os.getenv("llm_api_key"))
 
-running_log = logger.info
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
-app.include_router(optimize_router, prefix="/optimize")
 
 app.include_router(biography_router)
 
@@ -76,7 +73,6 @@ async def root():
 
 @app.post("/life_topic_score")
 async def life_topic_score_server(request: LifeTopicScoreRequest):
-    running_log("running life_topic_score")
     try:
         result = MemoryCardManager.get_score(
             S=request.S_list,
@@ -98,7 +94,6 @@ async def life_topic_score_server(request: LifeTopicScoreRequest):
 
 @app.post("/life_aggregate_scheduling_score")
 async def life_aggregate_scheduling_score_server(request: ScoreRequest):
-    running_log("running life_aggregate_scheduling_score")
     try:
         result = MemoryCardManager.get_score_overall(
             request.S_list,
@@ -124,7 +119,6 @@ async def user_overview_server(request: UseroverviewRequests):
     """
     用户概述
     """
-    running_log("running user_overview_server")
     memory_cards = request.model_dump()["memory_cards"]
     result = await da.auser_overview(
         action = request.action,
@@ -139,7 +133,6 @@ async def user_overview_server(request: UseroverviewRequests):
 async def user_relationship_extraction_server(
     request: UserRelationshipExtractionRequest,
 ):
-    running_log("running user_relationship_extraction_server")
     result = await da.auser_relationship_extraction(text=request.text)
     return {"relation": result}
 

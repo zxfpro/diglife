@@ -12,7 +12,7 @@ table_name="prompts_table"
 
 from .utils import memoryCards2str
 from diglife import logger
-running_log = logger.info
+
 
 ###
 
@@ -46,9 +46,9 @@ class DigitalAvatar:
 
         prompt, _ = inters.get_prompts_from_sql(prompt_id="0099")
         input_data = "\n操作方案:\n" + action + "\n旧人物性格:\n" + old_character +"\n记忆卡片:\n" +  memoryCards_str
-        super_log(input_data, "input_data",log_ = running_log)
+        
         result = await self.bx.aproduct(prompt + input_data)
-        super_log(result, "output_data",log_ = running_log)
+        
         return extract_article(result)
 
     
@@ -61,10 +61,10 @@ class DigitalAvatar:
 
         prompt, _ = inters.get_prompts_from_sql(prompt_id="0098")
         input_data = "聊天历史:\n" + memoryCards_str
-        super_log(input_data, "input_data",log_ = running_log) # log_ = logger.debug
+        
         result = await self.bx.aproduct(prompt + input_data)
-        super_log(result, "output_data",log_ = running_log)
-
+        
+        dict_ = json.loads(extract_json(result))
         return json.loads(extract_json(result))
 
     async def auser_relationship_extraction(self,text: str) -> dict:
@@ -73,9 +73,9 @@ class DigitalAvatar:
         """
         prompt, _ = inters.get_prompts_from_sql(prompt_id="0097")
         input_data = "聊天历史" + text
-        super_log(input_data, "input_data",log_ = running_log)
+        
         result = await self.bx.aproduct(prompt + input_data)
-        super_log(result, "output_data",log_ = running_log)
+        
 
         return json.loads(extract_json(result))
 
@@ -88,14 +88,13 @@ class DigitalAvatar:
         memoryCards_str, _ = memoryCards2str(memory_cards)
         # prompt, _ = inters.get_prompts_from_sql(prompt_id="0096", table_name=table_name)
         input_data = "\n操作方案:\n" + action + "\n旧概述文本:\n" + old_overview +"\n记忆卡片:\n" +  memoryCards_str
-        super_log(input_data, "input_data",log_ = running_log)
+        
         result = inters.intellect_3(input_data,
                            type = IntellectType.inference,
                            prompt_id = "0096",
                            demand = "用户的概述太多了, 还是要保持在100字左右?",
                            version = version,
                            )
-        super_log(result, "output_data",log_ = running_log)
 
         return result
 

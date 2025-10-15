@@ -3,6 +3,7 @@ fastapi>=0.116.1
 llama-index>=0.12.30
 llama-index-vector-stores-qdrant>=0.6.1
 llmada>=1.1.1
+loguru>=0.7.3
 prompt-writing-assistant==0.2.7
 pytest>=8.4.2
 pytest-asyncio>=1.1.0

@@ -1,0 +1,18 @@
+2025-10-14 19:56:49,364 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:84 - Started server process [98736]
+2025-10-14 19:56:49,365 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:48 - Waiting for application startup.
+2025-10-14 19:56:49,365 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:62 - Application startup complete.
+2025-10-14 19:57:00,019 - uvicorn.access - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/protocols/http/h11_impl.py:473 - 127.0.0.1:53295 - "POST /memory_card/score HTTP/1.1" 200
+2025-10-14 19:58:00,856 - uvicorn.access - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/protocols/http/h11_impl.py:473 - 127.0.0.1:53467 - "POST /memory_card/merge HTTP/1.1" 200
+2025-10-14 19:58:58,528 - uvicorn.access - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/protocols/http/h11_impl.py:473 - 127.0.0.1:53608 - "POST /memory_card/polish HTTP/1.1" 200
+2025-10-14 19:59:58,950 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:264 - Shutting down
+2025-10-14 19:59:59,053 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:67 - Waiting for application shutdown.
+2025-10-14 19:59:59,053 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:76 - Application shutdown complete.
+2025-10-14 19:59:59,053 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:94 - Finished server process [98736]
+2025-10-14 20:00:06,989 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:84 - Started server process [258]
+2025-10-14 20:00:06,989 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:48 - Waiting for application startup.
+2025-10-14 20:00:06,989 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:62 - Application startup complete.
+2025-10-14 20:00:18,744 - uvicorn.access - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/protocols/http/h11_impl.py:473 - 127.0.0.1:53842 - "POST /memory_card/score HTTP/1.1" 200
+2025-10-14 20:04:32,312 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:264 - Shutting down
+2025-10-14 20:04:32,415 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:67 - Waiting for application shutdown.
+2025-10-14 20:04:32,417 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/lifespan/on.py:76 - Application shutdown complete.
+2025-10-14 20:04:32,418 - uvicorn.error - INFO - /Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/uvicorn/server.py:94 - Finished server process [258]

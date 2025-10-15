@@ -1,4 +1,4 @@
-
+# 1 日志不打在server中 不打在工具中, 只打在core 中
 from diglife.utils import extract_json, extract_article, super_log
 from prompt_writing_assistant.prompt_helper import Intel,IntellectType
 from llmada.core import BianXieAdapter, ArkAdapter
@@ -11,7 +11,7 @@ inters = Intel(model_name = "doubao-1-5-pro-256k-250115")
 table_name="prompts_table"
 from diglife import logger
 from pydantic import BaseModel, Field, model_validator
-
+from pydantic import ValidationError
 
 class MemoryCardManager:
     def __init__(self,model_name: str = "gemini-2.5-flash-preview-05-20-nothinking",
@@ -29,7 +29,7 @@ class MemoryCardManager:
         计算人生总进度
         """
         x = sum(S)
-        return math.sqrt((1/600) * x)  * 100
+        return math.sqrt((1/601) * x)  * 100
 
     @staticmethod
     def get_score(
@@ -83,9 +83,15 @@ class MemoryCardManager:
         try:
             for score in result_1:
                 MemoryCardScore(**score)
-        except:
-            # log
-            pass
+        except ValidationError as e:
+            log_ = "记忆卡片打分 - 大模型生成的格式未通过校验"
+            logger.error(log_)
+            logger.error(f"错误类型: {type(e)}")
+            logger.error(f"错误信息: {e}")
+            logger.error(f"错误详情 (errors()): {e.errors()}")
+            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+            raise ValidationError(log_)
+        
         return result_1
 
     async def amemory_card_merge(self, memory_cards: list[str]):
@@ -110,17 +116,20 @@ class MemoryCardManager:
         try:
             result_1 = json.loads(extract_json(result))
             MemoryCard(**result_1)
-        except Exception as e:
-            print(e)
-
+        except ValidationError as e:
+            log_ = "记忆卡片合并 - 大模型生成的格式未通过校验"
+            logger.error(log_)
+            logger.error(f"错误类型: {type(e)}")
+            logger.error(f"错误信息: {e}")
+            logger.error(f"错误详情 (errors()): {e.errors()}")
+            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+            raise ValidationError(log_)
+            
         return result_1
 
     async def amemory_card_polish(self, memory_card: dict) -> dict:
         # 记忆卡片润色
         # TODO 要将时间融入到内容中润色
-        # memory_card_polish_prompt, _ = inters.get_prompts_from_sql(
-        #     prompt_id="0090", table_name=table_name
-        # )
 
         demand = "124"
         output_format = """
@@ -140,8 +149,15 @@ class MemoryCardManager:
             result_1 = json.loads(extract_json(result))
             result_1.update({"time": ""})
             MemoryCard(**result_1)
-        except Exception as e:
-            print(e)
+        except ValidationError as e:
+            log_ = "记忆卡片润色 - 大模型生成的格式未通过校验"
+            logger.error(log_)
+            logger.error(f"错误类型: {type(e)}")
+            logger.error(f"错误信息: {e}")
+            logger.error(f"错误详情 (errors()): {e.errors()}")
+            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+            raise ValidationError(log_)
+            
 
         return result_1
 
@@ -184,8 +200,15 @@ class MemoryCardManager:
                 title: str
                 chapters: list[Chapter]
             Output(**result_dict)
-        except Exception as e:
-            print(e)
+        except ValidationError as e:
+            log_ = "上传文件生成记忆卡片 - 大模型生成的格式未通过校验"
+            logger.error(log_)
+            logger.error(f"错误类型: {type(e)}")
+            logger.error(f"错误信息: {e}")
+            logger.error(f"错误详情 (errors()): {e.errors()}")
+            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+            raise ValidationError(log_)
+            
             
         chapters = result_dict["chapters"]
         output_format_2 = """
@@ -239,9 +262,12 @@ class MemoryCardManager:
 ```
 """
         number_ = len(chat_history_str) // weight + 1
+
+
         result = await inters.aintellect_2(input = f"It is suggested to output {number_} events" + chat_history_str,
                                 type=IntellectType.inference,prompt_id = "0093",demand = demand,version=None,
                                 output_format=output_format)
+
 
         try:
             result_dict = json.loads(extract_json(result))
@@ -254,8 +280,16 @@ class MemoryCardManager:
                 title: str
                 chapters: list[Chapter]
             Output(**result_dict)
-        except Exception as e:
-            print(e)
+        except ValidationError as e:
+            log_ = "聊天历史生成记忆卡片 - 大模型生成的格式未通过校验"
+            logger.error(log_)
+            logger.error(f"错误类型: {type(e)}")
+            logger.error(f"错误信息: {e}")
+            logger.error(f"错误详情 (errors()): {e.errors()}")
+            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+            raise ValidationError(log_)
+            
+
             
         output_format_2 = """
 输出格式
@@ -314,3 +348,6 @@ class MemoryCardManager:
             i.update(time_dict)
             i.update({"topic": 0})
         return chapters
+    
+
+

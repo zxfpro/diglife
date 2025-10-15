@@ -1,0 +1,11 @@
+2025-10-14 19:48:51.163 | INFO     | diglife.server.__main__:lifespan:59 - FastAPI 应用启动 - Loguru 正在捕获标准 logging 模块的日志
+2025-10-14 19:49:13.290 | INFO     | diglife.server.__main__:lifespan:59 - FastAPI 应用启动 - Loguru 正在捕获标准 logging 模块的日志
+2025-10-14 19:49:13.291 | INFO     | diglife.server.__main__:lifespan:69 - FastAPI 应用启动 - Loguru
+2025-10-14 19:49:13.291 | INFO     | logging:callHandlers:1736 - Application startup complete.
+2025-10-14 19:49:13.291 | INFO     | logging:callHandlers:1736 - Application startup complete.
+2025-10-14 19:49:22.411 | INFO     | logging:callHandlers:1736 - 127.0.0.1:51998 - "POST /memory_card/score HTTP/1.1" 200
+2025-10-14 19:56:36.688 | INFO     | logging:callHandlers:1736 - Shutting down
+2025-10-14 19:56:36.689 | INFO     | logging:callHandlers:1736 - Shutting down
+2025-10-14 19:56:36.793 | INFO     | logging:callHandlers:1736 - Waiting for application shutdown.
+2025-10-14 19:56:36.793 | INFO     | logging:callHandlers:1736 - Waiting for application shutdown.
+2025-10-14 19:56:36.794 | INFO     | logging:callHandlers:1736 - Application shutdown complete.
