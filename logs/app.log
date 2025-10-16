@@ -6861,3 +6861,11 @@ vector
 2025-10-16 16:02:11,764 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
 2025-10-16 16:02:11,770 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
 2025-10-16 16:02:11,782 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:04:19,142 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:04:19,167 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:04:19,171 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:04:19,184 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:04:21,869 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:04:21,895 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:04:21,905 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:04:21,911 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
