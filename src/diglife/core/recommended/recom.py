@@ -54,7 +54,7 @@ class Recommend():
         user_brief = user_brief or "这是一个简单的记忆卡片"
 
         result = self.ep.search_bac(query=user_brief) # 假如top_k = 1000
-        print(len(result),'result')
+
         # 是否记录了该用户, 如果没记录, 创建空列表
         if self.recommended_biographies_cache.get(user_id):
             clear_result = [i for i in result if i.get("id") not in self.recommended_biographies_cache.get(user_id)]
@@ -67,12 +67,9 @@ class Recommend():
         self.recommended_biographies_cache[user_id] = list(
             set(self.recommended_biographies_cache[user_id])
         )
-        print(clear_result,'clear_result')
-        print(self.recommended_biographies_cache,'self.recommended_biographies_cache')
 
         reset_length = recommended_biographies_cache_max_leng if recommended_biographies_cache_max_leng < len(result) else len(result) -1
-        print(len(self.recommended_biographies_cache[user_id]),'len(self.recommended_biographies_cache[user_id])')
-        print(reset_length,'reset_length')
+
         if len(self.recommended_biographies_cache[user_id]) > reset_length:
             self.recommended_biographies_cache[user_id] = []
         return clear_result
@@ -94,11 +91,15 @@ class Recommend():
             self.recommended_figure_cache[user_id] = []
             clear_result = result
 
+        clear_result = clear_result[:recommended_top_k]
         self.recommended_figure_cache[user_id] += [i.get("id") for i in result]
         self.recommended_figure_cache[user_id] = list(
             set(self.recommended_figure_cache[user_id])
         )
-        if len(self.recommended_figure_cache[user_id]) > recommended_cache_max_leng:
+
+        reset_length = recommended_cache_max_leng if recommended_cache_max_leng < len(result) else len(result) -1
+
+        if len(self.recommended_figure_cache[user_id]) > reset_length:
             self.recommended_figure_cache[user_id] = []
         return clear_result
 
