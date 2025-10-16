@@ -54,7 +54,7 @@ class Recommend():
         user_brief = user_brief or "这是一个简单的记忆卡片"
 
         result = self.ep.search_bac(query=user_brief) # 假如top_k = 1000
-
+        print(len(result),'result')
         # 是否记录了该用户, 如果没记录, 创建空列表
         if self.recommended_biographies_cache.get(user_id):
             clear_result = [i for i in result if i.get("id") not in self.recommended_biographies_cache.get(user_id)]
@@ -69,6 +69,7 @@ class Recommend():
         )
         print(clear_result,'clear_result')
         print(self.recommended_biographies_cache,'self.recommended_biographies_cache')
+        # self.recommended_biographies_cache < len(result)
         print(len(self.recommended_biographies_cache[user_id]),'len(self.recommended_biographies_cache[user_id])')
         if len(self.recommended_biographies_cache[user_id]) > recommended_biographies_cache_max_leng:
             self.recommended_biographies_cache[user_id] = []
