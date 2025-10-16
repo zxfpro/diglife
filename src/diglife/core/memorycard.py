@@ -334,6 +334,8 @@ class MemoryCardManager:
         for i,chapter in enumerate(chapters):
             chapter.update(time_dicts[i])
             chapter.update({"topic": 0})
+
+        super_log(chapters,"聊天历史生成记忆卡片")
         return chapters
 
 
