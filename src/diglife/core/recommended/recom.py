@@ -69,9 +69,11 @@ class Recommend():
         )
         print(clear_result,'clear_result')
         print(self.recommended_biographies_cache,'self.recommended_biographies_cache')
-        # self.recommended_biographies_cache < len(result)
+
+        reset_length = len(self.recommended_biographies_cache[user_id]) if len(self.recommended_biographies_cache[user_id]) < len(result) else len(result)
         print(len(self.recommended_biographies_cache[user_id]),'len(self.recommended_biographies_cache[user_id])')
-        if len(self.recommended_biographies_cache[user_id]) > recommended_biographies_cache_max_leng:
+        print(reset_length,'reset_length')
+        if reset_length > recommended_biographies_cache_max_leng:
             self.recommended_biographies_cache[user_id] = []
         return clear_result
 
