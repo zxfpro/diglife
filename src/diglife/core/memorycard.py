@@ -25,7 +25,11 @@ class MemoryCardManager:
         计算人生总进度
         """
         x = sum(S)
-        return math.sqrt((1/601) * x)  * 100
+        
+        S_r = [math.sqrt((1/101) * i)/6 for i in S]
+        return sum(S_r)
+
+        # return math.sqrt((1/601) * x)  * 100
 
     @staticmethod
     def get_score(
