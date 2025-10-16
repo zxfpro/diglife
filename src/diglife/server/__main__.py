@@ -151,6 +151,15 @@ async def push_order(demand:str, prompt_id: str, key: str,action_type = "train")
     return {"message":"success",
             "result":result}
 
+@app.get("/get_latest_prompt")
+async def get_latest_prompt(prompt_id: str):
+
+    result = intels.get_prompts_from_sql(
+                            prompt_id = prompt_id
+                        )
+    return {"message":"success",
+            "result":result}
+
 # 可以考虑直接summary 作为单独功能拆出来
 
 

@@ -1,7 +1,6 @@
 
 from fastapi import APIRouter, HTTPException, status
 from typing import Dict, Any
-from diglife.embedding_pool import EmbeddingPool
 from diglife.core import BiographyGenerate
 from diglife.models import BiographyRequest, BiographyResult
 from diglife import logger
@@ -15,7 +14,7 @@ router = APIRouter(tags=["biography"])
 
 user_callback_url = os.getenv("user_callback_url")
 
-ep = EmbeddingPool()
+
 bg = BiographyGenerate(model_name = os.getenv("llm_model_name") ,
                               api_key = os.getenv("llm_api_key"))
 

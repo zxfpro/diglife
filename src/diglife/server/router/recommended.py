@@ -3,42 +3,12 @@
 
 from diglife.models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Dict, Any
-from diglife.embedding_pool import EmbeddingPool
-
+from diglife.core.recommended import Recommend
 from diglife import logger
-import os
-import httpx
 
 router = APIRouter(tags=["recommended"])
 
-
-recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
-recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
-user_callback_url = os.getenv("user_callback_url")
-
-ep = EmbeddingPool()
-recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
-recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
-
-
-async def aget_(url = ""):
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(url)
-            response.raise_for_status()  # 如果状态码是 4xx 或 5xx，会抛出 HTTPStatusError 异常
-            
-            print(f"Status Code: {response.status_code}")
-            print(f"Response Body: {response.json()}") # 假设返回的是 JSON
-            return response.json()
-        except httpx.HTTPStatusError as e:
-            print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-        except httpx.RequestError as e:
-            print(f"An error occurred while requesting {e.request.url!r}: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-    return None
-
+rep = Recommend()
 
 @router.post(
     "/update",  # 推荐使用POST请求进行数据更新
@@ -65,7 +35,7 @@ def recommended_update(item: UpdateItem):
     """
     try:
         if item.type in [0, 1, 2]:  # 上传的是卡片
-            ep.update(text=item.text, id=item.id, type=item.type)
+            rep.update(text=item.text, id=item.id, type=item.type)
         else:
             logger.error(f"Error updating EmbeddingPool for ID '{item.id}': {e}")
             raise HTTPException(
@@ -88,7 +58,7 @@ def recommended_update(item: UpdateItem):
 
 @router.post("/delete", response_model=DeleteResponse, description="delete")
 async def delete_server(request: DeleteRequest):
-    result = ep.delete(id=request.id)  # 包裹的内核函数
+    rep.delete(id=request.id)  # 包裹的内核函数
     ########
     return DeleteResponse(
         status="success",
@@ -102,35 +72,8 @@ async def delete_server(request: DeleteRequest):
 )
 async def recommended_biographies_and_cards(query_item: QueryItem):
     try:
-
-        user_profile_id_to_fetch = query_item.user_id
-        memory_info = await aget_(url = user_callback_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
-        user_brief = '\n'.join([i.get('content') for i in memory_info['data']["memoryCards"][:4]])
-
-        result = ep.search_bac(query=user_brief)
-
-        if recommended_biographies_cache.get(query_item.user_id):
-            clear_result = [
-                i
-                for i in result
-                if i.get("id")
-                not in recommended_biographies_cache.get(query_item.user_id)
-            ]
-        else:
-            recommended_biographies_cache[query_item.user_id] = []
-            clear_result = result
-
-        recommended_biographies_cache[query_item.user_id] += [
-            i.get("id") for i in result
-        ]
-        recommended_biographies_cache[query_item.user_id] = list(
-            set(recommended_biographies_cache[query_item.user_id])
-        )
-        if (
-            len(recommended_biographies_cache[query_item.user_id])
-            > recommended_biographies_cache_max_leng
-        ):
-            recommended_biographies_cache[query_item.user_id] = []
+        clear_result = await rep.recommended_biographies_and_cards(user_id = query_item.user_id,
+             )
 
         return {
             "status": "success",
@@ -147,43 +90,15 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
             detail=f"Failed to perform search: {e}",
         )
 
-
-
 @router.post(
     "/search_figure_person",
     description="搜索数字分身的",
 )
 async def recommended_figure_person(query_item: QueryItem):
     try:
-        user_profile_id_to_fetch = query_item.user_id
-        avatar_info = await aget_(url = user_callback_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
-        if avatar_info["code"] == 200:
-            user_brief = avatar_info["data"].get("avatarDesc")
-        else:
-            user_brief = "这是一个简单的人"
 
-        result = ep.search_figure_person(query=user_brief)  # 100+
-
-        if recommended_figure_cache.get(query_item.user_id):
-            # 不需要创建
-            clear_result = [
-                i
-                for i in result
-                if i.get("id") not in recommended_figure_cache.get(query_item.user_id)
-            ]
-        else:
-            recommended_figure_cache[query_item.user_id] = []
-            clear_result = result
-
-        recommended_figure_cache[query_item.user_id] += [i.get("id") for i in result]
-        recommended_figure_cache[query_item.user_id] = list(
-            set(recommended_figure_cache[query_item.user_id])
-        )
-        if (
-            len(recommended_figure_cache[query_item.user_id])
-            > recommended_cache_max_leng
-        ):
-            recommended_figure_cache[query_item.user_id] = []
+        clear_result = await rep.recommended_figure_person(user_id = query_item.user_id,
+             )
         return {
             "status": "success",
             "result": clear_result,

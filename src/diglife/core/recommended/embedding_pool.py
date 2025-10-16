@@ -5,7 +5,7 @@ from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.core import VectorStoreIndex
 from llama_index.core import Document
-from diglife.embedding_model import VolcanoEmbedding
+from .embedding_model import VolcanoEmbedding
 from diglife import logger
 
 from llama_index.core.vector_stores import (
@@ -103,8 +103,6 @@ class EmbeddingPool:
             similarity_top_k=int(os.getenv("similarity_top_k", 10)),
         )
 
-        logger.debug("== reload start ==")
-        logger.debug(self.postprocess)
 
     def update(self, text: str, id: str, type: int) -> str:
         doc = Document(

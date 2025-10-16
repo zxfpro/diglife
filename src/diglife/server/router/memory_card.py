@@ -1,12 +1,10 @@
 from fastapi import APIRouter
 from diglife.core import MemoryCardManager
-from diglife.embedding_pool import EmbeddingPool
 from diglife.models import MemoryCardsRequest, MemoryCard, MemoryCards, MemoryCardsGenerate, ChatHistoryOrText
 import os
 
 router = APIRouter(tags=["memory_card"])
 
-ep = EmbeddingPool()
 MCmanager = MemoryCardManager()
 
 @router.post("/score")

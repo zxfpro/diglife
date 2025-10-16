@@ -456,7 +456,7 @@ wheels = [
 
 [[package]]
 name = "diglife"
-version = "0.2.8"
+version = "0.2.10"
 source = { virtual = "." }
 dependencies = [
     { name = "anyio" },
@@ -482,7 +482,7 @@ requires-dist = [
     { name = "llama-index-vector-stores-qdrant", specifier = ">=0.6.1" },
     { name = "llmada", specifier = ">=1.1.1" },
     { name = "loguru", specifier = ">=0.7.3" },
-    { name = "prompt-writing-assistant", specifier = "==0.3.1" },
+    { name = "prompt-writing-assistant", specifier = "==0.3.3" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-tornasync", specifier = ">=0.6.0.post2" },
@@ -1729,7 +1729,7 @@ wheels = [
 
 [[package]]
 name = "prompt-writing-assistant"
-version = "0.3.1"
+version = "0.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1745,9 +1745,9 @@ dependencies = [
     { name = "toml" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/2e/1835ff693654c0a33d1b98c03d643a674aeecac082a7df3fcf435893d196/prompt_writing_assistant-0.3.1.tar.gz", hash = "sha256:60976efb9ca057ac261331c813f3350b99706cce8fee2744c39f09f5a3432646", size = 32947 }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/29/e8608d3f3f91404adca88e00aa388255647698f55fdd4d34add3556581b7/prompt_writing_assistant-0.3.3.tar.gz", hash = "sha256:3d39f8adb368ab4faa7871e33e095764c88989991144232b58442f89870090ea", size = 33121 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/37/bf/c5bb19aeb3af318cef79ff897500667cedd28b28f7e760932cbcace1da80/prompt_writing_assistant-0.3.1-py3-none-any.whl", hash = "sha256:47eddb60bd574237b8315d73f4dfc7abd6adbe9727f4e20afa391f83b77ea42d", size = 34247 },
+    { url = "https://files.pythonhosted.org/packages/49/05/72437a845dec54af3f964217378262f5bb46c1eff6f7aa2f6596a6fa094b/prompt_writing_assistant-0.3.3-py3-none-any.whl", hash = "sha256:924c9c90125083d6719061b24d05e29d8e7199fa586f169a41b5f25f6e6fc976", size = 34393 },
 ]
 
 [[package]]
