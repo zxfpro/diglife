@@ -250,6 +250,7 @@ class BiographyGenerate:
 ```json
 {
     "title": 标题
+    "description": 传记的简介
     "content": 传记正文
 }
 ```
@@ -261,7 +262,6 @@ class BiographyGenerate:
                                     prompt_id ="0095",
                                     version = None,
                                     inference_save_case=False)
-
         result = json.loads(extract_json(result))
         return result
 

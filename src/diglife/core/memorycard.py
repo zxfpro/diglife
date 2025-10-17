@@ -83,8 +83,9 @@ class MemoryCardManager:
 
 
         results = await asyncio.gather(*tasks, return_exceptions=False)
-        
+        print(results)
         result_1 = [json.loads(extract_json(result)) for result in results]
+        
         try:
             for score in result_1:
                 MemoryCardScore(**score)
@@ -238,7 +239,7 @@ class MemoryCardManager:
             tasks.append(
                 inters.aintellect_remove(input_data=f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
                                     output_format=output_format_2,
-                                    prompt_id ="0092",
+                                    prompt_id ="0094",# 
                                     version = None,
                                     inference_save_case=False)
             )
@@ -275,9 +276,9 @@ class MemoryCardManager:
     ```
 """
         number_ = len(chat_history_str) // weight + 1
+        print(number_,'number_number_')
 
-
-        result = await inters.aintellect_remove(input_data=f"It is suggested to output {number_} events" + chat_history_str,
+        result = await inters.aintellect_remove(input_data=f"建议输出卡片数量:  {number_} 个记忆卡片" + chat_history_str,
                                          output_format=output_format,
                                          prompt_id ="0093",
                                          version = None,
@@ -334,6 +335,7 @@ class MemoryCardManager:
         results = await asyncio.gather(*tasks, return_exceptions=False)
 
         time_dicts = [json.loads(extract_json(result)) for result in results]
+        super_log(time_dicts,"time_dicts")
 
         for i,chapter in enumerate(chapters):
             chapter.update(time_dicts[i])

@@ -6893,3 +6893,663 @@ vector
 2025-10-16 16:07:11,617 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
 2025-10-16 16:07:11,619 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
 2025-10-16 16:07:11,623 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:15:19,224 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:15:20,268 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:20:26,131 - INFO - root - _generate_biography - biography:53 - Task 66e061fa-08c2-4483-9f4f-71c293e8c0e4: Starting generation 
+2025-10-16 16:20:45,995 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:10,054 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:23,682 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:28,667 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:28,687 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第一章 葫芦岛小村庄的诞生
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第二章 山里野孩子的自由时光
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第三章 繁星下的宇宙之梦
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第四章 县城高中的求知环境
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第五章 天文物理兴趣的燃起
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第六章 全身心投入学科学习
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第七章 户外运动想法的萌生
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第八章 虎跳峡的挑战之旅
+2025-10-16 16:21:28,688 - INFO - root - _generate_biography - biography:81 - Creating task for chapter: 第九章 徒步的收获与新起点
+2025-10-16 16:21:28,862 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:28,961 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,060 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,206 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,283 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,352 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,415 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,490 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:29,697 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:36,863 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:36,864 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:36,912 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:36,912 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:37,103 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:37,104 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:37,710 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:37,710 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:37,876 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:37,877 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:37,892 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:37,892 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:38,281 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:38,282 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:39,025 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:39,025 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:39,087 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:39,088 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 16:21:42,249 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:42,784 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:43,424 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:43,597 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:43,916 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:44,173 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:44,526 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:44,713 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:45,211 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:45,227 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:45,747 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:45,915 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:46,252 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:46,456 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:46,529 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:47,026 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:47,178 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:47,642 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:47,670 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:47,865 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:48,356 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:48,373 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:49,069 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:50,105 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:50,825 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:51,569 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:52,756 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:21:52,838 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: GET http://182.92.107.224:7000/api/inner/notifyBiographyStatus?generateTaskId=66e061fa-08c2-4483-9f4f-71c293e8c0e4&status=1 "HTTP/1.1 200 "
+2025-10-16 16:35:06,371 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:35:06,400 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:35:06,404 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:35:06,409 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:35:13,108 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:35:13,140 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:35:13,149 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:35:13,155 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:35:15,672 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:35:15,698 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:35:15,703 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:35:15,717 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:35:18,960 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:35:18,993 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:35:18,999 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:35:19,010 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:35:21,524 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:35:21,550 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:35:21,559 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:35:21,565 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:36:36,337 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:36:37,611 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:36:58,389 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:41:34,366 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:34,394 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:34,401 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:34,407 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:41:38,299 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:38,327 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:38,337 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:38,345 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:41:41,038 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:41,072 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:41,078 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:41,086 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:41:47,995 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:48,036 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:48,048 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:48,066 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:41:54,827 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:54,856 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:54,865 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:54,876 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:41:59,337 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:41:59,380 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:41:59,385 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:41:59,390 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:42:02,354 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:42:02,384 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:42:02,391 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:42:02,400 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:42:06,476 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:42:06,510 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:42:06,519 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:42:06,526 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:42:14,332 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:42:14,365 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:42:14,377 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:42:14,383 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:42:21,770 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:42:21,805 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:42:21,813 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:42:21,820 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:42:24,682 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:42:24,738 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:42:24,744 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:42:24,751 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:43:13,718 - ERROR - root - amemory_card_merge - memorycard:128 - 记忆卡片合并 - 大模型生成的格式未通过校验
+2025-10-16 16:43:13,722 - ERROR - root - amemory_card_merge - memorycard:129 - 错误类型: <class 'pydantic_core._pydantic_core.ValidationError'>
+2025-10-16 16:43:13,722 - ERROR - root - amemory_card_merge - memorycard:130 - 错误信息: 2 validation errors for MemoryCard
+content
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+time
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2025-10-16 16:43:13,722 - ERROR - root - amemory_card_merge - memorycard:131 - 错误详情 (errors()): [{'type': 'missing', 'loc': ('content',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}, {'type': 'missing', 'loc': ('time',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]
+2025-10-16 16:43:13,723 - ERROR - root - amemory_card_merge - memorycard:132 - 错误详情 (json()): [
+  {
+    "type": "missing",
+    "loc": [
+      "content"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  },
+  {
+    "type": "missing",
+    "loc": [
+      "time"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  }
+]
+2025-10-16 16:43:15,147 - ERROR - root - amemory_card_merge - memorycard:128 - 记忆卡片合并 - 大模型生成的格式未通过校验
+2025-10-16 16:43:15,147 - ERROR - root - amemory_card_merge - memorycard:129 - 错误类型: <class 'pydantic_core._pydantic_core.ValidationError'>
+2025-10-16 16:43:15,148 - ERROR - root - amemory_card_merge - memorycard:130 - 错误信息: 2 validation errors for MemoryCard
+content
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+time
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2025-10-16 16:43:15,148 - ERROR - root - amemory_card_merge - memorycard:131 - 错误详情 (errors()): [{'type': 'missing', 'loc': ('content',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}, {'type': 'missing', 'loc': ('time',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]
+2025-10-16 16:43:15,148 - ERROR - root - amemory_card_merge - memorycard:132 - 错误详情 (json()): [
+  {
+    "type": "missing",
+    "loc": [
+      "content"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  },
+  {
+    "type": "missing",
+    "loc": [
+      "time"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  }
+]
+2025-10-16 16:43:16,319 - ERROR - root - amemory_card_merge - memorycard:128 - 记忆卡片合并 - 大模型生成的格式未通过校验
+2025-10-16 16:43:16,319 - ERROR - root - amemory_card_merge - memorycard:129 - 错误类型: <class 'pydantic_core._pydantic_core.ValidationError'>
+2025-10-16 16:43:16,319 - ERROR - root - amemory_card_merge - memorycard:130 - 错误信息: 2 validation errors for MemoryCard
+content
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+time
+  Field required [type=missing, input_value={'title': 'summary over'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2025-10-16 16:43:16,319 - ERROR - root - amemory_card_merge - memorycard:131 - 错误详情 (errors()): [{'type': 'missing', 'loc': ('content',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}, {'type': 'missing', 'loc': ('time',), 'msg': 'Field required', 'input': {'title': 'summary over'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]
+2025-10-16 16:43:16,319 - ERROR - root - amemory_card_merge - memorycard:132 - 错误详情 (json()): [
+  {
+    "type": "missing",
+    "loc": [
+      "content"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  },
+  {
+    "type": "missing",
+    "loc": [
+      "time"
+    ],
+    "msg": "Field required",
+    "input": {
+      "title": "summary over"
+    },
+    "url": "https://errors.pydantic.dev/2.12/v/missing"
+  }
+]
+2025-10-16 16:44:10,539 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:44:10,577 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:44:10,587 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:44:10,596 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:44:14,553 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:44:14,577 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:44:14,594 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:44:14,598 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:45:19,449 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:45:19,483 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:45:19,517 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:45:19,530 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:51:57,278 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:51:57,318 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:51:57,330 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:51:57,336 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:51:59,793 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 16:51:59,819 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 16:51:59,824 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 16:51:59,838 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 16:52:10,330 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:53:17,667 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 16:53:50,136 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 17:00:06,000 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 17:00:06,033 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 17:00:06,044 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 17:00:06,067 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 17:00:09,912 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 17:00:10,074 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 17:00:10,126 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 17:00:10,136 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 17:00:16,688 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:31:06,079 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:31:06,114 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:31:06,122 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:31:06,132 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:31:08,921 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:31:08,959 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:31:08,965 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:31:08,972 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:31:11,248 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:31:21,650 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:32:13,938 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:32:13,974 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:32:13,980 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:32:13,987 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:32:17,109 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:32:17,134 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:32:17,141 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:32:17,154 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:32:27,764 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:32:27,793 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:32:27,800 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:32:27,809 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:32:30,637 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:32:30,662 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:32:30,668 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:32:30,675 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:33:17,172 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:33:17,200 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:33:17,212 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:33:17,227 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:33:23,066 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:33:23,102 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:33:23,112 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:33:23,120 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:33:33,517 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:33:47,049 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:35:14,839 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:35:17,060 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:36:27,029 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:36:49,018 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:37:54,713 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:38:15,026 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:41:05,869 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:41:05,948 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:41:05,966 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:41:05,994 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:41:10,106 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:41:10,156 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:41:10,167 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:41:10,173 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:42:31,794 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:42:43,636 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:42:43,742 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:43:00,682 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:45:16,256 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:45:40,179 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:46:06,579 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:46:06,608 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:46:06,621 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:46:06,631 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:46:09,505 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:46:09,535 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:46:09,543 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:46:09,557 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:46:12,365 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:46:12,394 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:46:12,408 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:46:12,417 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:46:13,806 - INFO - root - arequest - client:223 - Async request running
+2025-10-16 18:46:27,764 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://api.bianxie.ai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-16 18:47:44,359 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:47:44,391 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:47:44,395 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:47:44,401 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:47:53,408 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:47:53,433 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:47:53,440 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:47:53,449 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:47:56,411 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:47:56,445 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:47:56,452 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:47:56,464 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:48:04,374 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:48:04,402 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:48:04,414 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:48:04,425 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-16 18:48:07,467 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-16 18:48:07,744 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-16 18:48:07,861 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-16 18:48:07,900 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 11:39:30,907 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 11:39:31,133 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 11:39:32,134 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 11:39:32,153 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 11:53:46,757 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 11:53:46,783 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 11:53:46,789 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 11:53:46,795 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 11:53:51,054 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 11:53:51,081 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 11:53:51,086 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 11:53:51,100 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 12:00:22,199 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:36,641 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:39,805 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:40,620 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:47,329 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:49,327 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:51,154 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 12:01:51,183 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 12:01:51,184 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 12:01:51,184 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 12:01:51,184 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 12:01:51,184 - CRITICAL - root - super_log - utils:68 - [{'title': '王志民因脚痛的坎坷过往', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，而且持续了几十年，没力气讲话。现在好多了，去台北做了个三小时的手术，解决了几十年的问题，回来后我掏钱让七百多个和我一样的人也做了这个手术。脚痛影响了我的性格，这得怪日本人。二战时，日本人打到东南亚，我才一岁，一次空袭警报响起，姐姐架着我跑，我没坐好朝后摔下，右脚受伤。当时大家忙着逃命，姐姐没告诉妈妈，我又不会说，只能每天哭，哭了三个月。家里人找郎中，郎中却误诊说我肚子里有虫子。七岁前我只能在地上爬，看东西都仰着头。七岁时突然又能走了，可只走了两年又不行，从此残疾，脚痛一直持续到现在。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚痛往事', 'topic': 0}, {'title': '王志民因脚痛的坎坷经历', 'content': '九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸也没好。因为脚不方便，没法好好上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以没什么文化。这个社会很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊‘你下去你下去’，后来又喊‘王志民会长请上台’，他们看我貌不惊人、穿着普通又走路不便，看不起我，却不知我是嘉乐斯集团大老板。', 'time': '1947年--月--日', 'score': 7, 'tag': '脚痛求学与受歧经历', 'topic': 0}, {'title': '王志民事业后的经历与感慨', 'content': '我事业做大后，有人妒忌嘲笑我，用潮州话骂我，意思大概是‘你一个瘸子还爱出风头，其实你有什么呢’。我回应说‘我有两个太太啊，你们有吗？’我两个太太是亲姐妹。我从小习惯别人说我不好就改，后来开会都不太敢坐主席台上。他们又说我想多拿国王给的绶带，国王确实认识我，虎年时因算命觉得冲，让我组织人去王宫里舞狮，他在窗口看。我第一次觐见国王时，紧张得话都说不出，国王还探身问我脚怎么回事，我吓得赶紧退下，浑身是汗。脚不好，让我这一辈子比别人多受很多苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '1938年--月--日', 'score': 7, 'tag': '事业后风波', 'topic': 0}]
+2025-10-17 12:01:51,185 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:17:12,435 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:17:21,614 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:17:22,921 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:17:23,604 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:17:25,547 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:17:25,572 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:17:25,573 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:17:25,573 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:17:25,573 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:17:25,573 - CRITICAL - root - super_log - utils:68 - [{'title': '王志民因脚痛的坎坷过往', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，持续了几十年，没力气讲话。现在好多了，去台北做了个三小时的手术，解决了几十年的问题，回来后我掏钱让七百多个和我一样的人也做了这个手术。脚痛影响了我的性格，这得怪日本人。二战时，日本人打到东南亚，我才一岁，有天空袭警报响，姐姐架着我跑，我没坐好朝后摔下，右脚受伤。当时大家忙着逃命，姐姐没告诉妈妈，我太小也不会说，只能每天哭，哭了三个月，家人不知原因。找郎中看病，郎中竟说我肚子里有虫子，开了打虫药方，明明脚痛却误诊，真是害人。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚痛往事', 'topic': 0}, {'title': '王志民因脚伤的成长困境', 'content': '七岁前我只能在地上爬，看周围都是仰着头。七岁时突然又会走了，一家人都很高兴，但只走了两年又不行了，从此真的残疾，脚痛一直持续到现在。九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸还是没好。因脚伤无法正常上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以我没什么文化。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚伤困境', 'topic': 0}, {'title': '王志民遭人以貌取人经历', 'content': '社会上很多人以貌取人。我第一次当泰华裔协会会长上台发言，刚上台就有人喊‘你下去你下去’，后来又有人喊‘王志民会长请上台’。他们看我貌不惊人、穿着普通、走路不便就看不起我，却不知我是嘉乐斯集团大老板。做大后有人妒忌嘲笑我，用潮州话骂我，意思是‘你一个瘸子还爱出风头，其实你有什么呢？’我回应说‘我有两个太太啊，你们有吗？’，我两个太太还是亲姐妹。别人说我不好，我就改，后来开会都不太敢坐主席台。', 'time': '1938年--月--日', 'score': 7, 'tag': '以貌取人', 'topic': 0}, {'title': '与国王的交集及感慨', 'content': '有人说我想多拿国王给的绶带，国王确实认识我，见了很多次。虎年时国王因算命觉得有些冲，让我组织人去王宫里舞狮，他在窗口远远观看，把我们华人当自己人。我第一次觐见国王时，吓得话都说不出来，国王探身问我脚怎么回事，我脑子空白，只会说‘是是是’，退下时身上都是汗。脚不好让我这辈子比别人多受苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '1938年--月--日', 'score': 7, 'tag': '觐王感慨', 'topic': 0}]
+2025-10-17 13:17:25,574 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:19:03,311 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:19:03,365 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:19:03,373 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:19:03,382 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:19:06,401 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:19:06,438 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:19:06,453 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:19:06,463 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:19:25,226 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:19:33,234 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:19:35,196 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:19:37,113 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:19:37,130 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:19:37,131 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:19:37,132 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:19:37,132 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:19:37,132 - CRITICAL - root - super_log - utils:68 - [{'title': '王志民因脚痛的坎坷过往', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，痛了几十年，没力气讲话。这脚伤得怪日本人，二战时他们空袭，一岁的我被姐姐架着跑，结果没坐好朝后摔下，右脚受伤。当时大家忙着逃命，姐姐没告诉妈妈，我又不会说，只能每天哭，哭了三个月。家人找郎中，郎中却误诊说我肚子里有虫子。七岁前我只能在地上爬，七岁时竟又能走了，可两年后又不行，从此残疾，脚痛一直持续到现在。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚痛往事', 'topic': 0}, {'title': '因脚伤的学习困境', 'content': '九岁到二十岁，我不停地进出医院，治了十一年，骨头都截了好几寸也没好。因为脚伤，我没法好好上学，只能断断续续在寺庙学堂读书，一年级就读了十年，没什么文化。', 'time': '9到20岁', 'score': 7, 'tag': '脚伤求学', 'topic': 0}, {'title': '王志民的复杂经历与感慨', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，还有人妒忌嘲笑我，用潮州话骂我，我回应说自己有两个亲姐妹太太。别人说我不好，我就改，开会都不敢坐主席台。他们又说我想多拿国王绶带，其实国王认识我，虎年还让我组织舞狮，他在窗口看。我第一次觐见国王时，紧张得话都说不出，国王还关心我脚怎么回事。脚不好，我和妈妈都多受了很多苦，我很想念妈妈。后来去台北做了个三小时手术，解决了几十年的问题，回来我掏钱让七百多个和我一样的人也做了这个手术。', 'time': '1938年--月--日', 'score': 7, 'tag': '经历感慨', 'topic': 0}]
+2025-10-17 13:19:37,132 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:20:50,298 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:20:50,334 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:20:50,342 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:20:50,349 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:20:55,452 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:20:55,485 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:20:55,495 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:20:55,503 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:21:05,276 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:21:12,857 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:21:14,738 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:21:19,345 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:21:19,363 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:21:19,364 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:21:19,364 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:21:19,364 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:21:19,364 - CRITICAL - root - super_log - utils:68 - [{'title': '王志民因脚痛的坎坷过往', 'content': '很多人觉得我凶，不怎么讲话，其实是因为我脚痛，每个小时都痛，持续了几十年，没力气讲话。这脚伤得怪日本人，二战时他们空袭东南亚，我才一岁，姐姐架着我逃命，我没坐好朝后摔下，右脚受伤。因大家忙着逃命，姐姐没告诉妈妈，我太小也不会说，只能每天哭，哭了三个月。家人找郎中，郎中却误诊说我肚子里有虫子。七岁前我只能在地上爬，七岁时竟又能走了，可只走两年又不行，从此残疾，脚痛至今。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚痛往事', 'topic': 0}, {'title': '因脚伤的学习困境', 'content': '九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸也没好。因脚伤无法正常上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以我没什么文化。', 'time': '9到20岁', 'score': 7, 'tag': '脚伤求学', 'topic': 0}, {'title': '王志民的社会经历与感慨', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我，我回应自己有两个亲姐妹做太太。因别人说我不好我就改，后来开会都不太敢坐主席台。有人说我想多拿国王绶带，国王确实认识我，虎年时还让我组织人进宫舞狮。其实我第一次觐见国王吓得话都说不出，国王还关心我脚的情况。脚不好让我和妈妈都多受了很多苦，我很想念妈妈。', 'time': '1938年--月--日', 'score': 7, 'tag': '社会经历', 'topic': 0}]
+2025-10-17 13:21:19,364 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:27:27,036 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:39,506 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:39,783 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:40,743 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:40,799 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:48,359 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:49,411 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:50,010 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:55,696 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:27:55,722 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:27:55,723 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:27:55,723 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:27:55,723 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:27:55,723 - CRITICAL - root - super_log - utils:68 - [{'title': '王志民因脚痛的坎坷过往', 'content': '很多人觉得我凶，不怎么讲话，其实是因为我脚痛，每个小时都痛，持续了几十年，没力气讲话。现在好多了，去台北做了个三小时的手术，解决了困扰我几十年的问题，回来后我掏钱让七百多个和我一样的人也做了这个手术。脚痛影响了我的性格，这得怪日本人。二战时，日本人打到东南亚，我才一岁，一次空袭警报响起，姐姐架着我跑，我在她脖子上没坐好朝后摔下，右脚受伤。当时大家忙着逃命，姐姐没告诉妈妈，我太小也不会说。我疼得每天哭，哭了三个月，家人不知原因，找郎中，郎中竟说我肚子里有虫子，开了打虫药方，明明我是脚痛，这可真害人。七岁前，我只能在地上爬，看周围东西都是仰着头。不知为何，七岁时我又能走了，一家人都很高兴，可只走了两年又不行了，从此真的残疾，脚痛一直持续到现在。', 'time': '1938年--月--日', 'score': 7, 'tag': '脚痛往事', 'topic': 0}, {'title': '因脚伤的学习困境', 'content': '九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸还是没好。因为脚不好，我没法好好上学，只能断断续续在寺庙开的学堂读书，一年级就读了十年，所以没什么文化。', 'time': '9到20岁', 'score': 7, 'tag': '脚伤求学', 'topic': 0}, {'title': '王志民遭人以貌取人经历', 'content': '社会上很多人以貌取人。我第一次当泰华裔协会会长上台发言，刚上台就有人喊‘你下去你下去’，后来又有人喊‘王志民会长请上台’，我理解他们，我貌不惊人，穿着普通，走路还不方便，他们自然看不起我，可他们不知道我是嘉乐斯集团大老板。做大后，有人妒忌嘲笑我，用潮州话骂我，意思是说我一个瘸子还爱出风头。我回应说我有两个太太，还是亲姐妹。别人说我不好，我就改，后来开会都不太敢坐主席台上。', 'time': '1938年--月--日', 'score': 7, 'tag': '以貌取人', 'topic': 0}, {'title': '与国王的交集及感慨', 'content': '有人说我想多拿几条国王给的绶带，国王确实认识我，见了很多次。虎年时，国王算命觉得有些冲，让我组织人去王宫里舞狮，他在窗口看。其实我第一次觐见国王时，吓得话都说不出来，国王还探身问我脚怎么回事，我脑子空白，只会说‘是是是’，退下时身上都是汗。脚不好，我这一辈子比别人多受很多苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '1938年--月--日', 'score': 7, 'tag': '觐王感慨', 'topic': 0}]
+2025-10-17 13:27:55,725 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:28:40,340 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:28:43,410 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:28:46,079 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:28:46,789 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:28:46,820 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:28:46,820 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:28:46,821 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:28:46,821 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:28:46,821 - CRITICAL - root - super_log - utils:68 - [{'title': '脚伤的过往与影响', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，持续了几十年。这脚伤得怪日本人，二战时他们空袭东南亚，我才一岁，姐姐抱着我逃命，我没坐好朝后摔下，脚却被姐姐紧紧抓住，右脚就此受伤。当时大家忙着逃命，姐姐没告诉妈妈，我太小也不会说，只是每天疼得哭，哭了三个月。家人找郎中，郎中却误诊说我肚子里有虫。七岁前我只能在地上爬，七岁时突然又能走了，可两年后又不行，从此残疾，脚痛一直延续至今。', 'time': '1到9岁', 'score': 7, 'tag': '脚伤往事', 'topic': 0}, {'title': '因脚伤致学业坎坷', 'content': '九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸也没好。因脚伤无法正常上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以我没什么文化。', 'time': '9到20岁', 'score': 5, 'tag': '学业坎坷', 'topic': 0}, {'title': '因脚痛引发的种种经历', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我，我回应说自己有两个亲姐妹太太。因从小习惯别人说不好就改，后来开会都不敢坐主席台。有人说我想多拿国王绶带，国王确实认识我，虎年时还让我组织人进宫舞狮。其实我第一次觐见国王吓得话都说不出，国王还关心我脚的情况。脚不好让我和妈妈都受了很多苦，我很想念妈妈。', 'time': '1到20岁', 'score': 7, 'tag': '貌受轻视', 'topic': 0}]
+2025-10-17 13:28:46,821 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:29:49,915 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:29:49,941 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:29:49,957 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:29:49,966 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:29:53,436 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:29:53,479 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:29:53,503 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:29:53,527 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:30:06,273 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:30:10,757 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:30:11,022 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:30:11,585 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:30:11,599 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:30:11,615 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0mtime_dicts[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:30:11,615 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:30:11,615 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:30:11,615 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:68 - [{'title': '脚痛引发的人生经历', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，痛了几十年，没力气讲话。现在好多了，去台北做了个三小时的手术，解决了困扰我几十年的问题，回来后我掏钱让七百多个和我一样的人也做了这个手术。脚痛影响了我的性格，这得怪日本人。二战时，日本人打到东南亚，我才一岁，一次空袭警报响起，姐姐架着我跑，我没在她脖子上坐好朝后摔下，右脚受伤。当时大家都忙着逃命，姐姐没告诉妈妈，我太小也不会说。我疼得每天哭，哭了三个月，家里人不知原因，找郎中，郎中却误诊说我肚子里有虫子，开了打虫药方。', 'time': '1到9岁', 'score': 6, 'tag': '脚痛往事', 'topic': 2}, {'title': '因脚伤致成长坎坷', 'content': '我因此不会走路，七岁前只能在地上爬，看东西都是仰着头。七岁时又能走了，一家人都很高兴，但只走了两年又不行了，从此真的残疾，脚痛一直持续到现在。九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸也没好。因脚伤我没能好好上学，只能断断续续在寺庙开的学堂读书，一年级就读了十年，所以没什么文化。', 'time': '1到20岁', 'score': 7, 'tag': '脚伤之困', 'topic': 3}, {'title': '以貌取人经历', 'content': '社会上很多人以貌取人。我第一次当泰华裔协会会长上台发言，刚上台就有人喊‘你下去你下去’，后来又有人喊‘王志民会长请上台’。他们看我貌不惊人、穿着普通且走路不便，就看不起我，却不知我是嘉乐斯集团大老板。我做大后，有人妒忌嘲笑我，用潮州话骂我，意思大概是‘你一个瘸子还爱出风头，其实你有什么呢？’我回应说‘我有两个太太啊，你们有吗？’我两个太太还是亲姐妹。别人说我不好，我就改，后来开会都不太敢坐主席台上。', 'time': '未知', 'score': 0, 'tag': '以貌取人', 'topic': 6}, {'title': '与国王的交集及脚伤感慨', 'content': '有人说我想多拿几条国王给的绶带，国王确实认识我，见了很多次。虎年时，国王因算命觉得有些冲，让我组织人去王宫里舞狮，他在窗口看。我第一次觐见国王时，吓得话都说不出来，国王还探身问我‘你的脚怎么回事？’我脑子空白，只会说‘是是是’，退下时身上都是汗。脚不好让我这一辈子比别人多受很多苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '--到--岁', 'score': 7, 'tag': '觐见国王', 'topic': 7}]
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0mtime_dicts  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:68 - [{'title': '脚痛引发的人生经历', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，痛了几十年，没力气讲话。现在好多了，去台北做了个三小时的手术，解决了困扰我几十年的问题，回来后我掏钱让七百多个和我一样的人也做了这个手术。脚痛影响了我的性格，这得怪日本人。二战时，日本人打到东南亚，我才一岁，一次空袭警报响起，姐姐架着我跑，我没在她脖子上坐好朝后摔下，右脚受伤。当时大家都忙着逃命，姐姐没告诉妈妈，我太小也不会说。我疼得每天哭，哭了三个月，家里人不知原因，找郎中，郎中却误诊说我肚子里有虫子，开了打虫药方。', 'time': '1到9岁', 'score': 6, 'tag': '脚痛往事', 'topic': 0}, {'title': '因脚伤致成长坎坷', 'content': '我因此不会走路，七岁前只能在地上爬，看东西都是仰着头。七岁时又能走了，一家人都很高兴，但只走了两年又不行了，从此真的残疾，脚痛一直持续到现在。九岁到二十岁，我不停进出医院，治了十一年，骨头截了好几寸也没好。因脚伤我没能好好上学，只能断断续续在寺庙开的学堂读书，一年级就读了十年，所以没什么文化。', 'time': '1到20岁', 'score': 7, 'tag': '脚伤之困', 'topic': 0}, {'title': '以貌取人经历', 'content': '社会上很多人以貌取人。我第一次当泰华裔协会会长上台发言，刚上台就有人喊‘你下去你下去’，后来又有人喊‘王志民会长请上台’。他们看我貌不惊人、穿着普通且走路不便，就看不起我，却不知我是嘉乐斯集团大老板。我做大后，有人妒忌嘲笑我，用潮州话骂我，意思大概是‘你一个瘸子还爱出风头，其实你有什么呢？’我回应说‘我有两个太太啊，你们有吗？’我两个太太还是亲姐妹。别人说我不好，我就改，后来开会都不太敢坐主席台上。', 'time': '未知', 'score': 0, 'tag': '以貌取人', 'topic': 0}, {'title': '与国王的交集及脚伤感慨', 'content': '有人说我想多拿几条国王给的绶带，国王确实认识我，见了很多次。虎年时，国王因算命觉得有些冲，让我组织人去王宫里舞狮，他在窗口看。我第一次觐见国王时，吓得话都说不出来，国王还探身问我‘你的脚怎么回事？’我脑子空白，只会说‘是是是’，退下时身上都是汗。脚不好让我这一辈子比别人多受很多苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '--到--岁', 'score': 7, 'tag': '觐见国王', 'topic': 0}]
+2025-10-17 13:30:11,616 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:54:12,534 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:54:12,567 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:54:12,571 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:54:12,576 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:54:15,411 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:54:15,438 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:54:15,444 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:54:15,449 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:54:30,054 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:54:33,515 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:54:34,846 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:54:34,898 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 13:54:34,914 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0mtime_dicts[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:54:34,914 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:54:34,914 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:54:34,914 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:68 - [{'title': '脚痛的经历与影响', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，持续了几十年。这都怪日本人，二战时他们空袭东南亚，我才一岁，姐姐架着我逃命，我没坐好朝后摔下，右脚受伤。姐姐没告诉妈妈，我太小也不会说，只能每天哭，哭了三个月。家人找郎中，郎中误诊说我肚子里有虫。七岁前我只能在地上爬，七岁时突然又能走了，可两年后又不行，从此残疾，脚痛一直延续到现在。', 'time': '1到9岁', 'score': 7, 'tag': '脚痛缘由', 'topic': 2}, {'title': '因脚伤艰难求学', 'content': '九岁到二十岁，我不停进出医院，治了十一年，截了好几寸骨头也没好。因脚伤我没法正常上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以没什么文化。', 'time': '9到20岁', 'score': 6, 'tag': '求学艰难', 'topic': 3}, {'title': '因脚痛引发的种种经历', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我，我回应说自己有两个亲姐妹太太。别人说我不好，我就改，开会都不敢坐主席台。有人说我想多拿国王绶带，国王确实认识我，虎年还让我组织舞狮。其实我第一次觐见国王吓得话都说不出，国王还关心我脚的问题。脚不好让我和妈妈都受了很多苦，我很想念妈妈。', 'time': '1到20岁', 'score': 7, 'tag': '以貌取人', 'topic': 6}]
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0mtime_dicts  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:68 - [{'title': '脚痛的经历与影响', 'content': '很多人觉得我凶，不爱讲话，其实是因为我脚痛，每个小时都痛，持续了几十年。这都怪日本人，二战时他们空袭东南亚，我才一岁，姐姐架着我逃命，我没坐好朝后摔下，右脚受伤。姐姐没告诉妈妈，我太小也不会说，只能每天哭，哭了三个月。家人找郎中，郎中误诊说我肚子里有虫。七岁前我只能在地上爬，七岁时突然又能走了，可两年后又不行，从此残疾，脚痛一直延续到现在。', 'time': '1到9岁', 'score': 7, 'tag': '脚痛缘由', 'topic': 0}, {'title': '因脚伤艰难求学', 'content': '九岁到二十岁，我不停进出医院，治了十一年，截了好几寸骨头也没好。因脚伤我没法正常上学，只能断断续续在寺庙学堂读书，一年级就读了十年，所以没什么文化。', 'time': '9到20岁', 'score': 6, 'tag': '求学艰难', 'topic': 0}, {'title': '因脚痛引发的种种经历', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我，我回应说自己有两个亲姐妹太太。别人说我不好，我就改，开会都不敢坐主席台。有人说我想多拿国王绶带，国王确实认识我，虎年还让我组织舞狮。其实我第一次觐见国王吓得话都说不出，国王还关心我脚的问题。脚不好让我和妈妈都受了很多苦，我很想念妈妈。', 'time': '1到20岁', 'score': 7, 'tag': '以貌取人', 'topic': 0}]
+2025-10-17 13:54:34,915 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 13:56:40,089 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:56:40,173 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:56:40,208 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:56:40,234 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:56:44,281 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:56:44,306 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:56:44,313 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:56:44,320 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:56:47,629 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:56:47,655 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:56:47,667 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:56:47,675 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 13:56:56,956 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 13:56:56,987 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 13:56:56,993 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 13:56:57,011 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 14:34:25,268 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:34:25,674 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:34:27,310 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:34:27,375 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:53:24,519 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:53:31,207 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:53:32,255 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:53:32,313 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0mtime_dicts[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 14:53:32,314 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:68 - [{'title': '因脚伤致人生坎坷的经历', 'content': '很多人觉得我凶，不怎么讲话，其实是因为我脚痛，每个小时都痛，持续了几十年。这脚伤得怪日本人，二战时他们空袭东南亚，我才一岁，姐姐架着我逃命，我没坐好朝后摔下，右脚受伤。因忙着逃命，姐姐没告诉妈妈，我又不会说，只能每天哭，哭了三个月。家人找郎中，郎中竟说我肚子里有虫子，开错药。七岁前我只能在地上爬，七岁时突然又会走了，可两年后又不行，从此残疾，脚痛一直延续到现在。九岁到二十岁，我不断进出医院，治了十一年，截了好几寸骨头也没好，路都走不了，只能断断续续在寺庙学堂读书，一年级就读了十年，所以没什么文化。', 'time': '1到20岁', 'score': 6, 'tag': '脚伤之痛'}, {'title': '以貌取人及与国王的经历', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我是瘸子还爱出风头。我回应说自己有两个太太，还是亲姐妹。因从小习惯别人说不好就改，后来开会都不太敢坐主席台。他们又说我想多拿国王绶带，国王确实认识我，虎年时还让我组织人去王宫里舞狮。其实我第一次觐见国王吓得话都说不出，国王还关切问我脚怎么回事。脚不好让我这辈子多受苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '9到20岁', 'score': 3, 'tag': '貌受歧视'}]
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0mtime_dicts  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:64 - 
+[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m聊天历史生成记忆卡片[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m[94m==[0m
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:65 - 
+       --------------------------------------------------------------------------------
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:66 - <class 'list'>
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:67 - 
+       [91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m[91m--[0m
+2025-10-17 14:53:32,315 - CRITICAL - root - super_log - utils:68 - [{'title': '因脚伤致人生坎坷的经历', 'content': '很多人觉得我凶，不怎么讲话，其实是因为我脚痛，每个小时都痛，持续了几十年。这脚伤得怪日本人，二战时他们空袭东南亚，我才一岁，姐姐架着我逃命，我没坐好朝后摔下，右脚受伤。因忙着逃命，姐姐没告诉妈妈，我又不会说，只能每天哭，哭了三个月。家人找郎中，郎中竟说我肚子里有虫子，开错药。七岁前我只能在地上爬，七岁时突然又会走了，可两年后又不行，从此残疾，脚痛一直延续到现在。九岁到二十岁，我不断进出医院，治了十一年，截了好几寸骨头也没好，路都走不了，只能断断续续在寺庙学堂读书，一年级就读了十年，所以没什么文化。', 'time': '1到20岁', 'score': 6, 'tag': '脚伤之痛', 'topic': 0}, {'title': '以貌取人及与国王的经历', 'content': '社会上很多人以貌取人，我第一次当泰华裔协会会长上台发言，就有人喊我下去。做大后，有人妒忌嘲笑我，用潮州话骂我是瘸子还爱出风头。我回应说自己有两个太太，还是亲姐妹。因从小习惯别人说不好就改，后来开会都不太敢坐主席台。他们又说我想多拿国王绶带，国王确实认识我，虎年时还让我组织人去王宫里舞狮。其实我第一次觐见国王吓得话都说不出，国王还关切问我脚怎么回事。脚不好让我这辈子多受苦，妈妈也跟着受苦，我很想念妈妈。', 'time': '9到20岁', 'score': 3, 'tag': '貌受歧视', 'topic': 0}]
+2025-10-17 14:53:32,316 - CRITICAL - root - super_log - utils:69 - 
+[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m聊天历史生成记忆卡片  end![92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m[92m==[0m
+2025-10-17 14:55:06,245 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 14:55:06,309 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:47:49,525 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:47:49,759 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:48:44,917 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:48:44,940 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:48:44,945 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:48:44,950 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:48:48,360 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:48:48,397 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:48:48,407 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:48:48,467 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:50:43,268 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:50:43,305 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:50:43,315 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:50:43,326 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:50:50,302 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:50:50,337 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:50:50,345 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:50:50,356 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:51:30,532 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:51:30,566 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:51:30,577 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:51:30,583 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:51:55,308 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:51:55,361 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:51:55,371 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:51:55,379 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:52:04,500 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:52:04,543 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:52:04,550 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:52:04,556 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:52:51,035 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:52:51,071 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:52:51,087 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:52:51,094 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:52:56,490 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:52:56,526 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:52:56,536 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:52:56,545 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:53:02,893 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:53:02,928 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:53:02,940 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:53:02,946 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:53:07,404 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:53:07,453 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:53:07,462 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:53:07,470 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:54:14,431 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:54:14,469 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:54:14,477 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:54:14,487 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:54:22,656 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:54:22,696 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:54:22,703 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:54:22,710 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:54:25,343 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:54:25,374 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:54:25,379 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:54:25,393 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:54:37,423 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:54:52,832 - INFO - root - reload - embedding_pool:50 - reload
+2025-10-17 15:54:52,879 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2025-10-17 15:54:52,889 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife/exists "HTTP/1.1 200 OK"
+2025-10-17 15:54:52,901 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: GET http://localhost:6333/collections/diglife "HTTP/1.1 200 OK"
+2025-10-17 15:54:55,536 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:55:14,350 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:55:28,745 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-17 15:56:07,685 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"

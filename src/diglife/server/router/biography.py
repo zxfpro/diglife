@@ -199,5 +199,4 @@ async def generate_biography(request: BiographyRequest):
         memory_cards=memory_cards,
         vitae=request.vitae,
     )
-
-    return {"title": result.get("title"), "content": result.get("content")}
+    return result
