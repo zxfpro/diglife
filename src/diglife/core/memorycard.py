@@ -1,20 +1,59 @@
 # 1 日志不打在server中 不打在工具中, 只打在core 中
+from diglife import logger
+from diglife.models import MemoryCardGenerate, MemoryCard2
 from diglife.utils import extract_json, extract_article, super_log
-from prompt_writing_assistant.prompt_helper import Intel,IntellectType
-from llmada.core import BianXieAdapter, ArkAdapter
 from diglife.models import MemoryCard, MemoryCardScore, MemoryCards
+
+from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, ValidationError, field_validator
+
+from pro_craft.prompt_helper_async import AsyncIntel
+from pro_craft.prompt_helper import Intel, IntellectType
+import re
 import math
 import asyncio
 import json
+import inspect
+from llmada.core import BianXieAdapter, ArkAdapter
+
+from datetime import datetime
 from .utils import memoryCards2str
-inters = Intel(model_name = "doubao-1-5-pro-256k-250115")
-from diglife import logger
-from pydantic import BaseModel, Field, model_validator
-from pydantic import ValidationError
+
+# inters = Intel(model_name = "doubao-1-5-pro-256k-250115",
+#                     database_url = "mysql+pymysql://zxf_root:Zhf4233613%40@rm-2ze0793c6548pxs028o.mysql.rds.aliyuncs.com:3306/serverz")
+
+inters = AsyncIntel(model_name = "doubao-1-5-pro-256k-250115")
+
+
+from typing import List
+from pydantic import BaseModel, Field
+
+# 1. 定义记忆卡片模型 (Chapter)
+class Chapter(BaseModel):
+    """
+    表示文档中的一个记忆卡片（章节）。
+    """
+    title: str = Field(..., description="记忆卡片的标题")
+    content: str = Field(..., description="记忆卡片的内容")
+
+# 2. 定义整个文档模型 (Document)
+class Document(BaseModel):
+    """
+    表示一个包含标题和多个记忆卡片的文档。
+    """
+    title: str = Field(..., description="整个文档的标题内容")
+    chapters: List[Chapter] = Field(..., description="文档中包含的记忆卡片列表")
+
 
 class MemoryCardManager:
     def __init__(self):
-        pass
+        self.base_format_prompt = """
+按照一定格式输出, 以便可以通过如下校验
+
+使用以下正则检出
+"```json([\s\S]*?)```"
+使用以下方式验证
+"""
 
     @staticmethod
     def get_score_overall(
@@ -58,116 +97,41 @@ class MemoryCardManager:
         return total_score
 
     async def ascore_from_memory_card(self, memory_cards: list[str]) -> list[int]:
-
-        # 记忆卡片打分
-        output_format = """
-输出格式
-```json
-{
-    "score": 得分,
-    "reason": 给分理由
-}
-```
-"""
         # 正式运行
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
-                inters.aintellect_remove(input_data=memory_card,
-                                         output_format=output_format,
-                                         prompt_id ="0088",
-                                         version = None,
-                                        inference_save_case=False)
+                inters.aintellect_remove_format(
+                    input_data=memory_card,
+                    prompt_id = "0088",
+                    version = None,
+                    inference_save_case=False,
+                    OutputFormat = MemoryCardScore,
+                )
             )
-
-
-
-        results = await asyncio.gather(*tasks, return_exceptions=False)
-        print(results)
-        result_1 = [json.loads(extract_json(result)) for result in results]
-        
-        try:
-            for score in result_1:
-                MemoryCardScore(**score)
-        except ValidationError as e:
-            log_ = "记忆卡片打分 - 大模型生成的格式未通过校验"
-            logger.error(log_)
-            logger.error(f"错误类型: {type(e)}")
-            logger.error(f"错误信息: {e}")
-            logger.error(f"错误详情 (errors()): {e.errors()}")
-            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
-            raise ValidationError(log_)
-        
+        result_1 = await asyncio.gather(*tasks, return_exceptions=False)
         return result_1
 
     async def amemory_card_merge(self, memory_cards: list[str]):
-
         memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
-        # 记忆卡片合并
-        output_format = """
-输出格式
-```json
-{
-    "title": 标题,
-    "content": 内容,
-    "time": 发生的时间,
-}
-```
-"""
-        result = await inters.aintellect_remove(input_data=memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,
-                                         output_format=output_format,
-                                         prompt_id ="0089",
-                                         version = None,
-                                         inference_save_case=False)
-
-        try:
-            result_1 = json.loads(extract_json(result))
-            MemoryCard(**result_1)
-        except ValidationError as e:
-            log_ = "记忆卡片合并 - 大模型生成的格式未通过校验"
-            logger.error(log_)
-            logger.error(f"错误类型: {type(e)}")
-            logger.error(f"错误信息: {e}")
-            logger.error(f"错误详情 (errors()): {e.errors()}")
-            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
-            raise ValidationError(log_)
-            
+        result_1 = await inters.aintellect_remove_format(
+            input_data=memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,
+            prompt_id = "0089",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = MemoryCard2,
+        )
         return result_1
 
     async def amemory_card_polish(self, memory_card: dict) -> dict:
-        # 记忆卡片润色
-        # TODO 要将时间融入到内容中润色
-
-
-        output_format = """
-输出格式
-```json
-{
-    "title": 标题,
-    "content": 内容,
-}
-```
-"""
-
-        result = await inters.aintellect_remove(input_data="\n记忆卡片标题: "+ memory_card["title"]+ "\n记忆卡片内容: " + memory_card["content"] + "\n记忆卡片发生时间: " + memory_card["time"],
-                                         output_format=output_format,
-                                         prompt_id ="0090",
-                                         version = None,
-                                         inference_save_case=False)
-        try:
-            result_1 = json.loads(extract_json(result))
-            result_1.update({"time": ""})
-            MemoryCard(**result_1)
-        except ValidationError as e:
-            log_ = "记忆卡片润色 - 大模型生成的格式未通过校验"
-            logger.error(log_)
-            logger.error(f"错误类型: {type(e)}")
-            logger.error(f"错误信息: {e}")
-            logger.error(f"错误详情 (errors()): {e.errors()}")
-            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
-            raise ValidationError(log_)
-            
-
+        result_1 = await inters.aintellect_remove_format(
+            input_data="\n记忆卡片标题: "+ memory_card["title"]+ "\n记忆卡片内容: " + memory_card["content"] + "\n记忆卡片发生时间: " + memory_card["time"],
+            prompt_id = "0090",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = MemoryCard,
+        )
+        result_1.update({"time": ""})
         return result_1
 
 
@@ -176,80 +140,76 @@ class MemoryCardManager:
     ):
         # 0091 上传文件生成记忆卡片-memory_card_system_prompt
         # 0092 上传文件生成记忆卡片-time_prompt
-        output_format = """
-输出格式如下: 
+        
+#         output_format = """
+# 输出格式如下: 
 
-    ```json
-    {
-        "title": "标题内容",
-        "chapters": [
-            {
-                "title": "记忆卡片标题",
-                "content": "记忆卡片的内容"
-            },
-            ...
-        ]
-    }
-    ```
-"""
+#     ```json
+#     {
+#         "title": "标题内容",
+#         "chapters": [
+#             {
+#                 "title": "记忆卡片标题",
+#                 "content": "记忆卡片的内容"
+#             },
+#             ...
+#         ]
+#     }
+#     ```
+# """
         number_ = len(chat_history_str) // weight + 1
 
-        result = await inters.aintellect_remove(input_data=f"It is suggested to output {number_} events" + chat_history_str,
-                                         output_format=output_format,
-                                         prompt_id ="0091",
-                                         version = None,
-                                         inference_save_case=False)
+        result_dict = await inters.aintellect_remove_format(
+            input_data = f"It is suggested to output {number_} events" + chat_history_str,
+            prompt_id = "0091",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = Document,
+        )
+        print(result_dict,'result_dict')
+        # result = await inters.aintellect_remove(input_data=f"It is suggested to output {number_} events" + chat_history_str,
+        #                                  output_format=output_format,
+        #                                  prompt_id ="0091",
+        #                                  version = None,
+        #                                  inference_save_case=False)
 
-        try:
-            result_dict = json.loads(extract_json(result))
+        # try:
+        #     result_dict = json.loads(extract_json(result))
 
-            class Chapter(BaseModel):
-                title: str
-                content: str
+        #     class Chapter(BaseModel):
+        #         title: str
+        #         content: str
 
-            class Output(BaseModel):
-                title: str
-                chapters: list[Chapter]
-            Output(**result_dict)
-        except ValidationError as e:
-            log_ = "上传文件生成记忆卡片 - 大模型生成的格式未通过校验"
-            logger.error(log_)
-            logger.error(f"错误类型: {type(e)}")
-            logger.error(f"错误信息: {e}")
-            logger.error(f"错误详情 (errors()): {e.errors()}")
-            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
-            raise ValidationError(log_)
+        #     class Output(BaseModel):
+        #         title: str
+        #         chapters: list[Chapter]
+        #     Output(**result_dict)
+        # except ValidationError as e:
+        #     log_ = "上传文件生成记忆卡片 - 大模型生成的格式未通过校验"
+        #     logger.error(log_)
+        #     logger.error(f"错误类型: {type(e)}")
+        #     logger.error(f"错误信息: {e}")
+        #     logger.error(f"错误详情 (errors()): {e.errors()}")
+        #     logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+        #     raise ValidationError(log_)
         
         chapters = result_dict["chapters"]
-        output_format_2 = """
-输出格式
-```json
-{
-    "title": 卡片的标题,
-    "content": chapter 提供的内容,
-    "time": 卡片记录事件的发生时间,
-    "score": 卡片得分,
-    "tag": 卡片标签,
-}
-```
-"""
+
         tasks = []
         chapters = chapters
         for chapter in chapters:
             tasks.append(
-                inters.aintellect_remove(input_data=f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
-                                    output_format=output_format_2,
-                                    prompt_id ="0094",# 
-                                    version = None,
-                                    inference_save_case=False)
+                inters.aintellect_remove_format(
+                    input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
+                    prompt_id = "0094",
+                    version = None,
+                    inference_save_case=False,
+                    OutputFormat = MemoryCardGenerate,
+                )
             )
 
-
-
-        results = await asyncio.gather(*tasks, return_exceptions=False)
-
-        time_dicts = [json.loads(extract_json(result)) for result in results]
-
+        time_dicts = await asyncio.gather(*tasks, return_exceptions=False)
+        
         for i,chapter in enumerate(chapters):
             chapter.update(time_dicts[i])
         return chapters
@@ -258,83 +218,78 @@ class MemoryCardManager:
     async def agenerate_memory_card(self, chat_history_str: str, weight: int = 1000):
         # 0093 聊天历史生成记忆卡片-memory_card_system_prompt
         # 0094 聊天历史生成记忆卡片-time_prompt
-        demand = ""
-        output_format = """
-输出格式
+        # TODO work1
+#         demand = ""
+#         output_format = """
+# 输出格式
 
-    ```json
-    {
-        "title": "标题内容",
-        "chapters": [
-            {
-                "title": "记忆卡片标题",
-                "content": "记忆卡片的内容"
-            },
-            ...
-        ]
-    }
-    ```
-"""
+#     ```json
+#     {
+#         "title": "标题内容",
+#         "chapters": [
+#             {
+#                 "title": "记忆卡片标题",
+#                 "content": "记忆卡片的内容"
+#             },
+#             ...
+#         ]
+#     }
+#     ```
+# """
+
         number_ = len(chat_history_str) // weight + 1
-        print(number_,'number_number_')
 
-        result = await inters.aintellect_remove(input_data=f"建议输出卡片数量:  {number_} 个记忆卡片" + chat_history_str,
-                                         output_format=output_format,
-                                         prompt_id ="0093",
-                                         version = None,
-                                         inference_save_case=False)
+        result_dict = await inters.aintellect_remove_format(
+            input_data = f"建议输出卡片数量:  {number_} 个记忆卡片" + chat_history_str,
+            prompt_id = "0093",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = Document,
+        )
+        print(result_dict,'result_dict')
+
+        # result = await inters.aintellect_remove(input_data=f"建议输出卡片数量:  {number_} 个记忆卡片" + chat_history_str,
+        #                                  output_format=output_format,
+        #                                  prompt_id ="0093",
+        #                                  version = None,
+        #                                  inference_save_case=False)
         
-        try:
-            result_dict = json.loads(extract_json(result))
+        # try:
+        #     # result_dict = json.loads(extract_json(result))
 
-            class Chapter(BaseModel):
-                title: str
-                content: str
+        #     class Chapter(BaseModel):
+        #         title: str
+        #         content: str
 
-            class Output(BaseModel):
-                title: str
-                chapters: list[Chapter]
-            Output(**result_dict)
-        except ValidationError as e:
-            log_ = "聊天历史生成记忆卡片 - 大模型生成的格式未通过校验"
-            logger.error(log_)
-            logger.error(f"错误类型: {type(e)}")
-            logger.error(f"错误信息: {e}")
-            logger.error(f"错误详情 (errors()): {e.errors()}")
-            logger.error(f"错误详情 (json()): {e.json(indent=2)}")
-            raise ValidationError(log_)
-            
-
+        #     class Output(BaseModel):
+        #         title: str
+        #         chapters: list[Chapter]
+        #     Output(**result_dict)
+        # except ValidationError as e:
+        #     log_ = "聊天历史生成记忆卡片 - 大模型生成的格式未通过校验"
+        #     logger.error(log_)
+        #     logger.error(f"错误类型: {type(e)}")
+        #     logger.error(f"错误信息: {e}")
+        #     logger.error(f"错误详情 (errors()): {e.errors()}")
+        #     logger.error(f"错误详情 (json()): {e.json(indent=2)}")
+        #     raise ValidationError(log_)
+        
         chapters = result_dict["chapters"]
-        output_format_2 = """
-输出格式
-```json
-{
-    "title": 卡片的标题,
-    "content": chapter 提供的内容,
-    "time": 卡片记录事件的发生时间,
-    "score": 卡片得分,
-    "tag": 卡片标签,
-}
-```
-"""
 
         tasks = []
-        chapters = chapters
         for chapter in chapters:
             tasks.append(
-                inters.aintellect_remove(input_data=f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
-                                    output_format=output_format_2,
-                                    prompt_id ="0094",
-                                    version = None,
-                                    inference_save_case=False)
+                inters.aintellect_remove_format(
+                    input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
+                    prompt_id = "0094",
+                    version = None,
+                    inference_save_case=False,
+                    OutputFormat = MemoryCardGenerate,
+                )
             )
 
+        time_dicts = await asyncio.gather(*tasks, return_exceptions=False)
 
-
-        results = await asyncio.gather(*tasks, return_exceptions=False)
-
-        time_dicts = [json.loads(extract_json(result)) for result in results]
         super_log(time_dicts,"time_dicts")
 
         for i,chapter in enumerate(chapters):
@@ -343,6 +298,3 @@ class MemoryCardManager:
 
         super_log(chapters,"聊天历史生成记忆卡片")
         return chapters
-
-
-

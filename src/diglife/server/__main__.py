@@ -8,11 +8,10 @@ from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
+from diglife.server.router.prompt import router as prompt_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
-import os
-from prompt_writing_assistant.prompt_helper import IntellectType,Intel
 
-intels = Intel(model_name="doubao-1-5-pro-256k-250115")
+import os
 
 app = FastAPI(
     title="LLM Service",
@@ -40,6 +39,7 @@ da = DigitalAvatar()
 app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
+app.include_router(prompt_router, prefix="/prompt")
 
 app.include_router(biography_router)
 
@@ -136,29 +136,6 @@ async def user_relationship_extraction_server(
     result = await da.auser_relationship_extraction(text=request.text)
     return {"relation": result}
 
-
-
-@app.get("/push_order")
-async def push_order(demand:str, prompt_id: str, key: str,action_type = "train"):
-
-    assert key == '1234'
-    result = intels.push_train_order(
-                            demand = demand,
-                            prompt_id = prompt_id,
-                            action_type = action_type
-                        )
-    print(result,'result')
-    return {"message":"success",
-            "result":result}
-
-@app.get("/get_latest_prompt")
-async def get_latest_prompt(prompt_id: str):
-
-    result = intels.get_prompts_from_sql(
-                            prompt_id = prompt_id
-                        )
-    return {"message":"success",
-            "result":result}
 
 # 可以考虑直接summary 作为单独功能拆出来
 

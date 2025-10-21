@@ -1,0 +1,7 @@
+2025-10-20 21:23:39,118 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:24:17,850 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:25:18,487 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:27:33,913 - INFO - httpx - _send_single_request - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:48:59,010 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:50:41,991 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-20 21:52:02,273 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"

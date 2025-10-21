@@ -6,7 +6,6 @@ import os
 import httpx
 from .embedding_pool import EmbeddingPool
 
-
 recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
 recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
 recommended_top_k = 10

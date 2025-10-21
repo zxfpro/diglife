@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from diglife.core import MemoryCardManager
-from diglife.models import MemoryCardsRequest, MemoryCard, MemoryCards, MemoryCardsGenerate, ChatHistoryOrText
+from diglife.models import MemoryCardsRequest, MemoryCard, MemoryCards, MemoryCardsGenerate, ChatHistoryOrText, MemoryCard2
 import os
 
 router = APIRouter(tags=["memory_card"])
@@ -16,11 +16,11 @@ async def score_from_memory_card_server(request: MemoryCardsRequest):
     results = await MCmanager.ascore_from_memory_card(memory_cards=request.memory_cards)
     return {"message": "memory card score successfully", "result": results}
 
-@router.post("/merge", response_model=MemoryCard, summary="记忆卡片合并")
+@router.post("/merge", response_model=MemoryCard2, summary="记忆卡片合并")
 async def memory_card_merge_server(request: MemoryCards) -> dict:
     memory_cards = request.model_dump()["memory_cards"]
     result = await MCmanager.amemory_card_merge(memory_cards=memory_cards)
-    return MemoryCard(
+    return MemoryCard2(
         **result
     )
 

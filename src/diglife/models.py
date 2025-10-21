@@ -1,34 +1,50 @@
 
 # server
 from typing import Dict, Any, Optional, List
-from pydantic import BaseModel, Field, model_validator
-
+from pydantic import BaseModel, Field, model_validator, field_validator
+from datetime import datetime
+import re
 
 # 记忆合并
 class MemoryCardsRequest(BaseModel):
     memory_cards: list[str] = Field(..., description="记忆卡片列表")
 
 class MemoryCard(BaseModel):
-    title: str
-    content: str
-    time: str
+    title: str = Field(..., description="标题")
+    content: str = Field(..., description="内容")
+    time: str = Field(..., description="卡片记录事件的发生时间")
+
+class MemoryCard2(BaseModel):
+    title: str = Field(..., description="标题")
+    content: str = Field(..., description="内容")
+    time: str = Field(..., description="卡片记录事件的发生时间")
+    tag: str = Field(..., description="标签1",max_length=4)
 
 
 class MemoryCardScore(BaseModel):
-    score: int
-    reason: str
+    score: int = Field(..., description="得分")
+    reason: str = Field(..., description="给分理由")
 
 class MemoryCards(BaseModel):
     memory_cards: list[MemoryCard] = Field(..., description="记忆卡片列表")
 
-
 class MemoryCardGenerate(BaseModel):
-    title: str
-    content: str
-    time: str
-    score: int
-    tag: str
-    topic: int
+    title: str = Field(..., description="标题",min_length=1, max_length=10)
+    content: str = Field(..., description="内容",min_length=1,max_length=1000)
+    time: str = Field(..., description="日期格式,YYYY年MM月DD日,其中YYYY可以是4位数字或4个下划线,MM可以是2位数字或2个--,DD可以是2位数字或2个--。年龄范围格式,X到Y岁,其中X和Y是数字。不接受 --到--岁")
+    score: int = Field(..., description="卡片得分", ge=0, le=10)
+    tag: str = Field(..., description="标签1",max_length=4)
+    topic: int = Field(..., description="主题1-7",ge=0, le=7)
+
+    @field_validator('time')
+    @classmethod
+    def validate_time_format(cls, v: str) -> str:
+        combined_regex = r"^(?:(\d{4}|-{4})年(\d{2}|-{2})月(\d{2}|-{2})日|(\d+)到(\d+)岁|-{1,}到(\d+)岁|(\d+)到-{1,}岁)$"
+        match = re.match(combined_regex, v)
+        if match:
+            return v
+        else:
+            raise ValueError("时间无效")
 
 
 class MemoryCardsGenerate(BaseModel):
@@ -65,15 +81,14 @@ class ChatHistoryOrText(BaseModel):
 
 
 
-
 class UserRelationshipExtractionRequest(BaseModel):
     text: str
 
 
 class BriefResponse(BaseModel):
-    title: str
-    content: str
-    tags: list[str]
+    title: str = Field(..., description="标题")
+    content: str = Field(..., description="内容")
+    tags: list[str] = Field(..., description='["标签1","标签2"]')
 
 
 class DeleteRequest(BaseModel):

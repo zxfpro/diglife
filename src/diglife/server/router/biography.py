@@ -8,7 +8,7 @@ import asyncio
 import httpx
 import uuid
 import os
-
+from diglife.utils import super_log
 
 router = APIRouter(tags=["biography"])
 
@@ -43,8 +43,6 @@ async def aget_(url = ""):
 
 async def _generate_biography(task_id: str, request_data: BiographyRequest):
     """
-    模拟一个耗时的传记生成过程。
-    在真实场景中，这里会调用LLM或其他复杂的生成逻辑。
     """
     memory_cards = request_data.model_dump()["memory_cards"]
     try:
@@ -58,6 +56,8 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         )
         task_store[task_id]["progress"] = 0.2
         task_store[task_id]["material"] = material
+
+        super_log(material,'material')
         # 生成大纲
         outline = await bg.aoutline_generate(material)
 
@@ -66,6 +66,8 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["biography_title"] = "个人传记"
         task_store[task_id]["outline"] = outline
 
+        super_log(outline,'outline')
+        return 1
         # 生成传记简介
         brief = await bg.agener_biography_brief(outline)
         task_store[task_id]["biography_brief"] = brief
@@ -119,7 +121,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
 
 
     except Exception as e:
-        task_store[task_id]["status"] = "FAILED"
+        task_store[task_id]["status"] = "得到"
         task_store[task_id]["error_message"] = str(e)
         task_store[task_id]["progress"] = 1.0
         biography_callback_url_failed = user_callback_url + f'/api/inner/notifyBiographyStatus?generateTaskId={task_id}&status=0'
