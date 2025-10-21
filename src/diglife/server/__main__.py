@@ -3,12 +3,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from diglife.core import MemoryCardManager
 from diglife.core import DigitalAvatar
-from diglife import logger
 from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
 from diglife.server.router.prompt import router as prompt_router
+from diglife.server.router.chat import router as chat_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
 
 import os
@@ -40,7 +40,7 @@ app.include_router(avatar_router, prefix="/digital_avatar")
 app.include_router(memory_card_router, prefix="/memory_card")
 app.include_router(recommended_router, prefix="/recommended")
 app.include_router(prompt_router, prefix="/prompt")
-
+app.include_router(chat_router, prefix="/v1")
 app.include_router(biography_router)
 
 @app.get("/")
@@ -136,8 +136,6 @@ async def user_relationship_extraction_server(
     result = await da.auser_relationship_extraction(text=request.text)
     return {"relation": result}
 
-
-# 可以考虑直接summary 作为单独功能拆出来
 
 
 if __name__ == "__main__":

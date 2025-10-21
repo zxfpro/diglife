@@ -11,9 +11,9 @@ src/diglife.egg-info/requires.txt
 src/diglife.egg-info/top_level.txt
 src/diglife/core/__init__.py
 src/diglife/core/biography.py
+src/diglife/core/chat.py
 src/diglife/core/digital_avatar.py
 src/diglife/core/memorycard.py
-src/diglife/core/utils.py
 src/diglife/core/recommended/__init__.py
 src/diglife/core/recommended/embedding_model.py
 src/diglife/core/recommended/embedding_pool.py
@@ -21,9 +21,9 @@ src/diglife/core/recommended/recom.py
 src/diglife/server/__main__.py
 src/diglife/server/router/__init__.py
 src/diglife/server/router/biography.py
+src/diglife/server/router/chat.py
+src/diglife/server/router/chat_models.py
 src/diglife/server/router/digital_avatar.py
 src/diglife/server/router/memory_card.py
 src/diglife/server/router/prompt.py
 src/diglife/server/router/recommended.py
-tests/test_1.py
-tests/test_main.py

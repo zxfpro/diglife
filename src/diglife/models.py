@@ -4,8 +4,51 @@ from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field, model_validator, field_validator
 from datetime import datetime
 import re
+from pydantic import BaseModel, Field, RootModel
 
-# 记忆合并
+
+# 分数
+
+class LifeTopicScoreRequest(BaseModel):
+    S_list: List[int] = Field(..., description="List of scores, each between 1 and 10.")
+    K: float = Field(0.8, description="Weighting factor K.")
+    total_score: int = Field(0, description="Initial total score.")
+    epsilon: float = Field(0.001, description="Epsilon value for calculation.")
+
+    @model_validator(mode="after")
+    def validate_s_list(self):
+        if not all(0 <= x <= 10 for x in self.S_list):
+            raise ValueError(
+                "All elements in 'S_list' must be integers between 1 and 10 (inclusive)."
+            )
+        return self
+
+class ScoreRequest(BaseModel):
+    S_list: List[float] = Field(
+        ...,
+        description="List of string representations of scores, each between 1 and 10.",
+    )
+    K: float = Field(0.3, description="Coefficient K for score calculation.")
+    total_score: int = Field(0, description="Total score to be added.")
+    epsilon: float = Field(0.0001, description="Epsilon value for score calculation.")
+
+    @model_validator(mode="after")
+    def check_s_list_values(self):
+        for s_val in self.S_list:
+            try:
+                int_s_val = float(s_val)
+                if not (0 <= int_s_val <= 100):
+                    raise ValueError(
+                        "Each element in 'S_list' must be an integer between 1 and 10."
+                    )
+            except ValueError:
+                raise ValueError(
+                    "Each element in 'S_list' must be a valid integer string."
+                )
+        return self
+
+
+# 记忆卡片
 class MemoryCardsRequest(BaseModel):
     memory_cards: list[str] = Field(..., description="记忆卡片列表")
 
@@ -50,8 +93,59 @@ class MemoryCardGenerate(BaseModel):
 class MemoryCardsGenerate(BaseModel):
     memory_cards: list[MemoryCardGenerate] = Field(..., description="记忆卡片列表")
 
+# 1. 定义记忆卡片模型 (Chapter)
+class Chapter(BaseModel):
+    """
+    表示文档中的一个记忆卡片（章节）。
+    """
+    title: str = Field(..., description="记忆卡片的标题")
+    content: str = Field(..., description="记忆卡片的内容")
+
+# 2. 定义整个文档模型 (Document)
+class Document(BaseModel):
+    """
+    表示一个包含标题和多个记忆卡片的文档。
+    """
+    title: str = Field(..., description="整个文档的标题内容")
+    chapters: List[Chapter] = Field(..., description="文档中包含的记忆卡片列表")
 
 
+# 分身
+class PersonInfo(BaseModel):
+    """
+    表示一个人的详细信息。
+    """
+    relationship: str = Field(..., description="与查询对象的_关系_")
+    profession: str = Field(..., description="职业信息")
+    birthday: str = Field(..., description="生日信息 (格式可根据实际情况调整)")
+
+class CharactersData(RootModel[Dict[str, PersonInfo]]):
+    """
+    表示一个包含多个角色信息的字典，键为角色名称，值为 PersonInfo 模型。
+    """
+    pass # RootModel 不需要定义额外的字段，它直接代理其泛型类型
+
+class ContentVer(BaseModel):
+    content: str = Field(..., description="内容")
+
+# 传记
+
+
+
+
+class Extract_Person(BaseModel):
+    content: list[str] = Field(..., description="提取人名")
+
+class Extract_Place(BaseModel):
+    content: list[str] = Field(..., description="提取地名")
+
+class Biography_Free(BaseModel):
+    title: str = Field(..., description="标题")
+    description: str = Field(..., description="传记的简介")
+    content: str = Field(..., description="传记正文")
+
+class ContentVer(BaseModel):
+    content: str = Field(..., description="内容")
 
 class BiographyRequest(BaseModel):
     """
@@ -143,45 +237,3 @@ class BiographyResult(BaseModel):
     progress: float = Field(
         0.0, ge=0.0, le=1.0, description="任务处理进度，0.0到1.0之间。"
     )
-
-
-
-class LifeTopicScoreRequest(BaseModel):
-    S_list: List[int] = Field(..., description="List of scores, each between 1 and 10.")
-    K: float = Field(0.8, description="Weighting factor K.")
-    total_score: int = Field(0, description="Initial total score.")
-    epsilon: float = Field(0.001, description="Epsilon value for calculation.")
-
-    @model_validator(mode="after")
-    def validate_s_list(self):
-        if not all(0 <= x <= 10 for x in self.S_list):
-            raise ValueError(
-                "All elements in 'S_list' must be integers between 1 and 10 (inclusive)."
-            )
-        return self
-
-
-class ScoreRequest(BaseModel):
-    S_list: List[float] = Field(
-        ...,
-        description="List of string representations of scores, each between 1 and 10.",
-    )
-    K: float = Field(0.3, description="Coefficient K for score calculation.")
-    total_score: int = Field(0, description="Total score to be added.")
-    epsilon: float = Field(0.0001, description="Epsilon value for score calculation.")
-
-    @model_validator(mode="after")
-    def check_s_list_values(self):
-        for s_val in self.S_list:
-            try:
-                int_s_val = float(s_val)
-                if not (0 <= int_s_val <= 100):
-                    raise ValueError(
-                        "Each element in 'S_list' must be an integer between 1 and 10."
-                    )
-            except ValueError:
-                raise ValueError(
-                    "Each element in 'S_list' must be a valid integer string."
-                )
-        return self
-

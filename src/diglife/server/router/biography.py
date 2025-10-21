@@ -8,20 +8,14 @@ import asyncio
 import httpx
 import uuid
 import os
-from diglife.utils import super_log
+from diglife import super_log
 
 router = APIRouter(tags=["biography"])
 
 user_callback_url = os.getenv("user_callback_url")
-
-
-bg = BiographyGenerate(model_name = os.getenv("llm_model_name") ,
-                              api_key = os.getenv("llm_api_key"))
-
-
-
+bg = BiographyGenerate()
 task_store: Dict[str, Dict[str, Any]] = {}
-
+# TODO 后续使用redis 进行任务队列设计
 
 async def aget_(url = ""):
     async with httpx.AsyncClient() as client:
@@ -54,10 +48,9 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         material = await bg.amaterial_generate(
             vitae=request_data.vitae, memory_cards=memory_cards
         )
+
         task_store[task_id]["progress"] = 0.2
         task_store[task_id]["material"] = material
-
-        super_log(material,'material')
         # 生成大纲
         outline = await bg.aoutline_generate(material)
 
@@ -66,8 +59,6 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         task_store[task_id]["biography_title"] = "个人传记"
         task_store[task_id]["outline"] = outline
 
-        super_log(outline,'outline')
-        return 1
         # 生成传记简介
         brief = await bg.agener_biography_brief(outline)
         task_store[task_id]["biography_brief"] = brief

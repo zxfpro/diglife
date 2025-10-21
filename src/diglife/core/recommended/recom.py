@@ -1,7 +1,4 @@
-
 from typing import Dict, Any
-
-from diglife import logger
 import os
 import httpx
 from .embedding_pool import EmbeddingPool
@@ -35,15 +32,11 @@ class Recommend():
         self.recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
         self.recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
 
-
-
     def update(self,text, id, type):
         self.ep.update(text=text, id=id, type=type)
 
-
     def delete(self,id):
         self.ep.delete(id)
-
 
     async def recommended_biographies_and_cards(self,user_id):
         user_profile_id_to_fetch = user_id

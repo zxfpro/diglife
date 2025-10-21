@@ -3,12 +3,8 @@ from fastapi import APIRouter
 from diglife.core import DigitalAvatar
 from diglife.models import BriefResponse, MemoryCards, AvatarXGRequests
 
-import os
-
-
-da = DigitalAvatar()
-
 router = APIRouter(tags=["digital_avatar"])
+da = DigitalAvatar()
 
 @router.post(
     "/brief", response_model=BriefResponse, description="数字分身介绍"

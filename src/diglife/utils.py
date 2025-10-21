@@ -1,16 +1,40 @@
-"""
-Author: 823042332@qq.com 823042332@qq.com
-Date: 2025-08-28 09:07:54
-LastEditors: 823042332@qq.com 823042332@qq.com
-LastEditTime: 2025-09-03 13:56:45
-FilePath: /prompt_writing_assistant/src/prompt_writing_assistant/unit.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-"""
 
+# 工具箱
 import re
-import importlib
-import yaml
-from diglife import log_level
+import json
+from diglife.models import MemoryCards
+
+def memoryCards2str(memory_cards: MemoryCards):
+    memoryCards_str = ""
+    memoryCards_time_str = ""
+    for memory_card in memory_cards:
+        memory_card_str = memory_card["title"] + "\n" + memory_card["content"] + "\n"
+        memoryCards_str += memory_card_str
+        memoryCards_time_str += "\n"
+        memoryCards_time_str += memory_card["time"]
+    return memoryCards_str, memoryCards_time_str
+
+
+def extract_last_user_input(dialogue_text):
+    """
+    从多轮对话文本中提取最后一个 user 的输入内容。
+
+    Args:
+        dialogue_text: 包含多轮对话的字符串。
+
+    Returns:
+        最后一个 user 的输入内容字符串，如果未找到则返回 None。
+    """
+    pattern = r"(?s).*user:\s*(.*?)(?=user:|$)"
+
+    match = re.search(pattern, dialogue_text)
+
+    if match:
+        # group(1) 捕获的是最后一个 user: 到下一个 user: 或字符串末尾的内容
+        return match.group(1).strip()
+    else:
+        return None
+    
 
 def extract_json(text: str) -> str:
     """从文本中提取python代码
@@ -41,29 +65,3 @@ def extract_article(text: str) -> str:
     else:
         return ""  # 返回空字符串或抛出异常，此处返回空字符串
 
-
-def load_inpackage_file(package_name: str, file_name: str, file_type="yaml"):
-    """load config"""
-    with importlib.resources.open_text(package_name, file_name) as f:
-        if file_type == "yaml":
-            return yaml.safe_load(f)
-        else:
-            return f.read()
-
-
-
-
-def super_log(s, target: str = "target"):
-    COLOR_RED = "\033[91m"
-    COLOR_GREEN = "\033[92m"
-    COLOR_YELLOW = "\033[93m"
-    COLOR_BLUE = "\033[94m"
-    COLOR_RESET = "\033[0m" # 重置颜色
-    log_ = log_level
-
-    log_("\n"+f"{COLOR_BLUE}=={COLOR_RESET}" * 21 + target + f"{COLOR_BLUE}=={COLOR_RESET}" * 21)
-    log_("\n       "+"--" * 40)
-    log_(type(s))
-    log_("\n       "+f"{COLOR_RED}--{COLOR_RESET}" * 40)
-    log_(s)
-    log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21 + target + "  end!"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21)
