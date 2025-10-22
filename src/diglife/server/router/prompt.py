@@ -4,7 +4,9 @@ from pro_craft.utils import create_session
 import os
 
 router = APIRouter(tags=["prompt"])
-intels = Intel(model_name="doubao-1-5-pro-256k-250115")
+intels = Intel(
+    database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
+    model_name="doubao-1-5-pro-256k-250115")
 
 @router.get("/push_order")
 async def push_order(demand:str, prompt_id: str, key: str,action_type = "train"):
@@ -31,6 +33,6 @@ async def get_latest_prompt(prompt_id: str):
 
 @router.get("/sync_database")
 async def get_latest_prompt():
-    # test_database_url
-    result = intels.sync_prompt_data_to_database(os.getenv("test_database_url"))
+    test_database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2-test"
+    result = intels.sync_prompt_data_to_database(test_database_url)
     return {"message":"success"}

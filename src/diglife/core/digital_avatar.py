@@ -12,9 +12,7 @@ from diglife import super_log
 
 class DigitalAvatar:
     def __init__(self):
-        self.inters = AsyncIntel(
-            database_url="mysql+aiomysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
-            model_name = "doubao-1-5-pro-256k-250115")
+        self.inters = AsyncIntel(model_name = "doubao-1-5-pro-256k-250115")
 
 
     async def desensitization(self, memory_cards: list[str]) -> list[str]:
