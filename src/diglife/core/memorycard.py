@@ -59,7 +59,7 @@ class MemoryCardManager:
         tasks = []
         for memory_card in memory_cards:
             tasks.append(
-                self.inters.aintellect_remove_format(
+                self.inters.intellect_remove_format(
                     input_data=memory_card,
                     prompt_id = "0088",
                     version = None,
@@ -72,7 +72,7 @@ class MemoryCardManager:
 
     async def amemory_card_merge(self, memory_cards: list[str]):
         memoryCards_str, memoryCards_time_str = memoryCards2str(memory_cards)
-        result_1 = await self.inters.aintellect_remove_format(
+        result_1 = await self.inters.intellect_remove_format(
             input_data=memoryCards_str + "\n 各记忆卡片的时间" + memoryCards_time_str,
             prompt_id = "0089",
             version = None,
@@ -82,7 +82,7 @@ class MemoryCardManager:
         return result_1
 
     async def amemory_card_polish(self, memory_card: dict) -> dict:
-        result_1 = await self.inters.aintellect_remove_format(
+        result_1 = await self.inters.intellect_remove_format(
             input_data="\n记忆卡片标题: "+ memory_card["title"]+ "\n记忆卡片内容: " + memory_card["content"] + "\n记忆卡片发生时间: " + memory_card["time"],
             prompt_id = "0090",
             version = None,
@@ -101,7 +101,7 @@ class MemoryCardManager:
         """
         number_ = len(chat_history_str) // weight + 1
 
-        result_dict = await self.inters.aintellect_remove_format(
+        result_dict = await self.inters.intellect_remove_format(
             input_data = f"It is suggested to output {number_} events" + chat_history_str,
             prompt_id = "0091",
             version = None,
@@ -116,7 +116,7 @@ class MemoryCardManager:
         chapters = chapters
         for chapter in chapters:
             tasks.append(
-                self.inters.aintellect_remove_format(
+                self.inters.intellect_remove_format(
                     input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
                     prompt_id = "0094",
                     version = None,
@@ -139,7 +139,7 @@ class MemoryCardManager:
 
         number_ = len(chat_history_str) // weight + 1
 
-        result_dict = await self.inters.aintellect_remove_format(
+        result_dict = await self.inters.intellect_remove_format(
             input_data = f"建议输出卡片数量:  {number_} 个记忆卡片" + chat_history_str,
             prompt_id = "0093",
             version = None,
@@ -153,7 +153,7 @@ class MemoryCardManager:
         tasks = []
         for chapter in chapters:
             tasks.append(
-                self.inters.aintellect_remove_format(
+                self.inters.intellect_remove_format(
                     input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
                     prompt_id = "0094",
                     version = None,

@@ -34,27 +34,46 @@ class BiographyGenerate:
     async def extract_person_name(self, bio_chunk: str):
         """0087 提取人名"""
 
-        result = await self.inters.intellect_remove_format(
-            input_data = bio_chunk,
-            prompt_id = "0087",
-            version = None,
-            inference_save_case=inference_save_case,
-            OutputFormat = Extract_Person,
-        )
+        # result = await self.inters.intellect_remove_format(
+        #     input_data = bio_chunk,
+        #     prompt_id = "0087",
+        #     version = None,
+        #     inference_save_case=inference_save_case,
+        #     OutputFormat = Extract_Person,
+        # )
+        output_format = """"""
+        result = await self.inters.intellect_remove(input_data=bio_chunk,
+                                    output_format=output_format,
+                                    prompt_id ="0087",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
         super_log(result,"提取人名")
+        result = json.loads(extract_json(result))
+        result = result.get("content")
         return result
 
     async def extract_person_place(self, bio_chunk: str):
         """0086 提取地名"""
 
-        result = await self.inters.intellect_remove_format(
-            input_data = bio_chunk,
-            prompt_id = "0086",
-            version = None,
-            inference_save_case=inference_save_case,
-            OutputFormat = Extract_Place,
-        )
+        # result = await self.inters.intellect_remove_format(
+        #     input_data = bio_chunk,
+        #     prompt_id = "0086",
+        #     version = None,
+        #     inference_save_case=inference_save_case,
+        #     OutputFormat = Extract_Place,
+        # )
+
+        output_format = """"""
+        result = await self.inters.intellect_remove(input_data=bio_chunk,
+                                    output_format=output_format,
+                                    prompt_id ="0086",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
         super_log(result,"提取地名")
+        result = json.loads(extract_json(result))
+        result = result.get("content")
         return result
     
     async def aoutline_generate(self, material: str) -> str:
@@ -123,10 +142,14 @@ class BiographyGenerate:
                                     version = None,
                                     inference_save_case = inference_save_case,
                                     )
-        super_log(result,'传记简介')
         
-
-        return result.get("content")
+        
+   
+        
+        super_log(result,'传记简介')
+        result = extract_json(result)
+        result = result.replace('"content":','')
+        return result
 
     async def amaterial_generate(self, vitae: str, memory_cards: list[str]) -> str:
         """
@@ -147,28 +170,45 @@ class BiographyGenerate:
         # --- 示例 ---
         chunks = split_into_chunks(memory_cards, chunk_size=2)
 
-        material = {"content":""}
+        # material = {"content":""}
+        material = ""
         for i, chunk in enumerate(chunks):
             chunk = json.dumps(chunk, ensure_ascii=False)
             if i == 0:
-                material = await self.inters.intellect_remove_format(
-                    input_data = vitae + chunk,
-                    prompt_id = "0085",
-                    version = None,
-                    inference_save_case=inference_save_case,
-                    OutputFormat = ContentVer,
-                        )
+                # material = await self.inters.intellect_remove_format(
+                #     input_data = vitae + chunk,
+                #     prompt_id = "0085",
+                #     version = None,
+                #     inference_save_case=inference_save_case,
+                #     OutputFormat = ContentVer,
+                #         )
+                output_format = """"""
+                material = await self.inters.intellect_remove(input_data=vitae + chunk,
+                                    output_format=output_format,
+                                    prompt_id ="0085",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
             else:
-                output_format = """```json 内容 ```"""
+                # output_format = """```json 内容 ```"""
+                # material = await self.inters.intellect_remove(input_data=material,
+                #                             output_format=output_format,
+                #                             prompt_id ="0082",
+                #                             version = None,
+                #                             inference_save_case = inference_save_case,
+                #                             )
+                output_format = """"""
                 material = await self.inters.intellect_remove(input_data=material,
-                                            output_format=output_format,
-                                            prompt_id ="0082",
-                                            version = None,
-                                            inference_save_case = inference_save_case,
-                                            )
-                material = json.loads(extract_json(material))
+                                    output_format=output_format,
+                                    prompt_id ="0082",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
+                # material = json.loads(extract_json(material))
+                super_log(material)
         
-        return material.get("content")
+        # return material.get("content")
+        return material
 
 
     async def awrite_chapter(
@@ -185,40 +225,63 @@ class BiographyGenerate:
             # 0081 prompt_base
             # TODO 大量的format 怎么办
             
-            material = await self.inters.intellect_remove_format(
-                input_data = {
-                                "material": material,
-                                "frame": json.dumps(outline,ensure_ascii=False),
-                                "Requirements for Chapter Writing": json.dumps(chapter,ensure_ascii=False)
-                            },
-                prompt_id = "0080",
-                version = None,
-                inference_save_case=inference_save_case,
-                OutputFormat = ContentVer,
-                    )
-            # super_log(material,'编写传记时, material')
-
+            # material = await self.inters.intellect_remove_format(
+            #     input_data = {
+            #                     "material": material,
+            #                     "frame": json.dumps(outline,ensure_ascii=False),
+            #                     "Requirements for Chapter Writing": json.dumps(chapter,ensure_ascii=False)
+            #                 },
+            #     prompt_id = "0080",
+            #     version = None,
+            #     inference_save_case=inference_save_case,
+            #     OutputFormat = ContentVer,
+            #         )
+            
 
             output_format = """"""
-            article = await self.inters.intellect_remove(input_data = {
-                                                            "目标人物": master,
-                                                            "章节名称": chapter.get("chapter_number") + "   " + chapter.get("title"),
-                                                            "目标字数范围":suggest_number_words,
-                                                            "核心主题": chapter.get("topic"),
-                                                            "素材":material.get("content"),
-                                                        },
-                                        output_format=output_format,
-                                        prompt_id ="0081",
-                                        version = None,
-                                        inference_save_case = inference_save_case,
-                                        )
+            try:
+                material = await self.inters.intellect_remove(input_data={
+                                                                    "material": material,
+                                                                    "frame": json.dumps(outline,ensure_ascii=False),
+                                                                    "Requirements for Chapter Writing": json.dumps(chapter,ensure_ascii=False)
+                                                                },
+                                    output_format=output_format,
+                                    prompt_id ="0080",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
+            except Exception as e:
+                raise Exception(f'素材收拾的时候报错 {e}')
             
-            chapter_name = await self.extract_person_name(article)
-            chapter_place = await self.extract_person_place(article)
+            # super_log(material,'编写传记时, material')
 
-            assert isinstance(chapter_name["content"], list)
-            assert isinstance(chapter_place["content"], list)
-
+            try:
+                output_format = """"""
+                article = await self.inters.intellect_remove(input_data = {
+                                                                "目标人物": master,
+                                                                "章节名称": chapter.get("chapter_number") + "   " + chapter.get("title"),
+                                                                "目标字数范围":suggest_number_words,
+                                                                "核心主题": chapter.get("topic"),
+                                                                "素材":material,
+                                                            },
+                                            output_format=output_format,
+                                            prompt_id ="0081",
+                                            version = None,
+                                            inference_save_case = inference_save_case,
+                                            )
+            except Exception as e:
+                raise Exception(f'这是在生成文章时候报错 {e}')
+            try:
+                chapter_name = await self.extract_person_name(article)
+                chapter_place = await self.extract_person_place(article)
+            except Exception as e:
+                raise Exception(f'提取人名地名报错 {e}')
+            try:
+                # assert isinstance(chapter_name["content"], list)
+                # assert isinstance(chapter_place["content"], list)
+                1 == 1
+            except Exception as e:
+                raise Exception(f'断言出错 {e}')
             # a = {
             #                                     "article": article,
             #                                     "素材":material.get("content"),
@@ -234,21 +297,25 @@ class BiographyGenerate:
             #                             version = None,
             #                             inference_save_case = inference_save_case,
             #                             )
-            imgs = extract_from_text(article)
-            if imgs:
-                imgs_path = ["![](img[0])" for img in imgs]
-
+            print(1234123)
+            print(chapter,'chapter')
+            print(article,'article')
+            print(material,'material')
+            print(created_material,'created_material')
+            print(chapter_name,'chapter_name')
+            print(chapter_place,'chapter_place')
             return {
                 "chapter_number": chapter.get("chapter_number"),
-                "article": article + "\n".join(imgs_path),
+                "article": article,
                 "material": material,
                 "created_material": created_material,
-                "chapter_name": chapter_name["content"],
-                "chapter_place": chapter_place["content"],
+                "chapter_name": chapter_name,
+                "chapter_place": chapter_place,
             }
 
         except Exception as e:
             print(f"Error processing chapter {chapter.get('chapter_number')}: {e}")
+
             return {
                 "chapter_number": chapter.get("chapter_number"),
                 "article": "",

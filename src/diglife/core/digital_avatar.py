@@ -2,8 +2,9 @@
 import asyncio
 from pro_craft.prompt_helper_async import AsyncIntel
 from diglife.models import PersonInfo, CharactersData, ContentVer, BriefResponse
-from diglife.utils import memoryCards2str
+from diglife.utils import memoryCards2str, extract_article
 from diglife import inference_save_case
+from diglife import super_log
 
 
 ###
@@ -22,7 +23,7 @@ class DigitalAvatar:
         """
         tasks = []
         for memory_card in memory_cards:
-            tasks.append(self.inters.aintellect_remove_format(
+            tasks.append(self.inters.intellect_remove_format(
                                 input_data=memory_card.get("content"),
                                 prompt_id="0100",
                                 version = None,
@@ -41,15 +42,27 @@ class DigitalAvatar:
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
 
-        result = await self.inters.aintellect_remove_format(
-                                input_data="\n操作方案:\n" + action + "\n旧人物性格:\n" + old_character +"\n记忆卡片:\n" +  memoryCards_str,
-                                prompt_id="0099",
-                                version = None,
-                                inference_save_case=inference_save_case,
-                                OutputFormat = ContentVer,
-                                 )
+        # result = await self.inters.intellect_remove_format(
+        #                         input_data="\n操作方案:\n" + action + "\n旧人物性格:\n" + old_character +"\n记忆卡片:\n" +  memoryCards_str,
+        #                         prompt_id="0099",
+        #                         version = None,
+        #                         inference_save_case=inference_save_case,
+        #                         OutputFormat = ContentVer,
+        #                          )
+        output_format = """"""
+        result = await self.inters.intellect_remove(
+                                    input_data="\n操作方案:\n" + action + "\n旧人物性格:\n" + old_character +"\n记忆卡片:\n" +  memoryCards_str,
+                                    output_format=output_format,
+                                    prompt_id ="0099",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
         
-        result_content = result.get("content")
+        
+        super_log(result,"数字分身性格提取")
+        
+        # result_content = result.get("content")
+        result_content = extract_article(result)
         return result_content
 
     
@@ -59,7 +72,7 @@ class DigitalAvatar:
         """
         
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
                                 input_data="聊天历史:\n" + memoryCards_str,
                                 prompt_id="0098",
                                 version = None,
@@ -73,7 +86,7 @@ class DigitalAvatar:
         用户关系提取 0097
         # TODO
         """
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
                         input_data="聊天历史" + text,
                         prompt_id="0097",
                         version = None,
@@ -91,7 +104,7 @@ class DigitalAvatar:
         用户概述 0096
         """
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
                 input_data="\n操作方案:\n" + action + "\n旧概述文本:\n" + old_overview +"\n记忆卡片:\n" +  memoryCards_str,
                 prompt_id="0096",
                 version = None,
