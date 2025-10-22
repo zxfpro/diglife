@@ -74,10 +74,8 @@ class Log:
         COLOR_RESET = "\033[0m" # 重置颜色
         log_ = self.super_log_level
 
-        log_("\n"+f"{COLOR_BLUE}=={COLOR_RESET}" * 21 + target + f"{COLOR_BLUE}=={COLOR_RESET}" * 21)
-        log_("\n       "+"--" * 40)
+        log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 50)
+        log_(target + "\n       "+"--" * 40)
         log_(type(s))
-        log_("\n       "+f"{COLOR_RED}--{COLOR_RESET}" * 40)
         log_(s)
-        log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21 + target + "  end!"+f"{COLOR_GREEN}=={COLOR_RESET}" * 21)
-
+        log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 50)

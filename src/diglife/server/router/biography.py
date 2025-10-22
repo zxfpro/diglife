@@ -68,6 +68,9 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
         biography_name = []
         biography_place = []
 
+
+
+
         tasks = []
         for part, chapters in outline.items():
             for chapter in chapters:
@@ -83,7 +86,7 @@ async def _generate_biography(task_id: str, request_data: BiographyRequest):
                     )
                 )
         results = await asyncio.gather(*tasks, return_exceptions=False)
-
+        super_log(results,'resultsresults23')
         for part, chapters in outline.items():
             biography_json[part] = []
             for chapter in chapters:

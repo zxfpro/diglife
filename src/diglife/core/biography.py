@@ -1,14 +1,27 @@
 
-from pro_craft.prompt_helper_async import AsyncIntel
+
 from diglife.utils import memoryCards2str, extract_article, extract_json
 from diglife.models import Extract_Person,Extract_Place, Biography_Free, ContentVer
 from diglife import inference_save_case
 import json
 from diglife import super_log
+from pro_craft.prompt_helper_async import AsyncIntel
+
+import re
+
+def extract_from_text(text: str):
+    matches = []
+    for match in re.finditer(r'!\[\]\(([^)]+)\)', text):
+        url = match.group(1).strip()
+        position = match.start()
+        matches.append((url, position))
+    return matches
 
 class BiographyGenerate:
     def __init__(self):
-        self.inters = AsyncIntel(model_name = "doubao-1-5-pro-256k-250115")
+        self.inters = AsyncIntel(
+            database_url="mysql+aiomysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
+            model_name = "doubao-1-5-pro-256k-250115")
         # ArkAdapter
 
         self.base_format_prompt = """
@@ -21,7 +34,7 @@ class BiographyGenerate:
     async def extract_person_name(self, bio_chunk: str):
         """0087 提取人名"""
 
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
             input_data = bio_chunk,
             prompt_id = "0087",
             version = None,
@@ -34,7 +47,7 @@ class BiographyGenerate:
     async def extract_person_place(self, bio_chunk: str):
         """0086 提取地名"""
 
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
             input_data = bio_chunk,
             prompt_id = "0086",
             version = None,
@@ -82,7 +95,7 @@ class BiographyGenerate:
 }
 ```
 """
-        outline_origin = await self.inters.aintellect_remove(input_data=material,
+        outline_origin = await self.inters.intellect_remove(input_data=material,
                                             output_format=output_format,
                                             prompt_id ="0084",
                                             version = None,
@@ -96,14 +109,22 @@ class BiographyGenerate:
         """
         0083 传记简介
         """
-        result = await self.inters.aintellect_remove_format(
-            input_data = json.dumps(outline, ensure_ascii=False),
-            prompt_id = "0083",
-            version = None,
-            inference_save_case=inference_save_case,
-            OutputFormat = ContentVer,
-        )
+        # result = await self.inters.intellect_remove_format(
+        #     input_data = json.dumps(outline, ensure_ascii=False),
+        #     prompt_id = "0083",
+        #     version = None,
+        #     inference_save_case=inference_save_case,
+        #     OutputFormat = ContentVer,
+        # )
+        output_format = """"""
+        result = await self.inters.intellect_remove(input_data=json.dumps(outline, ensure_ascii=False),
+                                    output_format=output_format,
+                                    prompt_id ="0083",
+                                    version = None,
+                                    inference_save_case = inference_save_case,
+                                    )
         super_log(result,'传记简介')
+        
 
         return result.get("content")
 
@@ -130,7 +151,7 @@ class BiographyGenerate:
         for i, chunk in enumerate(chunks):
             chunk = json.dumps(chunk, ensure_ascii=False)
             if i == 0:
-                material = await self.inters.aintellect_remove_format(
+                material = await self.inters.intellect_remove_format(
                     input_data = vitae + chunk,
                     prompt_id = "0085",
                     version = None,
@@ -139,7 +160,7 @@ class BiographyGenerate:
                         )
             else:
                 output_format = """```json 内容 ```"""
-                material = await self.inters.aintellect_remove(input_data=material,
+                material = await self.inters.intellect_remove(input_data=material,
                                             output_format=output_format,
                                             prompt_id ="0082",
                                             version = None,
@@ -164,7 +185,7 @@ class BiographyGenerate:
             # 0081 prompt_base
             # TODO 大量的format 怎么办
             
-            material = await self.inters.aintellect_remove_format(
+            material = await self.inters.intellect_remove_format(
                 input_data = {
                                 "material": material,
                                 "frame": json.dumps(outline,ensure_ascii=False),
@@ -175,11 +196,11 @@ class BiographyGenerate:
                 inference_save_case=inference_save_case,
                 OutputFormat = ContentVer,
                     )
-            super_log(material,'编写传记时, material')
+            # super_log(material,'编写传记时, material')
 
 
             output_format = """"""
-            article = await self.inters.aintellect_remove(input_data = {
+            article = await self.inters.intellect_remove(input_data = {
                                                             "目标人物": master,
                                                             "章节名称": chapter.get("chapter_number") + "   " + chapter.get("title"),
                                                             "目标字数范围":suggest_number_words,
@@ -191,23 +212,39 @@ class BiographyGenerate:
                                         version = None,
                                         inference_save_case = inference_save_case,
                                         )
-
-            super_log(article,'编写传记时, article')
-
             
             chapter_name = await self.extract_person_name(article)
             chapter_place = await self.extract_person_place(article)
 
-            assert isinstance(chapter_name, list)
-            assert isinstance(chapter_place, list)
+            assert isinstance(chapter_name["content"], list)
+            assert isinstance(chapter_place["content"], list)
+
+            # a = {
+            #                                     "article": article,
+            #                                     "素材":material.get("content"),
+            #                                             }
+            # super_log(a,'添加图片')
+            # article = await self.inters.intellect_remove(
+            #                             input_data = {
+            #                                     "article": article,
+            #                                     "素材":material.get("content"),
+            #                                             },
+            #                             output_format=output_format,
+            #                             prompt_id ="0079",
+            #                             version = None,
+            #                             inference_save_case = inference_save_case,
+            #                             )
+            imgs = extract_from_text(article)
+            if imgs:
+                imgs_path = ["![](img[0])" for img in imgs]
 
             return {
                 "chapter_number": chapter.get("chapter_number"),
-                "article": extract_article(article),
+                "article": article + "\n".join(imgs_path),
                 "material": material,
                 "created_material": created_material,
-                "chapter_name": chapter_name,
-                "chapter_place": chapter_place,
+                "chapter_name": chapter_name["content"],
+                "chapter_place": chapter_place["content"],
             }
 
         except Exception as e:
@@ -225,7 +262,7 @@ class BiographyGenerate:
         self, user_name: str, vitae: str, memory_cards: list[dict]
     ):
         memoryCards_str, _ = memoryCards2str(memory_cards)
-        result = await self.inters.aintellect_remove_format(
+        result = await self.inters.intellect_remove_format(
             input_data = f"{user_name},{vitae},{memoryCards_str}",
             prompt_id = "0095",
             version = None,
