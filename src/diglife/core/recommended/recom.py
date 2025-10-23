@@ -7,7 +7,7 @@ from .redis_ import get_redis_client, store_with_expiration, get_value
 
 recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
 recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
-recommended_top_k = 10
+# recommended_top_k = 10
 user_callback_url = os.getenv("user_callback_url")
 two_hours_in_seconds = os.getenv("two_hours_in_seconds")
 
@@ -122,7 +122,7 @@ class Recommend():
     def delete(self,id):
         self.ep.delete(id)
 
-    async def recommended_biographies_and_cards(self,user_id,timestamp):
+    async def recommended_biographies_and_cards(self,user_id,timestamp,current:int,size = 10):
         user_profile_id_to_fetch = user_id
         user_id_timestamp = f"{user_id}_{timestamp}"
         memory_info = await aget_(url = user_callback_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
@@ -133,6 +133,9 @@ class Recommend():
         result = self.ep.search_bac(query=user_brief) # 假如top_k = 1000
         # result  300个推荐结果
         # 是否记录了该用户, 如果没记录, 创建空列表
+        if current == 1:
+            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds) 
+
         now_values = get_value(self.biographies_redis_client,user_id_timestamp)
 
         if now_values:
@@ -141,7 +144,7 @@ class Recommend():
             store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds) # 新建不用过滤
             clear_result = result
 
-        clear_result = clear_result[:recommended_top_k]
+        clear_result = clear_result[:size]
 
         now_user_id_list = get_value(self.biographies_redis_client,user_id_timestamp)
         now_user_id_list += [i.get("id") for i in clear_result]
@@ -151,7 +154,7 @@ class Recommend():
         return clear_result
 
 
-    async def recommended_figure_person(self,user_id,timestamp):
+    async def recommended_figure_person(self,user_id,timestamp,current:int,size:int = 10):
         user_profile_id_to_fetch = user_id
         user_id_timestamp = f"{user_id}_{timestamp}"
         avatar_info = await aget_(url = user_callback_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
@@ -161,6 +164,10 @@ class Recommend():
             user_brief = "这是一个简单的人"
 
         result = self.ep.search_figure_person(query=user_brief)  # 100+
+
+        if current == 1:
+            store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds) 
+
         now_values = get_value(self.figure_redis_client,user_id_timestamp)
 
         if now_values:
@@ -169,7 +176,7 @@ class Recommend():
             store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds)
             clear_result = result
 
-        clear_result = clear_result[:recommended_top_k]
+        clear_result = clear_result[:size]
 
         now_user_id_list = get_value(self.figure_redis_client,user_id_timestamp)
         now_user_id_list += [i.get("id") for i in result]

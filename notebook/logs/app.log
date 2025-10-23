@@ -5,3 +5,48 @@
 2025-10-20 21:48:59,010 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
 2025-10-20 21:50:41,991 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
 2025-10-20 21:52:02,273 - INFO - httpx - _send_single_request - _client:1740 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-23 16:58:36,257 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:194 - Request options: {'method': 'post', 'url': '/chat/completions', 'body': {'messages': [{'role': 'user', 'content': '你哈'}], 'model': 'doubao-1.5-pro-32k', 'frequency_penalty': None, 'function_call': None, 'logit_bias': None, 'logprobs': None, 'max_tokens': None, 'presence_penalty': None, 'stop': None, 'stream': None, 'stream_options': None, 'temperature': 0.7, 'tools': None, 'top_logprobs': None, 'top_p': None, 'user': None, 'repetition_penalty': None, 'n': None, 'parallel_tool_calls': None, 'service_tier': None, 'tool_choice': None, 'response_format': None, 'thinking': None, 'max_completion_tokens': None}, 'files': None}
+2025-10-23 16:58:36,259 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='ark.cn-beijing.volces.com' port=443 local_address=None timeout=60.0 socket_options=None
+2025-10-23 16:58:36,289 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x106d4c1a0>
+2025-10-23 16:58:36,289 - DEBUG - httpcore.connection - _trace:47 - start_tls.started ssl_context=<ssl.SSLContext object at 0x106cf8cb0> server_hostname='ark.cn-beijing.volces.com' timeout=60.0
+2025-10-23 16:58:36,304 - DEBUG - httpcore.connection - _trace:47 - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x106bf3c50>
+2025-10-23 16:58:36,305 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'POST']>
+2025-10-23 16:58:36,305 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-10-23 16:58:36,305 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'POST']>
+2025-10-23 16:58:36,305 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-10-23 16:58:36,305 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'POST']>
+2025-10-23 16:58:36,332 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'server', b'istio-envoy'), (b'date', b'Thu, 23 Oct 2025 08:58:38 GMT'), (b'content-type', b'application/json; charset=utf-8'), (b'content-encoding', b'gzip'), (b'content-length', b'219'), (b'vary', b'Accept-Encoding'), (b'x-envoy-upstream-service-time', b'15'), (b'x-request-id', b'02176120991856927a5e9f0ebd85b418c7d4735108e419999118b')])
+2025-10-23 16:58:36,333 - INFO - httpx - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 404 Not Found"
+2025-10-23 16:58:36,334 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'POST']>
+2025-10-23 16:58:36,334 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-10-23 16:58:36,334 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-10-23 16:58:36,334 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-10-23 16:58:36,334 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:456 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "404 Not Found"
+2025-10-23 16:58:36,334 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:467 - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "/Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/volcenginesdkarkruntime/_base_client.py", line 465, in _request
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/zhaoxuefeng/GitHub/diglife/.venv/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-10-23 16:58:36,337 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:269 - Not retrying
+2025-10-23 16:58:36,337 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:485 - Re-raising status error
+2025-10-23 16:59:15,658 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:194 - Request options: {'method': 'post', 'url': '/chat/completions', 'body': {'messages': [{'role': 'user', 'content': '你哈'}], 'model': 'doubao-1-5-pro-32k-250115', 'frequency_penalty': None, 'function_call': None, 'logit_bias': None, 'logprobs': None, 'max_tokens': None, 'presence_penalty': None, 'stop': None, 'stream': None, 'stream_options': None, 'temperature': 0.7, 'tools': None, 'top_logprobs': None, 'top_p': None, 'user': None, 'repetition_penalty': None, 'n': None, 'parallel_tool_calls': None, 'service_tier': None, 'tool_choice': None, 'response_format': None, 'thinking': None, 'max_completion_tokens': None}, 'files': None}
+2025-10-23 16:59:15,659 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.started host='ark.cn-beijing.volces.com' port=443 local_address=None timeout=60.0 socket_options=None
+2025-10-23 16:59:15,680 - DEBUG - httpcore.connection - _trace:47 - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x106d76ad0>
+2025-10-23 16:59:15,680 - DEBUG - httpcore.connection - _trace:47 - start_tls.started ssl_context=<ssl.SSLContext object at 0x1053df1d0> server_hostname='ark.cn-beijing.volces.com' timeout=60.0
+2025-10-23 16:59:15,714 - DEBUG - httpcore.connection - _trace:47 - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x106c73100>
+2025-10-23 16:59:15,714 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.started request=<Request [b'POST']>
+2025-10-23 16:59:15,714 - DEBUG - httpcore.http11 - _trace:47 - send_request_headers.complete
+2025-10-23 16:59:15,714 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.started request=<Request [b'POST']>
+2025-10-23 16:59:15,714 - DEBUG - httpcore.http11 - _trace:47 - send_request_body.complete
+2025-10-23 16:59:15,714 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.started request=<Request [b'POST']>
+2025-10-23 16:59:17,229 - DEBUG - httpcore.http11 - _trace:47 - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'server', b'istio-envoy'), (b'date', b'Thu, 23 Oct 2025 08:59:18 GMT'), (b'content-type', b'application/json; charset=utf-8'), (b'content-encoding', b'gzip'), (b'content-length', b'401'), (b'x-client-request-id', b'20251023165915eeW2sIX1jPFDeo2Wncm7'), (b'vary', b'Accept-Encoding'), (b'x-envoy-upstream-service-time', b'1380'), (b'x-request-id', b'021761209957977d7126816271d03e3357cd96c8c4b95d48e1a88')])
+2025-10-23 16:59:17,230 - INFO - httpx - _client:1025 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "HTTP/1.1 200 OK"
+2025-10-23 16:59:17,231 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.started request=<Request [b'POST']>
+2025-10-23 16:59:17,231 - DEBUG - httpcore.http11 - _trace:47 - receive_response_body.complete
+2025-10-23 16:59:17,231 - DEBUG - httpcore.http11 - _trace:47 - response_closed.started
+2025-10-23 16:59:17,231 - DEBUG - httpcore.http11 - _trace:47 - response_closed.complete
+2025-10-23 16:59:17,231 - DEBUG - volcenginesdkarkruntime._base_client - _base_client:456 - HTTP Request: POST https://ark.cn-beijing.volces.com/api/v3/chat/completions "200 OK"

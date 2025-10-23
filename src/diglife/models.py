@@ -205,6 +205,8 @@ class UpdateItem(BaseModel):
 class QueryItem(BaseModel):
     user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
     timestamp: str = Field(..., min_length=1, max_length=500, description="timestamp")
+    current: int
+    size: int
 
 
 class BiographyResult(BaseModel):

@@ -73,6 +73,8 @@ async def recommended_biographies_and_cards(query_item: QueryItem):
     try:
         clear_result = await rep.recommended_biographies_and_cards(user_id = query_item.user_id,
                                                                    timestamp=query_item.timestamp,
+                                                                   current=query_item.current,
+                                                                    size=query_item.size,
              )
 
         return {
@@ -98,7 +100,9 @@ async def recommended_figure_person(query_item: QueryItem):
     try:
 
         clear_result = await rep.recommended_figure_person(user_id = query_item.user_id,
-                                                           timestamp = query_item.timestamp
+                                                           timestamp = query_item.timestamp,
+                                                           current=query_item.current,
+                                                           size=query_item.size,
              )
         return {
             "status": "success",
