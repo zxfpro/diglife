@@ -175,14 +175,15 @@ class MemoryCardManager:
             inference_save_case=False,
             OutputFormat = MemoryCardGenerate,
         )
+        time_dicts = time_dicts_
         # 1 你要在你的位置上布置如下代码(不重复), -> push 你的代码和需求
-        time_dicts = await self.inters.intellect_remove_formats(
-            input_datas=time_dicts_,
-            prompt_id = "0078",
-            version = None,
-            inference_save_case=False,
-            OutputFormat = MemoryCardGenerate,
-        )
+        # time_dicts = await self.inters.intellect_remove_formats(
+        #     input_datas=time_dicts_,
+        #     prompt_id = "0078",
+        #     version = None,
+        #     inference_save_case=False,
+        #     OutputFormat = MemoryCardGenerate,
+        # )
 
 
 
