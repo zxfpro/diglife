@@ -694,7 +694,7 @@ wheels = [
 
 [[package]]
 name = "diglife"
-version = "0.2.23"
+version = "0.2.25"
 source = { virtual = "." }
 dependencies = [
     { name = "anyio" },
@@ -2475,7 +2475,7 @@ wheels = [
 
 [[package]]
 name = "pro-craft"
-version = "0.1.24"
+version = "0.1.25"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiomysql" },
@@ -2488,9 +2488,9 @@ dependencies = [
     { name = "utils-tool" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fa/9e/4065be7b4c01cccec6a67d41c9ae306d8e57ce2749cbbe0f72cac1056029/pro_craft-0.1.24.tar.gz", hash = "sha256:1e7a6c818198c0b8891697fdfddd3562e3b95e80dfe72a206ec181c9987b32dc", size = 38874 }
+sdist = { url = "https://files.pythonhosted.org/packages/95/4d/e057f937fddd5292cf134d3810cfa98ec3c4d5fc42612f551ac50623016f/pro_craft-0.1.25.tar.gz", hash = "sha256:3c45cbb023991464bc97a8ebd7cf524ac16a94d96710fbe846465f0297a4ae2e", size = 38892 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/fa/b4856591999e43bb7d56c2bee8345e0142cabc36e44809f23f0587605316/pro_craft-0.1.24-py3-none-any.whl", hash = "sha256:542d7a9ab96518d46b84d985c091a410b8c44ab0d82714ff052e3c2590e8c801", size = 45324 },
+    { url = "https://files.pythonhosted.org/packages/5c/2c/60073da7d3199a96438ecc313f625f9612d5ed7bf86eaece3d67f07c8df3/pro_craft-0.1.25-py3-none-any.whl", hash = "sha256:4356d589246bf9921e8506c4b6a9a627533dfde0e64b7e4dd13f778372f4b293", size = 45354 },
 ]
 
 [[package]]

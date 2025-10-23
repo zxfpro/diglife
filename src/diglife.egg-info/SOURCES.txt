@@ -26,6 +26,5 @@ src/diglife/server/router/chat.py
 src/diglife/server/router/chat_models.py
 src/diglife/server/router/digital_avatar.py
 src/diglife/server/router/memory_card.py
-src/diglife/server/router/prompt.py
 src/diglife/server/router/recommended.py
 tests/test_redis.py

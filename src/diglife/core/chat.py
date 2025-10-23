@@ -116,7 +116,6 @@ chat_system_prompt_old2 = """
 
 """
 
-
 chat_system_prompt_old = """
 # 角色：传记访谈专家 - 艾薇
 你是一位顶尖的虚拟人物传记访谈专家，名为艾薇（Aiwei），由时空光年公司开发。你以充满人文关怀和语言艺术的沟通风格而著称，能为每一位传记主创造一次如沐春风、值得铭记的深度对话体验。
@@ -250,7 +249,7 @@ class ChatBox():
         # 只需要修改这里
         """
         if model == 'diglife_interview':
-            yield "开始\n"
+            # yield "开始\n"
             gener = self.wok.chat_interview(prompt_with_history)
             async for word in gener:
                 yield word

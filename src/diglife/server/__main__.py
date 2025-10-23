@@ -11,12 +11,15 @@ from diglife.server.router.biography import router as biography_router
 from diglife.server.router.chat import router as chat_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
 from pro_craft.server.router.prompt import create_router
-
+from diglife import logger
 import os
+database_url = os.getenv("database_url")
 
-prompt_router = create_router(database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
-              slave_database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2-test",
-              model_name="doubao-1-5-pro-256k-250115")
+                             
+prompt_router = create_router(database_url=database_url,
+              slave_database_url=database_url + "-test",
+              model_name="doubao-1-5-pro-256k-250115",
+              logger=logger)
 app = FastAPI(
     title="LLM Service",
     description="Provides an OpenAI-compatible API for custom large language models.",
