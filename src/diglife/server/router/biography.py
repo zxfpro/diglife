@@ -4,11 +4,11 @@ from typing import Dict, Any
 from diglife.core import BiographyGenerate
 from diglife.models import BiographyRequest, BiographyResult
 from diglife import logger
+from diglife import super_log
 import asyncio
 import httpx
 import uuid
 import os
-from diglife import super_log
 
 router = APIRouter(tags=["biography"])
 

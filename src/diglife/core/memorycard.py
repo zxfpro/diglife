@@ -2,11 +2,11 @@
 
 import math
 import asyncio
-from pro_craft.prompt_helper_async import AsyncIntel
+from pro_craft import AsyncIntel
 from diglife.utils import memoryCards2str
 from diglife.models import MemoryCardGenerate, MemoryCard2, MemoryCard, MemoryCardScore, MemoryCards, Document, Chapter
 from diglife import super_log
-
+from pro_craft.utils import create_async_session
 
 class MemoryCardManager:
     def __init__(self):
@@ -147,26 +147,54 @@ class MemoryCardManager:
         )
 
         chapters = result_dict["chapters"]
+        # async with create_async_session(self.inters.engine) as session:
+        #     prompt_result = await self.inters.get_prompts_from_sql(prompt_id="0094",session=session)
+        # print(prompt_result.action_type,'prompt_result.action_type')
+        # if prompt_result.action_type != "inference":
+        #     chapters = chapters[:1]
 
-        tasks = []
-        for chapter in chapters:
-            tasks.append(
-                self.inters.intellect_remove_format(
-                    input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
-                    prompt_id = "0094",
-                    version = None,
-                    inference_save_case=False,
-                    OutputFormat = MemoryCardGenerate,
-                )
-            )
+        # tasks = []
+        # for chapter in chapters:
+        #     tasks.append(
+        #         self.inters.intellect_remove_format(
+        #             input_data = f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content"),
+        #             prompt_id = "0094",
+        #             version = None,
+        #             inference_save_case=False,
+        #             OutputFormat = MemoryCardGenerate,
+        #         )
+        #     )
 
-        time_dicts = await asyncio.gather(*tasks, return_exceptions=False)
+        # [f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content") for chapter in chapters]
+        # time_dicts = await asyncio.gather(*tasks, return_exceptions=False)
+
+        time_dicts_ = await self.inters.intellect_remove_formats(
+            input_datas=[f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content") for chapter in chapters],
+            prompt_id = "0094",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = MemoryCardGenerate,
+        )
+        # 1 你要在你的位置上布置如下代码(不重复), -> push 你的代码和需求
+        time_dicts = await self.inters.intellect_remove_formats(
+            input_datas=time_dicts_,
+            prompt_id = "0078",
+            version = None,
+            inference_save_case=False,
+            OutputFormat = MemoryCardGenerate,
+        )
+
+
 
         super_log(time_dicts,"time_dicts")
+        if len(time_dicts) == len([f"# chat_history: {chat_history_str} # chapter:" + chapter.get("content") for chapter in chapters]):
+            for i,chapter in enumerate(chapters):
+                chapter.update(time_dicts[i])
+                chapter.update({"topic": 0})
+        else:
+            chapters = chapters[:1]
+            for i,chapter in enumerate(chapters):
+                chapter.update(time_dicts[i])
+                chapter.update({"topic": 0})
 
-        for i,chapter in enumerate(chapters):
-            chapter.update(time_dicts[i])
-            chapter.update({"topic": 0})
-
-        super_log(chapters,"聊天历史生成记忆卡片")
         return chapters

@@ -7,12 +7,16 @@ from diglife.server.router.digital_avatar import router as avatar_router
 from diglife.server.router.memory_card import router as memory_card_router
 from diglife.server.router.recommended import router as recommended_router
 from diglife.server.router.biography import router as biography_router
-from diglife.server.router.prompt import router as prompt_router
+# from diglife.server.router.prompt import router as prompt_router
 from diglife.server.router.chat import router as chat_router
 from diglife.models import LifeTopicScoreRequest, ScoreRequest, UseroverviewRequests, UserRelationshipExtractionRequest
+from pro_craft.server.router.prompt import create_router
 
 import os
 
+prompt_router = create_router(database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
+              slave_database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2-test",
+              model_name="doubao-1-5-pro-256k-250115")
 app = FastAPI(
     title="LLM Service",
     description="Provides an OpenAI-compatible API for custom large language models.",
@@ -47,11 +51,6 @@ app.include_router(biography_router)
 async def root():
     """server run"""
     envs = {
-        "MySQL_DB_HOST":os.getenv("MySQL_DB_HOST"),
-        "MySQL_DB_USER":os.getenv("MySQL_DB_USER"),
-        "MySQL_DB_PASSWORD":os.getenv("MySQL_DB_PASSWORD"),
-        "MySQL_DB_NAME":os.getenv("MySQL_DB_NAME"),
-        "MySQL_DB_Table_Name":os.getenv("MySQL_DB_Table_Name"),
         "host":os.getenv("host"),
         "port":os.getenv("port"),
         "similarity_top_k":os.getenv("similarity_top_k"),

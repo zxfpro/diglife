@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from diglife.core import MemoryCardManager
 from diglife.models import MemoryCardsRequest, MemoryCard, MemoryCards, MemoryCardsGenerate, ChatHistoryOrText, MemoryCard2
+from fastapi import FastAPI, HTTPException, status
 import os
 
 router = APIRouter(tags=["memory_card"])
@@ -54,7 +55,14 @@ async def memory_card_generate_server(request: ChatHistoryOrText) -> dict:
     # 0093 聊天历史生成记忆卡片-memory_card_system_prompt
     # 0094 聊天历史生成记忆卡片-time_prompt
     """
-    chapters = await MCmanager.agenerate_memory_card(
-        chat_history_str=request.text, weight=int(os.getenv("card_weight",1000))
-    )
+    try:
+        chapters = await MCmanager.agenerate_memory_card(
+            chat_history_str=request.text, weight=int(os.getenv("card_weight",1000))
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"MCmanager.agenerate_memory_card Error : {e}",
+        )
     return MemoryCardsGenerate(memory_cards=chapters)
+    

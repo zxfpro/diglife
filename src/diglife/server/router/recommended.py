@@ -1,8 +1,7 @@
 # server
 # 推荐算法
-
-from diglife.models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
 from fastapi import APIRouter, Depends, HTTPException, status
+from diglife.models import UpdateItem, DeleteResponse, DeleteRequest, QueryItem
 from diglife.core.recommended import Recommend
 from diglife import logger
 
@@ -73,6 +72,7 @@ async def delete_server(request: DeleteRequest):
 async def recommended_biographies_and_cards(query_item: QueryItem):
     try:
         clear_result = await rep.recommended_biographies_and_cards(user_id = query_item.user_id,
+                                                                   timestamp=query_item.timestamp,
              )
 
         return {
@@ -98,6 +98,7 @@ async def recommended_figure_person(query_item: QueryItem):
     try:
 
         clear_result = await rep.recommended_figure_person(user_id = query_item.user_id,
+                                                           timestamp = query_item.timestamp
              )
         return {
             "status": "success",

@@ -5,7 +5,7 @@ from diglife.models import Extract_Person,Extract_Place, Biography_Free, Content
 from diglife import inference_save_case
 import json
 from diglife import super_log
-from pro_craft.prompt_helper_async import AsyncIntel
+from pro_craft import AsyncIntel
 
 import re
 

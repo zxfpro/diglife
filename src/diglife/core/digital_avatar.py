@@ -1,6 +1,6 @@
 #
 import asyncio
-from pro_craft.prompt_helper_async import AsyncIntel
+from pro_craft import AsyncIntel
 from diglife.models import PersonInfo, CharactersData, ContentVer, BriefResponse
 from diglife.utils import memoryCards2str, extract_article
 from diglife import inference_save_case

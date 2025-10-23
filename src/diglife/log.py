@@ -79,3 +79,4 @@ class Log:
         log_(type(s))
         log_(s)
         log_("\n"+f"{COLOR_GREEN}=={COLOR_RESET}" * 50)
+

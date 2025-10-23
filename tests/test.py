@@ -1,1 +1,0 @@
-#celery -A celery_worker.celery_app worker --loglevel=info -P gevent -c 4

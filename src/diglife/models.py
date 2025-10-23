@@ -2,7 +2,6 @@
 # server
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field, model_validator, field_validator
-from datetime import datetime
 import re
 from pydantic import BaseModel, Field, RootModel
 
@@ -205,6 +204,7 @@ class UpdateItem(BaseModel):
 
 class QueryItem(BaseModel):
     user_id: str = Field(..., min_length=1, max_length=500, description="user_id")
+    timestamp: str = Field(..., min_length=1, max_length=500, description="timestamp")
 
 
 class BiographyResult(BaseModel):

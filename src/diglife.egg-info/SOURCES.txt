@@ -18,6 +18,7 @@ src/diglife/core/recommended/__init__.py
 src/diglife/core/recommended/embedding_model.py
 src/diglife/core/recommended/embedding_pool.py
 src/diglife/core/recommended/recom.py
+src/diglife/core/recommended/redis_.py
 src/diglife/server/__main__.py
 src/diglife/server/router/__init__.py
 src/diglife/server/router/biography.py
@@ -27,4 +28,4 @@ src/diglife/server/router/digital_avatar.py
 src/diglife/server/router/memory_card.py
 src/diglife/server/router/prompt.py
 src/diglife/server/router/recommended.py
-tests/test.py
+tests/test_redis.py

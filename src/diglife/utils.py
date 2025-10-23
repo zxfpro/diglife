@@ -1,7 +1,6 @@
 
 # 工具箱
 import re
-import json
 from diglife.models import MemoryCards
 
 def memoryCards2str(memory_cards: MemoryCards):
@@ -64,4 +63,3 @@ def extract_article(text: str) -> str:
         return matches[0].strip()  # 添加strip()去除首尾空白符
     else:
         return ""  # 返回空字符串或抛出异常，此处返回空字符串
-

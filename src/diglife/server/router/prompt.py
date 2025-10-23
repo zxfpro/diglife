@@ -1,12 +1,15 @@
 from fastapi import APIRouter
-from pro_craft.prompt_helper import IntellectType,Intel
+from pro_craft import Intel
 from pro_craft.utils import create_session
 import os
 
-router = APIRouter(tags=["prompt"])
+
 intels = Intel(
     database_url="mysql+pymysql://vc_agent:aihuashen%402024@rm-2ze0q808gqplb1tz72o.mysql.rds.aliyuncs.com:3306/digital-life2",
     model_name="doubao-1-5-pro-256k-250115")
+
+
+router = APIRouter(tags=["prompt"])
 
 @router.get("/push_order")
 async def push_order(demand:str, prompt_id: str, key: str,action_type = "train"):

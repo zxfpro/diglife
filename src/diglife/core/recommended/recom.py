@@ -2,11 +2,14 @@ from typing import Dict, Any
 import os
 import httpx
 from .embedding_pool import EmbeddingPool
+from .redis_ import get_redis_client, store_with_expiration, get_value
+
 
 recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_cache_max_leng",2))
 recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
 recommended_top_k = 10
 user_callback_url = os.getenv("user_callback_url")
+two_hours_in_seconds = 7200
 
 async def aget_(url = ""):
     async with httpx.AsyncClient() as client:
@@ -25,8 +28,7 @@ async def aget_(url = ""):
     return None
 
 
-
-class Recommend():
+class Recommend_old():
     def __init__(self):
         self.ep = EmbeddingPool()
         self.recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
@@ -93,6 +95,97 @@ class Recommend():
 
         if len(self.recommended_figure_cache[user_id]) > reset_length:
             self.recommended_figure_cache[user_id] = []
+        return clear_result
+
+
+
+class Recommend():
+    def __init__(self):
+        self.ep = EmbeddingPool()
+        self.biographies_redis_client = get_redis_client(username = os.getenv("redis_username"), 
+                                             password = os.getenv("redis_password"), 
+                                             host = os.getenv("redis_host"), 
+                                             port = os.getenv("redis_port"),
+                                             db = 20)
+        self.figure_redis_client = get_redis_client(username = os.getenv("redis_username"), 
+                                        password = os.getenv("redis_password"), 
+                                        host = os.getenv("redis_host"), 
+                                        port = os.getenv("redis_port"),
+                                        db = 21)
+
+        # self.recommended_biographies_cache: Dict[str, Dict[str, Any]] = {}
+        # self.recommended_figure_cache: Dict[str, Dict[str, Any]] = {}
+
+    def update(self,text, id, type):
+        self.ep.update(text=text, id=id, type=type)
+
+    def delete(self,id):
+        self.ep.delete(id)
+
+    async def recommended_biographies_and_cards(self,user_id,timestamp):
+        user_profile_id_to_fetch = user_id
+        user_id_timestamp = f"{user_id}_{timestamp}"
+        memory_info = await aget_(url = user_callback_url + f"/api/inner/getMemoryCards?userProfileId={user_profile_id_to_fetch}")
+
+        user_brief = '\n'.join([i.get('content') for i in memory_info['data']["memoryCards"][:4]])
+        user_brief = user_brief or "这是一个简单的记忆卡片"
+
+        result = self.ep.search_bac(query=user_brief) # 假如top_k = 1000
+
+        # 是否记录了该用户, 如果没记录, 创建空列表
+
+
+        if get_value(self.biographies_redis_client,user_id_timestamp):
+            clear_result = [i for i in result if i.get("id") not in get_value(self.biographies_redis_client,user_id_timestamp)]
+        else:
+            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds)
+            clear_result = result
+        clear_result = clear_result[:recommended_top_k]
+
+
+
+        now_user_id_list = get_value(self.biographies_redis_client,user_id_timestamp)
+        now_user_id_list += [i.get("id") for i in clear_result]
+        now_user_id_list = list(set(now_user_id_list))
+        store_with_expiration(self.biographies_redis_client, user_id_timestamp, now_user_id_list, two_hours_in_seconds)
+
+
+        reset_length = recommended_biographies_cache_max_leng if recommended_biographies_cache_max_leng < len(result) else len(result) -1
+
+
+        if len(get_value(self.biographies_redis_client,user_id_timestamp)) > reset_length:
+            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds)
+        return clear_result
+
+
+    async def recommended_figure_person(self,user_id,timestamp):
+        user_profile_id_to_fetch = user_id
+        user_id_timestamp = f"{user_id}_{timestamp}"
+        avatar_info = await aget_(url = user_callback_url + f"/api/inner/getAvatarDesc?userProfileId={user_profile_id_to_fetch}")
+        if avatar_info["code"] == 200:
+            user_brief = avatar_info["data"].get("avatarDesc")
+        else:
+            user_brief = "这是一个简单的人"
+
+        result = self.ep.search_figure_person(query=user_brief)  # 100+
+
+        if get_value(self.figure_redis_client,user_id_timestamp):
+            clear_result = [i for i in result if i.get("id") not in get_value(self.figure_redis_client,user_id_timestamp)]
+        else:
+            store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds)
+            clear_result = result
+        clear_result = clear_result[:recommended_top_k]
+        now_user_id_list = get_value(self.figure_redis_client,user_id_timestamp)
+        now_user_id_list += [i.get("id") for i in result]
+        now_user_id_list = list(set(now_user_id_list))
+        store_with_expiration(self.figure_redis_client, user_id_timestamp, now_user_id_list, two_hours_in_seconds)
+
+
+        reset_length = recommended_cache_max_leng if recommended_cache_max_leng < len(result) else len(result) -1
+
+
+        if len(get_value(self.figure_redis_client,user_id_timestamp)) > reset_length:
+            store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds)
         return clear_result
 
 
