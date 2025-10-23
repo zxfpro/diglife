@@ -9,7 +9,7 @@ recommended_biographies_cache_max_leng = int(os.getenv("recommended_biographies_
 recommended_cache_max_leng = int(os.getenv("recommended_cache_max_leng",2))
 recommended_top_k = 10
 user_callback_url = os.getenv("user_callback_url")
-two_hours_in_seconds = 7200
+two_hours_in_seconds = os.getenv("two_hours_in_seconds")
 
 async def aget_(url = ""):
     async with httpx.AsyncClient() as client:
@@ -131,30 +131,23 @@ class Recommend():
         user_brief = user_brief or "这是一个简单的记忆卡片"
 
         result = self.ep.search_bac(query=user_brief) # 假如top_k = 1000
-
+        # result  300个推荐结果
         # 是否记录了该用户, 如果没记录, 创建空列表
+        now_values = get_value(self.biographies_redis_client,user_id_timestamp)
 
-
-        if get_value(self.biographies_redis_client,user_id_timestamp):
-            clear_result = [i for i in result if i.get("id") not in get_value(self.biographies_redis_client,user_id_timestamp)]
+        if now_values:
+            clear_result = [i for i in result if i.get("id") not in now_values] # 将300个id 过滤一遍
         else:
-            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds)
+            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds) # 新建不用过滤
             clear_result = result
+
         clear_result = clear_result[:recommended_top_k]
-
-
 
         now_user_id_list = get_value(self.biographies_redis_client,user_id_timestamp)
         now_user_id_list += [i.get("id") for i in clear_result]
         now_user_id_list = list(set(now_user_id_list))
         store_with_expiration(self.biographies_redis_client, user_id_timestamp, now_user_id_list, two_hours_in_seconds)
 
-
-        reset_length = recommended_biographies_cache_max_leng if recommended_biographies_cache_max_leng < len(result) else len(result) -1
-
-
-        if len(get_value(self.biographies_redis_client,user_id_timestamp)) > reset_length:
-            store_with_expiration(self.biographies_redis_client, user_id_timestamp, [], two_hours_in_seconds)
         return clear_result
 
 
@@ -168,24 +161,21 @@ class Recommend():
             user_brief = "这是一个简单的人"
 
         result = self.ep.search_figure_person(query=user_brief)  # 100+
+        now_values = get_value(self.figure_redis_client,user_id_timestamp)
 
-        if get_value(self.figure_redis_client,user_id_timestamp):
-            clear_result = [i for i in result if i.get("id") not in get_value(self.figure_redis_client,user_id_timestamp)]
+        if now_values:
+            clear_result = [i for i in result if i.get("id") not in now_values]
         else:
             store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds)
             clear_result = result
+
         clear_result = clear_result[:recommended_top_k]
+
         now_user_id_list = get_value(self.figure_redis_client,user_id_timestamp)
         now_user_id_list += [i.get("id") for i in result]
         now_user_id_list = list(set(now_user_id_list))
         store_with_expiration(self.figure_redis_client, user_id_timestamp, now_user_id_list, two_hours_in_seconds)
 
-
-        reset_length = recommended_cache_max_leng if recommended_cache_max_leng < len(result) else len(result) -1
-
-
-        if len(get_value(self.figure_redis_client,user_id_timestamp)) > reset_length:
-            store_with_expiration(self.figure_redis_client, user_id_timestamp, [], two_hours_in_seconds)
         return clear_result
 
 
